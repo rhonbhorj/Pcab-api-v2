@@ -87,8 +87,7 @@
         font-weight: 900 !important;
         color: #6a6a6a;
     }
-
-
+    
     th {
         border: 1px black solid;
         border-width: 1px 0 1px 1px;
@@ -268,7 +267,7 @@
                                                         <th colspan="4" class="text-center">Amount</th>
                                                     </tr>
                                                     <tr>
-                                                    <th rowspan="2" class="text-center">Date<i
+                                                        <th rowspan="2" class="text-center">Date<i
                                                                 class="m-0">(mm/dd/yyyy)</i></th>
                                                         <th rowspan="2" class="text-center">Time</th>
                                                         <th rowspan="2" class="text-center">AR Number</th>
@@ -290,7 +289,7 @@
                                         foreach ($data as $row) {
                                             echo "<tr>";
                                             echo "<td>" . date_format(date_create($row['date']), "m/d/Y") . "</td>";
-                                            echo "<td>" . date("H:i:s", strtotime($row["date_created"])) . "</td>"; 
+                                            echo "<td>" . date("H:i:s", strtotime($row["date_created"])) . "</td>";
                                             echo "<td>" . $row["ar_no"] . "</td>";
                                             echo "<td>" . $row["name_of_payor"] . "</td>";
                                             echo "<td>" . $row["particulars"] . "</td>";
@@ -770,23 +769,23 @@
                         v: 'Collection Breakdown'
                     }]);
                     const footer = Addrow(sheet.childNodes[0].childNodes[1].childElementCount + 3, [{
-                        k: 'D',
+                        k: 'E',
                         v: 'Total:',
                         'text-right': true
                     }, {
-                        k: 'E',
+                        k: 'F',
                         v: collectTotal("ar_total"),
                         currency: true
                     }, {
-                        k: 'F',
+                        k: 'G',
                         v: collectTotal("pcab"),
                         currency: true
                     }, {
-                        k: 'G',
+                        k: 'H',
                         v: collectTotal("dst"),
                         currency: true
                     }, {
-                        k: 'H',
+                        k: 'I',
                         v: collectTotal("lrf"),
                         currency: true
                     }]);
@@ -885,6 +884,7 @@
         // Create a new div to wrap the table and add additional elements if needed     
         var modalContent = document.createElement('div');
         modalContent.classList.add('modal-content', 'table-responsive'); // Add classes for styling and responsiveness
+        modalContent.style.overflow = 'hidden';
 
         var modalBody = document.createElement('div');
         modalBody.classList.add('modal-body-content');
@@ -901,11 +901,7 @@
 
         var modalTableBody = document.createElement('tbody');
 
-        // Initialize variables to hold the total amounts
-        let totalCIAPPCAB = 0;
-        let totalLRF = 0;
-        let totalDST = 0;
-        let totalCollection = 0;
+        
 
         // Iterate through filtered data to calculate totals
         filteredData.forEach((row) => {
@@ -916,12 +912,6 @@
 
             // Sum of fees_pcab, legal_research_fund, and document_stamp_tax
             const collection = CIAPPCAB + LRF + DST;
-
-            // Add to total amounts
-            totalCIAPPCAB += CIAPPCAB;
-            totalLRF += LRF;
-            totalDST += DST;
-            totalCollection += collection;
 
             // Append row to modal table body
             // Create number formatter instance
@@ -966,7 +956,7 @@
         });
 
         // Append totals row to modal table body with formatted totals
-        modalTableBody.innerHTML += `<tr><td class="text-right" colspan="4">Total:</td><td class="text-right">${totalFormatter.format(totalCIAPPCAB)}</td><td class="text-right">${totalFormatter.format(totalLRF)}</td><td class="text-right">${totalFormatter.format(totalDST)}</td><td class="text-right">${totalFormatter.format(totalCollection)}</td></tr>`;
+        // modalTableBody.innerHTML += `<tr><td class="text-right" colspan="4">Total:</td><td class="text-right">${totalFormatter.format(totalCIAPPCAB)}</td><td class="text-right">${totalFormatter.format(totalLRF)}</td><td class="text-right">${totalFormatter.format(totalDST)}</td><td class="text-right">${totalFormatter.format(totalCollection)}</td></tr>`;
         // Append the modal body to the modal content
         modalContent.appendChild(modalBody);
 
@@ -985,6 +975,13 @@
             $('#validationMessage').empty();
             // Clear table content
             $('#modalDataTableContainer').empty();
+            // Reset modal size to small
+            $(this).attr("role", "dialog");
+            $(".modal-dialog", this).removeClass("modal-lg").addClass("modal-sm");
+        });
+
+        $('#modal_start_date, #modal_end_date').on("change", function () {
+            $('#validationMessage').empty();
         });
 
         // Ensure that it stays in modal-lg size
@@ -997,7 +994,7 @@
         // Initialize DataTable for the modal table with sorting enabled
         var table = $('#modalDataTable').DataTable({
             dom: '<"pull-left"b><"pull-right"f>rt<"row"<"col-sm-4"l><"col-sm-4"i><"col-sm-4"p>>',
-            scrollX: '90%',
+            scrollX: '100%',
             scrollCollapse: true,
         });
     });
