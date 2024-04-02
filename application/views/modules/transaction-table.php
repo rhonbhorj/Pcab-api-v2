@@ -226,7 +226,7 @@
 
                     $fmt = new NumberFormatter('en-US', NumberFormatter::CURRENCY);
                     $fmt->setPattern(str_replace('¤#', "", $fmt->getPattern()));
-                    if (empty ($data)) {
+                    if (empty($data)) {
                         // echo "<tr><td colspan='11'>No data available</td></tr>";
                     } else {
                         foreach ($data as $row) {
@@ -287,18 +287,26 @@
             scrollX: '100%',
             scrollCollapse: true,
             ordering: false,
-            buttons: [
-                {
-                    extend: 'excelHtml5',
-                    text: 'Export',
-                    filename: 'Transaction_Table', // Provide a valid filename here
-                    autoWidth: false, // Set to true or false based on your requirement
-                    header: true, // Set to true or false based on your requirement
-                    footer: true, // Set to true or false based on your requirement
-                    title: "Electronic Collection",
-                    className: 'export-btn',
+            buttons: [{
+                extend: 'excelHtml5',
+                text: 'Export',
+                filename: 'Transaction_Table', // Provide a valid filename here
+                autoWidth: false, // Set to true or false based on your requirement
+                header: true, // Set to true or false based on your requirement
+                footer: true, // Set to true or false based on your requirement
+                title: "Electronic Collection",
+                className: 'export-btn',
+                customizeData: function (data) {
+                    for (var i = 0; i < data.body.length; i++) {
+                        for (var j = 0; j < data.body[i].length; j++) {
+                            // Exclude peso sign from currency cells
+                            if (j >= 5 && j <= 9) {
+                                data.body[i][j] = data.body[i][j].replace(/₱/g, ''); // Replace peso sign
+                            }
+                        }
+                    }
                 }
-            ],
+            }],
         });
 
 

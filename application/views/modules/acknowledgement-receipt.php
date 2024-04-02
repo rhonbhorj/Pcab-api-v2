@@ -589,22 +589,28 @@
             scrollX: '100%',
             scrollCollapse: true,
             ordering: false,
-            buttons: [
-                {
-                    extend: 'excelHtml5',
-                    text: 'Export',
-                    filename: 'ACKNOWLEDGEMENT-RECEIPT_Table', // Provide a valid filename here
-                    autoWidth: false, // Set to true or false based on your requirement
-                    header: true, // Set to true or false based on your requirement
-                    footer: true, // Set to true or false based on your requirement
-                    className: 'export-btn',
-                    exportOptions: {
-                        columns: ':not(:last-child)' // Exclude the last column (Action)
+            buttons: [{
+                extend: 'excelHtml5',
+                text: 'Export',
+                filename: 'ACKNOWLEDGEMENT-RECEIPT_Table',
+                autoWidth: false,
+                header: true,
+                footer: true,
+                className: 'export-btn',
+                exportOptions: {
+                    columns: ':not(:last-child)', // Exclude the last column (Action)
+                    format: {
+                        body: function (data, row, column, node) {
+                            // Exclude peso sign from currency cells (assuming columns 8 to 11 are currency columns)
+                            if (column >= 7 && column <= 10) {
+                                return data.replace(/₱/g, ''); // Replace peso sign
+                            }
+                            return data;
+                        }
                     }
                 }
-            ],
+            }]
         });
-
 
         $('.search-btn').on('click', function () {
             table.draw();
