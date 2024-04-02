@@ -1039,10 +1039,7 @@
 
     });
 
-
-
     async function printDailyReport(startDate, endDate) {
-        // Your code to fetch data and generate PDF report goes here
         const filteredData = _jsonData.filter(object => {
             if (object.date >= $("#Daily_CollectionModal #modal_start_date").val() && object.date <= $("#Daily_CollectionModal #modal_end_date").val()) return object
         });
@@ -1057,9 +1054,6 @@
 
         let i = 0;
         let rowsPerPage = "";
-        let yOffset = 0; // Track vertical position
-
-        // Initialize variables to hold the total amounts
         let totalCIAPPCAB = 0;
         let totalLRF = 0;
         let totalDST = 0;
@@ -1067,39 +1061,46 @@
 
         // Define content function to generate HTML for each row
         const content = row => `
-        <tr>
-            <td style="border: 1px solid black;">${row.date_created ?? ""}</td>
-            <td style="border: 1px solid black;">${row.reference_number ?? ""}</td>
-            <td style="border: 1px solid black;">${row.name_of_payor ?? ""}</td>
-            <td style="border: 1px solid black;">${row.referenceNumber ?? ""}</td>
-            <td style="border: 1px solid black;">${parseFloat(parseFloat(row.fees_pcab ?? 0)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-            <td style="border: 1px solid black;">${parseFloat(parseFloat(row.legal_research_fund ?? 0)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-            <td style="border: 1px solid black;">${parseFloat(parseFloat(row.document_stamp_tax ?? 0)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-            <td style="border: 1px solid black;">${parseFloat(parseFloat(row.fees_pcab ?? 0) + parseFloat(row.legal_research_fund ?? 0) + parseFloat(row.document_stamp_tax ?? 0)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-        </tr>
+    <tr>
+        <td class="cell" style="border: 1px solid black;width;100%;">${row.date_created ?? ""}</td>
+        <td class="cell" style="border: 1px solid black;width;100%;">${row.reference_number ?? ""}</td>
+        <td class="cell" style="border: 1px solid black;width;100%;">${row.name_of_payor ?? ""}</td>
+        <td class="cell" style="border: 1px solid black;width;100%;">${row.referenceNumber ?? ""}</td>
+        <td class="cell" style="border: 1px solid black;width;100%;">${parseFloat(parseFloat(row.fees_pcab ?? 0)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+        <td class="cell" style="border: 1px solid black;width;100%;">${parseFloat(parseFloat(row.legal_research_fund ?? 0)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+        <td class="cell" style="border: 1px solid black;width;100%;">${parseFloat(parseFloat(row.document_stamp_tax ?? 0)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+        <td class="cell" style="border: 1px solid black;width;100%;">${parseFloat(parseFloat(row.fees_pcab ?? 0) + parseFloat(row.legal_research_fund ?? 0) + parseFloat(row.document_stamp_tax ?? 0)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+    </tr>
     `;
 
-        const tableHeader = `<table>
-                            <thead>
-                            <tr>
-                        <th colspan="8" class="text-center">COLLECTION</th>
+        // Define table header
+        const tableHeader = `
+<thead>
+    <tr>
+        <th colspan="8" class="text-center">Collection</th>
+    </tr>
+    <tr>
+        <th style="width: 12%; border-bottom: none;">Date & Time</th>
+        <th style="width: 12%; border-bottom: none;">AR Number</th>
+        <th style="width: 14%; border-bottom: none;">Name of Payor</th>
+        <th style="width: 14%; border-bottom: none;">Reference Number</th>
+        <th style="width: 20%;">CIAP-PCAB</th>
+        <th style="width: 20%;">LRF</th>
+        <th style="width: 20%;">DST</th>
+        <th style="width: 12%; border-bottom: none;">Total Collection</th>
+    </tr>
+    <tr>
+        <th style="width: 12%; border-top: none;"></th>
+        <th style="width: 12%; border-top: none;"></th>
+        <th style="width: 14%; border-top: none;"></th>
+        <th style="width: 14%; border-top: none;"></th>
+        <th>Account No.<br/>(0052-1684-30)</th>
+        <th>Account No.<br/>(3402-2866-00)</th>
+        <th>Account No.<br/>(3402-2866-19)</th>
+        <th style="width: 12%; border-top: none;"></th>
+    </tr>
+</thead>`;
 
-                    </tr>
-                    <tr>
-                        <th rowspan="3">Date and Time</th>
-                        <th rowspan="3">AR No.</th>
-                        <th rowspan="3">Name of Payor</th>
-                        <th rowspan="3">Reference No.</th>
-                        <th>CIAP-PCAB</th>
-                        <th>LRF</th>
-                        <th>DST</th>
-                        <th rowspan="3">Total Collection</th>
-                    </tr>
-                        <th>Account No.<br/>(0052-1684-30)</th>
-                        <th>Account No.<br/>(3402-2866-00)</th>
-                        <th>Account No.<br/>(3402-2866-19)</th>
-                    </tr>
-                            </thead>`;
 
         while (filteredData.length - (i * 30) > 0) {
             let rows = filteredData.slice(i * 30, i * 30 + 30);
@@ -1124,15 +1125,43 @@
             });
 
             // Concatenate HTML for all pages
-            rowsPerPage += `<table style="margin-left:5rem;margin-right:5px; margin-top:15rem;">
-                            ${i === 0 ? tableHeader : ''}
-                            <tbody >${rowsHtml}</tbody>
-                        </table>`;
+            rowsPerPage += `<div class="table-wrapper" style="margin-left: 2rem;  margin-top: 15rem; margin-bottom: 5rem;"> 
+                            <table class="report-table" style=" margin-top: 15rem; ">
+                                ${i == 0 ? tableHeader : ''}
+                                <tbody >${rowsHtml}</tbody>
+                                ${i == Math.ceil(filteredData.length / 30) - 1 ? `
+                                    <tfoot>
+                    <tr>
+                        <td style="border: 1px solid black;"></td>
+                        <td style="border: 1px solid black;"></td>
+                        <td style="border: 1px solid black;"></td>
+                        <td style="border: 1px solid black;">Total :</td>
+                        <td style="border: 1px solid black;">${totalCIAPPCAB.toLocaleString(undefined, {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            })}</td>
+                        <td style="border: 1px solid black;">${totalLRF.toLocaleString(undefined, {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            })}</td>
+                        <td style="border: 1px solid black;">${totalDST.toLocaleString(undefined, {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            })}</td>
+                        <td style="border: 1px solid black;">${totalCollection.toLocaleString(undefined, {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            })}</td>
+                    </tr>
+                </tfoot>` : ''}
+                            </table>
+                        </div>
+                        `;
 
             i++;
         }
+
         const header = `<div class="mx-auto d-flex flex-column border-dark" style="width:70rem;height:5rem;">
-                        <br>
                         <div class="d-flex align-items-center justify-content-center" style="height: 250px;">
                             <div class="row justify-content-center mb-2">
                                 <div class="col-md-3">
@@ -1145,11 +1174,9 @@
                                 </div>
                             </div>
                         </div>
-                        <br>
                         <div class="d-flex align-items-center justify-content-center" style="height: 250px;">
                             <img width="100%" height="6px" style="margin-top: -10px; margin-left:30px; margin-right:30px;" src="assets/images/NGSI_header.png" alt="logo" class="logo-dark" />
                         </div>
-                        <br>
                         <div class="d-flex align-items-center justify-content-center" style="height: 250px;">
                             <div class="text-center text-uppercase py-3">
                                 <p class="font-weight-bold" style="color:black;">LIST &nbsp;OF &nbsp;DAILY &nbsp;COLLECTION<p>
@@ -1189,12 +1216,19 @@
                 scale: .40
             },
             async callback(pdf) {
+                const totalPages = pdf.internal.getNumberOfPages();
+
+                for (let i = 1; i <= totalPages; i++) {
+                    pdf.setPage(i);
+                    pdf.setFontSize(10);
+                    pdf.text(520, 800, `Page ${i} of ${totalPages}`);
+                }
+
                 const date = new Date();
                 await pdf.save(`list_of_colletion-${date.toLocaleDateString()}.pdf`);
             },
         });
     }
-
 
     async function printRow(trans_id) {
         const rowData = _jsonData.find(obj => obj.trans_id == trans_id);
