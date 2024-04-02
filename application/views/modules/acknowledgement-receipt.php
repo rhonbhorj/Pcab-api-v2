@@ -1086,10 +1086,10 @@
         <th colspan="8" class="text-center">Collection</th>
     </tr>
     <tr>
-        <th style="width: 12%; border-bottom: none;">Date & Time</th>
-        <th style="width: 12%; border-bottom: none;">AR Number</th>
-        <th style="width: 14%; border-bottom: none;">Name of Payor</th>
-        <th style="width: 14%; border-bottom: none;">Reference Number</th>
+        <th style="width: 12%; border-bottom: none; ">Date & Time</th>
+        <th style="width: 12%; border-bottom: none; ">AR Number</th>
+        <th style="width: 14%; border-bottom: none; ">Name of Payor</th>
+        <th style="width: 14%; border-bottom: none;  ">Reference Number</th>
         <th style="width: 20%;">CIAP-PCAB</th>
         <th style="width: 20%;">LRF</th>
         <th style="width: 20%;">DST</th>
@@ -1131,8 +1131,8 @@
             });
 
             // Concatenate HTML for all pages
-            rowsPerPage += `<div class="table-wrapper" style="margin-left: 2rem;  margin-top: 15rem; margin-bottom: 5rem;"> 
-                            <table class="report-table" style=" margin-top: 15rem; ">
+            rowsPerPage += `<div class="table-wrapper" style="margin-left: 2rem;  margin-top: 15rem; margin-bottom: 5rem;width: 66rem;"> 
+                            <table class="report-table" style=" margin-top: 15rem;text-align:center; ">
                                 ${i == 0 ? tableHeader : ''}
                                 <tbody >${rowsHtml}</tbody>
                                 ${i == Math.ceil(filteredData.length / 30) - 1 ? `
@@ -1214,7 +1214,7 @@
                                 </div>
                             </div>
                         </div>
-                        <p style="position:relative;margin-left:10px;">Page : 1</p>
+                       
                     </div>`;
 
         doc.html(header + rowsPerPage + footer, {
