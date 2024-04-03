@@ -124,9 +124,11 @@ class Model_repo extends CI_Model
 
     public function updateTransaction($update, $where)
     {
-
-        $this->db->where('reference_number', $where)->update('transactions', $update);
+        $this->db->where('reference_number', $where)->limit(1)->update('transactions', $update);
         return $this->db->affected_rows();
+
+        // $this->db->where('reference_number', $where)->update('transactions', $update);
+        // return $this->db->affected_rows();
     }
 
     public function updateCallBack($update, $where)
