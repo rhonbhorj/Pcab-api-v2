@@ -1044,6 +1044,8 @@
         $('#modalDataTableContainer').empty();
 
     });
+
+
     async function printDailyReport(startDate, endDate) {
         const filteredData = _jsonData.filter(object => {
             if (object.date >= $("#Daily_CollectionModal #modal_start_date").val() && object.date <= $("#Daily_CollectionModal #modal_end_date").val()) return object
@@ -1108,8 +1110,8 @@
 
         let rowsPerPageHtml = ''; // Variable to store HTML for rows per page
 
-        while (filteredData.length - (i * 38) > 0) {
-            let rows = filteredData.slice(i * 38, i * 38 + 38);
+        while (filteredData.length - (i * 40) > 0) {
+            let rows = filteredData.slice(i * 40, i * 40 + 40);
 
             // Calculate totals for the current page
             rows.forEach(data => {
@@ -1125,28 +1127,46 @@
             });
 
             // Generate HTML for the current page
-            rowsPerPageHtml += `<div class="page-container" style="margin-top: 9rem; margin-left:2rem; width: 100%; text-align: center; margin-bottom;10rem;">
-<div class="table-wrapper" style="display: inline-block; width: 66rem; overflow: auto;margin-top: 3rem; margin-bottom:15rem">
-    <table class="report-table" style="width: 100%; border-collapse: collapse; border: 1px solid black;">
-        ${i == 0 ? tableHeader : ''}
-        <tbody>`;
+            rowsPerPageHtml += `<div class="page-container" style="margin-top: 10rem; margin-left:2rem; width: 100%; text-align: center; margin-bottom;10rem;">
+<div class="table-wrapper" style="display: inline-block; width: 66rem; overflow: auto; margin-bottom:15rem">
+<table class="report-table" style="width: 100%; border-collapse: collapse; border: 1px solid black;">
+    ${i == 0 ? tableHeader : ''}
+    <tbody>`;
 
             rows.forEach(data => {
                 rowsPerPageHtml += content(data);
             });
+            rowsPerPageHtml += `</tbody>`;
 
-            rowsPerPageHtml += `</tbody>
-    </table>
+            // Add the footer only on the last page
+            if (i === Math.ceil(filteredData.length / 40) - 1) {
+                rowsPerPageHtml += `
+            <tfoot>
+                <tr>
+                    <td style="border: 1px solid black;"></td>
+                    <td style="border: 1px solid black;"></td>
+                    <td style="border: 1px solid black;"></td>
+                    <td style="border: 1px solid black;">Total :</td>
+                    <td style="border: 1px solid black;">${totalCIAPPCAB.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                    <td style="border: 1px solid black;">${totalLRF.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                    <td style="border: 1px solid black;">${totalDST.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                    <td style="border: 1px solid black;">${totalCollection.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                </tr>
+            </tfoot>`;
+            }
+
+            rowsPerPageHtml += `</table>
 </div>
 </div>`;
 
             // Add a page break if there are more rows to be processed
-            if (filteredData.length - ((i + 1) * 38) > 0) {
+            if (filteredData.length - ((i + 1) * 40) > 0) {
                 rowsPerPageHtml += `<div style="page-break-before: always;"></div>`;
             }
 
             i++;
         }
+
 
         // Generate header and footer content
         const header = `<div class="mx-auto d-flex flex-column border-dark" style="width:70rem;height:5rem;">
