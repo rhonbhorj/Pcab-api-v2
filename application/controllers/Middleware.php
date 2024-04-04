@@ -285,11 +285,11 @@ class Middleware extends REST_Controller
                     if ($response['status_code'] == 200 || $response['status_code'] == 201) {
 
                         $this->response([
-                             $response['response']
+                             json_decode($response['response'],true)
                         ],$response['status_code']);
                     } else {
                         $this->response([
-                            $response['response']
+                            json_decode($response['response'],true)
                        ],$response['status_code']);
                     }
                 }
