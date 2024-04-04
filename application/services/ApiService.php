@@ -79,7 +79,7 @@ class ApiService
 
     public function call_back($data, $endpoint)
     {
-        $curl = curl_init();
+     
 
   
 
@@ -100,7 +100,7 @@ class ApiService
           
         //   $response = curl_exec($curl);
 
-    
+        $curl = curl_init();
 
         curl_setopt_array($curl, array(
           CURLOPT_URL => $endpoint,
@@ -118,10 +118,10 @@ class ApiService
         ));
         
         $response = curl_exec($curl);
-        
+        $http_status_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
         curl_close($curl);
        
-        $http_status_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+       
         $resp['response'] =json_encode($data);
         $resp['status_code'] = $http_status_code;
 

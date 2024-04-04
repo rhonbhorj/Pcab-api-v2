@@ -285,16 +285,12 @@ class Middleware extends REST_Controller
                     if ($response['status_code'] == 200 || $response['status_code'] == 201) {
 
                         $this->response([
-                            'messege' => 'Success',
-                            'error' => 'false',
-                            'data' => $doUpdateApiLog
-                        ], Rest_Controller::HTTP_OK);
+                             $response['response']
+                        ],$response['status_code']);
                     } else {
                         $this->response([
-                            'messege' => 'Success',
-                            'error' => 'true',
-                            'data' => $TransData['callback_uri']
-                        ], Rest_Controller::HTTP_OK);
+                            $response['response']
+                       ],$response['status_code']);
                     }
                 }
             }
