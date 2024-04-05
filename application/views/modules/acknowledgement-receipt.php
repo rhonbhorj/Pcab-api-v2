@@ -838,7 +838,7 @@
     });
 
 
-    const _jsonData = JSON.parse('<?php echo json_encode($data) ?>')
+    const _jsonData = <?php echo json_encode($data, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP); ?>;
 
     const toLocalCurrency = (val) => parseFloat(val).toLocaleString('en-US', {
         maximumFractionDigits: 2,
