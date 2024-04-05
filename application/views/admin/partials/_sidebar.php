@@ -6,12 +6,7 @@
         <i class="icon-screen-desktop menu-icon"></i>
       </a>
     </li> -->
-    <li class="nav-item">
-      <a class="nav-link" href="transaction-table">
-        <span class="menu-title text-capitalize"> Transaction</span>
-        <i class="icon-grid  menu-icon"></i>
-      </a>
-    </li>
+  
     <li class="nav-item">
       <a class="nav-link" href="acknowledgement-receipt">
         <span class="menu-title text-capitalize">Acknowledgements</span>
@@ -24,6 +19,18 @@
         <i class="icon-grid  menu-icon"></i>
       </a>
     </li>
+
+    <?php if ($_SESSION['usertype'] == "SUPERADMIN") 
+      echo 
+    '<li class="nav-item">
+      <a class="nav-link" href="transaction-table">
+        <span class="menu-title text-capitalize"> Transactions</span>
+        <i class="icon-grid  menu-icon"></i>
+      </a>
+    </li> '
+    
+  ?>
+  
     
     <!-- <li class="nav-item">
       <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">

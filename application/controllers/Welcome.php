@@ -57,7 +57,7 @@ class Welcome extends CI_Controller
 			$result["route"] = $this->uri->segment(1);
 
 			if ($result["route"] == "dashboard") {
-				redirect('/transaction-table');
+				redirect('/acknowledgement-receipt');
 				return;
 			}
 
@@ -89,13 +89,17 @@ class Welcome extends CI_Controller
 			}
 
 
-			if ($result["route"] == "transaction-table") {
-
-				$result['data'] = $this->crud->get_all_transaction_data();
+			if ($result["route"] == "transaction-table" ) {
+				if( $_SESSION['usertype'] == "SUPERADMIN"){
+					$result['data'] = $this->crud->get_all_transaction_data();
+				}
+				else {
+					redirect('login');
+				}
 				
-
 			}
-
+		
+			
 
 			$this->load->view('index', $result);
 		} else {
