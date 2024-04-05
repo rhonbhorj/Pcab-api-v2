@@ -602,7 +602,7 @@
                     format: {
                         body: function (data, row, column, node) {
                             // Exclude peso sign from currency cells (assuming columns 8 to 11 are currency columns)
-                            if (column >= 7 && column <= 10) {
+                            if (column >= 7 && column <= 11) {
                                 return data.replace(/₱/g, ''); // Replace peso sign
                             }
                             return data;
