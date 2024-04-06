@@ -261,22 +261,30 @@
                                                 aria-hidden="true">&times;</button>
                                         </div>
                                         <div class="modal-body  bg-white pb-3">
-                                            <label for="monthFilter">Select Month: </label>
-                                            <select id="monthFilter">
-                                                <option value="0">All Months</option>
-                                                <option value="1">January</option>
-                                                <option value="2">February</option>
-                                                <option value="3">March</option>
-                                                <option value="4">April</option>
-                                                <option value="5">May</option>
-                                                <option value="6">June</option>
-                                                <option value="7">July</option>
-                                                <option value="8">August</option>
-                                                <option value="9">September</option>
-                                                <option value="10">October</option>
-                                                <option value="11">November</option>
-                                                <option value="12">December</option>
-                                            </select>
+                                            <div class="form-group">
+                                                <label for="e-collection_start_date" class="date-label">Start Date:</label>
+                                                <div class="input-group date date-input-group" id="startDatePicker">
+                                                    <input type="text" class="form-control" name="e-collection_start_date"
+                                                        id="e-collection_start_date"
+                                                        style="z-index: 2; background:#fff;border:1px solid black; cursor:pointer;"
+                                                        readonly placeholder="mm /dd /yyyy">
+                                                    <span class="input-group-addon" id="startDateIcon">
+                                                        <i class="glyphicon glyphicon-calendar"></i>
+                                                    </span>
+                                                </div>
+
+                                                <label for="e-collection_end_date" class="date-label">End Date:</label>
+                                                <div class="input-group date date-input-group" id="endDatePicker">
+                                                    <input type="text" class="form-control" name="e-collection_end_date"
+                                                        id="e-collection_end_date"
+                                                        style="background:#fff;border:1px solid black;cursor:pointer;"
+                                                        readonly placeholder="mm /dd / yyyy">
+                                                    <span class="input-group-addon" id="endDateIcon">
+                                                        <i class="glyphicon glyphicon-calendar"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+
                                             <table id="EcollectTable" class="table table-striped text-center" width="100%">
                                                 <thead>
                                                     <tr>
@@ -308,26 +316,31 @@
                                                     <?php
                                         $fmt = new NumberFormatter('en-US', NumberFormatter::CURRENCY);
                                         $fmt->setPattern(str_replace('¤#', "", $fmt->getPattern()));
-                                        $total = ["totalAR" => 0, "totalFee" => 0, "totalDST" => 0, "totalLRF" => 0];
-                                        foreach ($data as $row) {
-                                            echo "<tr>";
-                                            echo "<td>" . date_format(date_create($row['date']), "m/d/Y") . "</td>";
-                                            echo "<td>" . date("H:i:s", strtotime($row["date_created"])) . "</td>";
-                                            echo "<td>" . $row["ar_no"] . "</td>";
-                                            echo "<td>" . $row["name_of_payor"] . "</td>";
-                                            echo "<td>" . $row["particulars"] . "</td>";
-                                            $total_per_AR = $row["fees_pcab"] + $row["document_stamp_tax"] + $row["legal_research_fund"];
-                                            $total["totalAR"] += $total_per_AR;
-                                            $total["totalFee"] += $row["fees_pcab"];
-                                            $total["totalDST"] += $row["document_stamp_tax"];
-                                            $total["totalLRF"] += $row["legal_research_fund"];
-                                            echo "<td class='text-right'>" . $fmt->formatCurrency(floatval($total_per_AR), "PHP") . "</td>";
-                                            echo "<td class='text-right'>" . $fmt->formatCurrency(floatval($row["fees_pcab"]), "PHP") . "</td>";
-                                            echo "<td class='text-right'>" . $fmt->formatCurrency(floatval($row["document_stamp_tax"]), "PHP") . "</td>";
-                                            echo "<td class='text-right'>" . $fmt->formatCurrency(floatval($row["legal_research_fund"]), "PHP") . "</td>";
-                                            echo "</tr>";
+                                        if (empty($data)) {
+                                            // echo "<tr><td colspan='11'>No data available</td></tr>";
+                                        } else {
+                                            $total = ["totalAR" => 0, "totalFee" => 0, "totalDST" => 0, "totalLRF" => 0];
+                                            foreach ($data as $row) {
+                                                echo "<tr>";
+                                                echo "<td>" . date_format(date_create($row['last_modified']), "m/d/Y") . "</td>";
+                                                echo "<td>" . date("H:i:s", strtotime($row["last_modified"])) . "</td>";
+                                                echo "<td>" . $row["ar_no"] . "</td>";
+                                                echo "<td>" . $row["name_of_payor"] . "</td>";
+                                                echo "<td>" . $row["particulars"] . "</td>";
+                                                $total_per_AR = $row["fees_pcab"] + $row["document_stamp_tax"] + $row["legal_research_fund"];
+                                                $total["totalAR"] += $total_per_AR;
+                                                $total["totalFee"] += $row["fees_pcab"];
+                                                $total["totalDST"] += $row["document_stamp_tax"];
+                                                $total["totalLRF"] += $row["legal_research_fund"];
+                                                echo "<td class='text-right'>" . $fmt->formatCurrency(floatval($total_per_AR), "PHP") . "</td>";
+                                                echo "<td class='text-right'>" . $fmt->formatCurrency(floatval($row["fees_pcab"]), "PHP") . "</td>";
+                                                echo "<td class='text-right'>" . $fmt->formatCurrency(floatval($row["document_stamp_tax"]), "PHP") . "</td>";
+                                                echo "<td class='text-right'>" . $fmt->formatCurrency(floatval($row["legal_research_fund"]), "PHP") . "</td>";
+                                                echo "</tr>";
+                                            }
                                         }
                                         ?>
+
 
                                             </tbody>
                                         </table>
@@ -380,8 +393,8 @@
 
 
                                 echo "<td>" . $row["trans_id"] . "</td>";
-                                echo "<td>" . date_format(date_create($row['date']), "m/d/Y") . "</td>";
-                                echo "<td>" . date("H:i:s", strtotime($row["date_created"])) . "</td>";
+                                echo "<td>" . date_format(date_create($row['last_modified']), "m/d/Y") . "</td>";
+                                echo "<td>" . date("H:i:s", strtotime($row["last_modified"])) . "</td>";
                                 echo "<td>" . $row["reference_number"] . "</td>";
                                 echo "<td>" . $row["name_of_payor"] . "</td>";
                                 echo "<td>" . $row["particulars"] . "</td>";
@@ -649,6 +662,18 @@
     });
 
     $(document).ready(function () {
+        // Tooltip initialization
+        $('[data-toggle="tooltip"]').tooltip();
+
+        // Datepicker initialization
+        $('#e-collection_start_date, #e-collection_end_date').datepicker({
+            format: 'mm-dd-yyyy',
+            autoclose: true,
+            todayHighlight: true,
+            clearBtn: true,
+            orientation: 'bottom',
+        });
+
         var today = new Date();
         var dateString = today.getFullYear() + '-' + (today.getMonth() + 1).toString().padStart(2, '0') + '-' + today.getDate().toString().padStart(2, '0');
         var filename = 'NGSI_E-Collection_' + dateString;
@@ -668,16 +693,7 @@
                 className: 'export-btn',
                 exportOptions: {
                     format: {
-                        // customizeData(a, b, c) {
-                        //     console.log(a, b, c)
-                        // },
-                        // footer(a, b, c) {
-                        //     if (b > 3) {
-                        //         console.log(b, c, toLocalCurrency(a.replaceAll(",", "")))
-                        //         return toLocalCurrency(a.replaceAll(",", ""));
-                        //     }
-                        //     return a
-                        // }
+
                     }
                 },
                 customize: function (xlsx) {
@@ -808,34 +824,32 @@
             }]
         });
 
-
-        $('#monthFilter').on('change', function () {
-            var selectedMonth = $(this).val();
-            if (selectedMonth === "0") {
-                // Clear the filter completely if "All Months" is selected
-                dataTable.column(0).search('').draw();
-            } else {
-                var specificMonth = selectedMonth.padStart(2, '0'); // Pad with zero if needed
-
-                // Use DataTables API to filter by a specific month
-                dataTable.column(0).search(specificMonth, true, false).draw();
-            }
-        });
-
-        // Modify the month filtering to only apply to the specific DataTable
+        // Add search functionality
         $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
             if (settings.nTable.id !== 'EcollectTable') {
                 return true;
             }
-            var selectedMonth = $('#monthFilter').val();
-            if (selectedMonth == 0) {
+            var e_start_Date = $('#e-collection_start_date').datepicker('getDate');
+            var e_ende_date = $('#e-collection_end_date').datepicker('getDate');
+            var E_CurrentDate = new Date(data[0]);
+
+            if (
+                (e_start_Date === null || e_ende_date === null) ||
+                (isNaN(e_start_Date) || isNaN(e_ende_date)) ||
+                (e_start_Date <= E_CurrentDate && e_ende_date >= E_CurrentDate)
+            ) {
                 return true;
             }
-            var dateParts = data[0].split('/'); // Split date string by '/'
-            var rowMonth = parseInt(dateParts[0]); // Parse month from date string
-            return rowMonth == selectedMonth;
+
+        });
+
+        // Update table on date change
+        $('#e-collection_start_date, #e-collection_end_date').on('change', function () {
+            dataTable.draw();
         });
     });
+
+
 
 
     const _jsonData = <?php echo json_encode($data, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP); ?>;
@@ -930,9 +944,9 @@
             });
 
             modalTableBody.innerHTML += `<tr>
-            <td class="text-left" style='width:${100 / 9}%;padding-left:18px;'>${formatDate(row.date_created)}</td>
+            <td class="text-left" style='width:${100 / 9}%;padding-left:18px;'>${formatDate(row.last_modified)}</td>
             <td class="text-center" style='width:${100 / 9}%;padding-left:18px;'>${row.ar_no}</td>
-            <td style='width:${100 / 9}%;padding-left:18px;'>${row.name_of_payor}</td>
+            <td style='width:${100 / 9}%;padding-left:18px; white-space: pre-wrap; word-wrap: break-word;'>${row.name_of_payor}</td>
             <td style='width:${100 / 9}%;padding-left:18px;'>${row.reference_number}</td>
             <td class="text-right" style='width:${100 / 9}%;'>${formatter.format(CIAPPCAB)}</td>
             <td class="text-right" style='width:${100 / 9}%;'>${formatter.format(LRF)}</td>
@@ -1048,7 +1062,10 @@
 
     async function printDailyReport(startDate, endDate) {
         const filteredData = _jsonData.filter(object => {
-            if (object.date >= $("#Daily_CollectionModal #modal_start_date").val() && object.date <= $("#Daily_CollectionModal #modal_end_date").val()) return object
+            const modalStartDate = new Date($("#Daily_CollectionModal #modal_start_date").val());
+            const modalEndDate = new Date($("#Daily_CollectionModal #modal_end_date").val());
+            const objectDate = new Date(object.date);
+            return objectDate >= modalStartDate && objectDate <= modalEndDate;
         });
 
         let doc = new jspdf.jsPDF({
@@ -1065,53 +1082,50 @@
         let totalDST = 0;
         let totalCollection = 0;
         let currentPage = 1; // Track the current page number
+        const tableHeader = `
+    <thead>
+    <tr>
+        <th colspan="8" class="text-center">Collection</th>
+    </tr>
+    <tr>
+        <th style="width: 12%; border-bottom: none; ">Date & Time</th>
+        <th style="width: 12%; border-bottom: none; ">AR Number</th>
+        <th style="width: 14%; border-bottom: none; ">Name of Payor</th>
+        <th style="width: 14%; border-bottom: none;  ">Reference Number</th>
+        <th style="width: 20%;">CIAP-PCAB</th>
+        <th style="width: 20%;">LRF</th>
+        <th style="width: 20%;">DST</th>
+        <th style="width: 12%; border-bottom: none;">Total Collection</th>
+    </tr>
+    <tr>
+        <th style="width: 12%; border-top: none;"></th>
+        <th style="width: 12%; border-top: none;"></th>
+        <th style="width: 14%; border-top: none;"></th>
+        <th style="width: 14%; border-top: none;"></th>
+        <th>Account No.<br/>(0052-1684-30)</th>
+        <th>Account No.<br/>(3402-2866-00)</th>
+        <th>Account No.<br/>(3402-2866-19)</th>
+        <th style="width: 12%; border-top: none;"></th>
+    </tr>
+    </thead>`;
 
-        // Define content function to generate HTML for each row
         const content = row => `
 <tr>
-    <td class="cell" style="border: 1px solid black;">${row.date_created ?? ""}</td>
-    <td class="cell" style="border: 1px solid black;">${row.reference_number ?? ""}</td>
-    <td class="cell" style="border: 1px solid black;">${row.name_of_payor ?? ""}</td>
-    <td class="cell" style="border: 1px solid black;">${row.referenceNumber ?? ""}</td>
-    <td class="cell" style="border: 1px solid black;">${parseFloat(parseFloat(row.fees_pcab ?? 0)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-    <td class="cell" style="border: 1px solid black;">${parseFloat(parseFloat(row.legal_research_fund ?? 0)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-    <td class="cell" style="border: 1px solid black;">${parseFloat(parseFloat(row.document_stamp_tax ?? 0)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-    <td class="cell" style="border: 1px solid black;">${parseFloat(parseFloat(row.fees_pcab ?? 0) + parseFloat(row.legal_research_fund ?? 0) + parseFloat(row.document_stamp_tax ?? 0)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+    <td class="cell" style="border: 1px solid black; width: 12px;">${row.last_modified ?? ""}</td>
+    <td class="cell" style="border: 1px solid black; width: 12px;">${row.reference_number ?? ""}</td>
+    <td class="cell" style="border: 1px solid black; width: 12px; white-space: pre-wrap; word-wrap: break-word;">${row.name_of_payor ?? ""}</td>
+    <td class="cell" style="border: 1px solid black; width: 12px;">${row.referenceNumber ?? ""}</td>
+    <td class="cell" style="border: 1px solid black; width: 12px;">${parseFloat(parseFloat(row.fees_pcab ?? 0)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+    <td class="cell" style="border: 1px solid black; width: 12px;">${parseFloat(parseFloat(row.legal_research_fund ?? 0)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+    <td class="cell" style="border: 1px solid black; width: 12px;">${parseFloat(parseFloat(row.document_stamp_tax ?? 0)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+    <td class="cell" style="border: 1px solid black; width: 12px;">${parseFloat(parseFloat(row.fees_pcab ?? 0) + parseFloat(row.legal_research_fund ?? 0) + parseFloat(row.document_stamp_tax ?? 0)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
 </tr>
 `;
 
-        // Define table header
-        const tableHeader = `
-<thead>
-<tr>
-    <th colspan="8" class="text-center">Collection</th>
-</tr>
-<tr>
-    <th style="width: 12%; border-bottom: none; ">Date & Time</th>
-    <th style="width: 12%; border-bottom: none; ">AR Number</th>
-    <th style="width: 14%; border-bottom: none; ">Name of Payor</th>
-    <th style="width: 14%; border-bottom: none;  ">Reference Number</th>
-    <th style="width: 20%;">CIAP-PCAB</th>
-    <th style="width: 20%;">LRF</th>
-    <th style="width: 20%;">DST</th>
-    <th style="width: 12%; border-bottom: none;">Total Collection</th>
-</tr>
-<tr>
-    <th style="width: 12%; border-top: none;"></th>
-    <th style="width: 12%; border-top: none;"></th>
-    <th style="width: 14%; border-top: none;"></th>
-    <th style="width: 14%; border-top: none;"></th>
-    <th>Account No.<br/>(0052-1684-30)</th>
-    <th>Account No.<br/>(3402-2866-00)</th>
-    <th>Account No.<br/>(3402-2866-19)</th>
-    <th style="width: 12%; border-top: none;"></th>
-</tr>
-</thead>`;
-
         let rowsPerPageHtml = ''; // Variable to store HTML for rows per page
 
-        while (filteredData.length - (i * 40) > 0) {
-            let rows = filteredData.slice(i * 40, i * 40 + 40);
+        while (filteredData.length - (i * 35) > 0) {
+            let rows = filteredData.slice(i * 35, i * 35 + 35);
 
             // Calculate totals for the current page
             rows.forEach(data => {
@@ -1128,18 +1142,18 @@
 
             // Generate HTML for the current page
             rowsPerPageHtml += `<div class="page-container" style="margin-top: 10rem; margin-left:2rem; width: 100%; text-align: center; margin-bottom;10rem;">
-<div class="table-wrapper" style="display: inline-block; width: 66rem; overflow: auto; margin-bottom:15rem">
-<table class="report-table" style="width: 100%; border-collapse: collapse; border: 1px solid black;">
+<div class="table-wrapper" style="display: inline-block; width: 66rem; margin-bottom:15rem ">
+<table class="report-table table-wrapper" style="width: 100%; border-collapse: collapse; border: 1px solid black;">
     ${i == 0 ? tableHeader : ''}
     <tbody>`;
 
             rows.forEach(data => {
                 rowsPerPageHtml += content(data);
             });
-            rowsPerPageHtml += `</tbody>`;
+            rowsPerPageHtml += `</tbody style="white-space: pre-wrap; word-wrap: break-word;">`;
 
             // Add the footer only on the last page
-            if (i === Math.ceil(filteredData.length / 40) - 1) {
+            if (i === Math.ceil(filteredData.length / 35) - 1) {
                 rowsPerPageHtml += `
             <tfoot>
                 <tr>
@@ -1160,8 +1174,8 @@
 </div>`;
 
             // Add a page break if there are more rows to be processed
-            if (filteredData.length - ((i + 1) * 40) > 0) {
-                rowsPerPageHtml += `<div style="page-break-before: always;"></div>`;
+            if (filteredData.length - ((i + 1) * 38) > 0) {
+                rowsPerPageHtml += `<div style="page-break-before: always; word-wrap: break-word; overflow-wrap: break-word;"></div>`;
             }
 
             i++;
@@ -1170,54 +1184,54 @@
 
         // Generate header and footer content
         const header = `<div class="mx-auto d-flex flex-column border-dark" style="width:70rem;height:5rem;">
-<div class="d-flex align-items-center justify-content-center" style="height: 250px;">
-    <div class="row justify-content-center mb-2">
-        <div class="col-md-3">
-            <img  height="100px" style="margin-left:-1rem;" src="assets/images/ngsi-letterhead.png" alt="logo" class="logo-dark" />
+        <div class="d-flex align-items-center justify-content-center" style="height: 250px;">
+            <div class="row justify-content-center mb-2">
+                <div class="col-md-3">
+                    <img  height="100px" style="margin-left:-1rem;" src="assets/images/ngsi-letterhead.png" alt="logo" class="logo-dark" />
+                </div>
+                <div class="col-md-4 mt-3"  style="margin-left:11rem;">
+                    <p class="font-weight-bold" style="font-family: Century Gothic; font-size:16px;">NET GLOBAL SOLUTIONS&nbsp;&nbsp; INC.</p>
+                    <p style="margin-top: -20px;margin-bottom: -5px; font-family: Century Gothic;">Tel. No. 632 82877374</p>
+                    <p style=" line-height: 80%; color:blue;margin-top: 10px;">Support@netglobalsolutions.net</p>
+                </div>
+            </div>
         </div>
-        <div class="col-md-4 mt-3"  style="margin-left:11rem;">
-            <p class="font-weight-bold" style="font-family: Century Gothic; font-size:16px;">NET GLOBAL SOLUTIONS&nbsp;&nbsp; INC.</p>
-            <p style="margin-top: -20px;margin-bottom: -5px; font-family: Century Gothic;">Tel. No. 632 82877374</p>
-            <p style=" line-height: 80%; color:blue;margin-top: 10px;">Support@netglobalsolutions.net</p>
+        <div class="d-flex align-items-center justify-content-center" style="height: 250px;">
+            <img width="100%" height="6px" style="margin-top: -10px; margin-left:30px; margin-right:30px;" src="assets/images/NGSI_header.png" alt="logo" class="logo-dark" />
         </div>
-    </div>
-</div>
-<div class="d-flex align-items-center justify-content-center" style="height: 250px;">
-    <img width="100%" height="6px" style="margin-top: -10px; margin-left:30px; margin-right:30px;" src="assets/images/NGSI_header.png" alt="logo" class="logo-dark" />
-</div>
-<div class="d-flex align-items-center justify-content-center" style="height: 250px;">
-    <div class="text-center text-uppercase py-3">
-        <p class="font-weight-bold" style="color:black;">LIST &nbsp;OF &nbsp;DAILY &nbsp;COLLECTION<p>
-        <p style="color:black;margin-top:-20px;">Agency : &nbsp;CONSTRUCTION &nbsp INDUSTRY &nbsp; OF &nbsp; THE &nbsp;PHILIPPINES<p>
-        <p class="text-justify" style="color:black;margin-top:-20px;">Philippine &nbsp; Contractors &nbsp;&nbsp; Accreditation &nbsp; Board &nbsp;( PCAB )<p>
-        <p class="text-capitalize" style="color:black;margin-top:-20px;">Date : ${pdf_date}<p>
-    </div>
-</div>
-<p class="text-right" style="color:black;margin-top:-20px;margin-right:50px;">Report No :${report_number}<p>
-<br>
-</div>`;
+        <div class="d-flex align-items-center justify-content-center" style="height: 250px;">
+            <div class="text-center text-uppercase py-3">
+                <p class="font-weight-bold" style="color:black;">LIST &nbsp;OF &nbsp;DAILY &nbsp;COLLECTION<p>
+                <p style="color:black;margin-top:-20px;">Agency : &nbsp;CONSTRUCTION &nbsp INDUSTRY &nbsp; OF &nbsp; THE &nbsp;PHILIPPINES<p>
+                <p class="text-justify" style="color:black;margin-top:-20px;">Philippine &nbsp; Contractors &nbsp;&nbsp; Accreditation &nbsp; Board &nbsp;( PCAB )<p>
+                <p class="text-capitalize" style="color:black;margin-top:-20px;">Date : ${pdf_date}<p>
+            </div>
+        </div>
+        <p class="text-right" style="color:black;margin-top:-20px;margin-right:50px;">Report No :${report_number}<p>
+        <br>
+        </div>`;
 
         const footer = `<div class="mx-auto d-flex flex-column border-dark" style="width:70rem;height:5rem;margin-top:20px;">
-<div class="d-flex align-items-center justify-content-center" style="height: 250px;">
-    <div class="row mt-4" style="margin:50px">
-        <div class="col-sm">
-            <img style="margin-left:25%; background-position:center; margin-bottom:-15px;z-index:0;position:relative;transform:scale(1.1)"width="35%" height="35%" src="assets/images/ma'am_je.png" alt="logo" class="logo-dark" />
-            <p style="position:relative;left:11px;margin:0;margin-top:-80px;">Prepared By: </p>
-            <p style="margin-top:60px;margin-left:155px;font-size: 18px; font-family: Arial, Helvetica, sans-serif;z-index:1;position:relative;">Jeremie Soliveres </p>
-            <p style=" margin-top:-20px; margin-left: 170px; font-family: Arial, Helvetica, sans-serif; font-size: 12px;">Accounting Specialist</p>
-            <p style=" margin-top:-20px; margin-left: 165px; font-family: Arial, Helvetica, sans-serif; font-size: 12px;">Netglobal Solutions, Inc.</p>
+        <div class="d-flex align-items-center justify-content-center" style="height: 250px;">
+            <div class="row mt-4" style="margin:50px">
+                <div class="col-sm">
+                    <img style="margin-left:25%; background-position:center; margin-bottom:-15px;z-index:0;position:relative;transform:scale(1.1)"width="35%" height="35%" src="assets/images/ma'am_je.png" alt="logo" class="logo-dark" />
+                    <p style="position:relative;left:11px;margin:0;margin-top:-80px;">Prepared By: </p>
+                    <p style="margin-top:60px;margin-left:155px;font-size: 18px; font-family: Arial, Helvetica, sans-serif;z-index:1;position:relative;">Jeremie Soliveres </p>
+                    <p style=" margin-top:-20px; margin-left: 170px; font-family: Arial, Helvetica, sans-serif; font-size: 12px;">Accounting Specialist</p>
+                    <p style=" margin-top:-20px; margin-left: 165px; font-family: Arial, Helvetica, sans-serif; font-size: 12px;">Netglobal Solutions, Inc.</p>
+                </div>
+                <div class="col-sm">
+                    <img style="margin-left:13rem; margin-bottom:-15px;" width="35%" height="35%" src="assets/images/sir_peter1.png" alt="logo" class="logo-dark" />
+                    <p style="position:relative;left:5.7rem;margin:0;margin-top:-80px;">Approved By: </p>
+                    <p style="margin-top:60px;margin-left: 13.5rem;font-size: 18px; font-family: Arial, Helvetica, sans-serif;">Mischell A. Fernandez</p>
+                    <p style=" margin-top:-20px; margin-left: 233px; font-family: Arial, Helvetica, sans-serif; font-size: 12px;">Admin Officer III /Cashier II</p>
+                    <p style=" margin-top:-20px; margin-left: 260px; font-family: Arial, Helvetica, sans-serif; font-size: 12px;">CIAP - PCAB</p>
+                </div>
+            </div>
         </div>
-        <div class="col-sm">
-            <img style="margin-left:13rem; margin-bottom:-15px;" width="35%" height="35%" src="assets/images/sir_peter1.png" alt="logo" class="logo-dark" />
-            <p style="position:relative;left:5.7rem;margin:0;margin-top:-80px;">Approved By: </p>
-            <p style="margin-top:60px;margin-left: 13.5rem;font-size: 18px; font-family: Arial, Helvetica, sans-serif;">Mischell A. Fernandez</p>
-            <p style=" margin-top:-20px; margin-left: 233px; font-family: Arial, Helvetica, sans-serif; font-size: 12px;">Admin Officer III /Cashier II</p>
-            <p style=" margin-top:-20px; margin-left: 260px; font-family: Arial, Helvetica, sans-serif; font-size: 12px;">CIAP - PCAB</p>
-        </div>
-    </div>
-</div>
 
-</div>`;
+        </div>`;
 
         doc.html(header + rowsPerPageHtml + footer, {
             html2canvas: {
@@ -1237,7 +1251,6 @@
             },
         });
     }
-
 
     async function printRow(trans_id) {
         const rowData = _jsonData.find(obj => obj.trans_id == trans_id);

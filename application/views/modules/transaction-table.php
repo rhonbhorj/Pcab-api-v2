@@ -233,8 +233,8 @@
                             $date = date_create($row['date']);
                             echo "<tr>";
                             echo "<td>" . $row["trans_id"] . "</td>";
-                            echo "<td>" . date_format(date_create($row['date']), "m/d/Y") . "</td>";
-                            echo "<td>" . date("H:i:s", strtotime($row["date_created"])) . "</td>";
+                            echo "<td>" . date_format(date_create($row['last_modified']), "m/d/Y") . "</td>";
+                            echo "<td>" . date("H:i:s", strtotime($row["last_modified"])) . "</td>";
                             echo "<td>" . $row["status"] . "</td>";
                             echo "<td>" . $row["reference_number"] . "</td>";
                             echo "<td class='text-right'>&#8369; " . $fmt->formatCurrency(floatval($row["fees_pcab"]), "") . "</td>";
@@ -263,80 +263,83 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.6/jspdf.plugin.autotable.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
 <script>
- $(document).ready(function () {
-    function getCurrentDate() {
-        const today = new Date();
-        const year = today.getFullYear();
-        const month = (today.getMonth() + 1).toString().padStart(2, '0');
-        const day = today.getDate().toString().padStart(2, '0');
-        return `${year}-${month}-${day}`;
-    }
+   $(document).ready(function () {
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
 
-    $('#startDate').val(getCurrentDate());
-    $('#endDate').val(getCurrentDate());
 
-    $('#startDate, #endDate').datepicker({
-        format: 'yyyy-mm-dd',
-        autoclose: true,
-        todayHighlight: true,
-        clearBtn: true,
-        orientation: 'bottom',
-    });
+        // Initialize datepicker for the first DataTable
+        $('#startDate, #endDate').datepicker({
+            format: 'mm-dd-yyyy',
+            autoclose: true,
+            todayHighlight: true,
+            clearBtn: true,
+            orientation: 'bottom',
+        });
 
-    var table = $('#myTable').DataTable({
-        dom: 'Bfrtip',
-        scrollX: '100%',
-        scrollCollapse: true,
-        ordering: false,
-        buttons: [{
-            extend: 'excelHtml5',
-            text: 'Export',
-            filename: 'Transaction_Table',
-            autoWidth: false,
-            header: true,
-            footer: true,
-            title: "Electronic Collection",
-            className: 'export-btn',
-            customizeData: function (data) {
-                for (var i = 0; i < data.body.length; i++) {
-                    for (var j = 0; j < data.body[i].length; j++) {
-                        if (j >= 5 && j <= 9) {
-                            data.body[i][j] = data.body[i][j].replace(/₱/g, '');
+        var table = $('#myTable').DataTable({
+            dom: 'Bfrtip',
+            scrollX: '100%',
+            scrollCollapse: true,
+            ordering: false,
+            buttons: [{
+                extend: 'excelHtml5',
+                text: 'Export',
+                filename: 'ACKNOWLEDGEMENT-RECEIPT_Table',
+                autoWidth: false,
+                header: true,
+                footer: true,
+                className: 'export-btn',
+                exportOptions: {
+                    columns: ':not(:last-child)', // Exclude the last column (Action)
+                    format: {
+                        body: function (data, row, column, node) {
+                            // Exclude peso sign from currency cells (assuming columns 8 to 11 are currency columns)
+                            if (column >= 7 && column <= 11) {
+                                return data.replace(/₱/g, ''); // Replace peso sign
+                            }
+                            return data;
                         }
                     }
                 }
+            }]
+        });
+
+        $('.search-btn').on('click', function () {
+            table.draw();
+        });
+
+        // Modify the start and end date filtering to only apply to the specific DataTable
+        $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
+            if (settings.nTable.id !== 'myTable') {
+                return true;
             }
-        }],
-    });
+            var startDate = $('#startDate').val();
+            var endDate = $('#endDate').val();
+            var currentDate = new Date(data[1]);
 
-    $('#startDate, #endDate').on('change', function () {
+            var formattedStartDate = new Date(startDate);
+            var formattedEndDate = new Date(endDate);
+
+            if (
+                (isNaN(formattedStartDate) || isNaN(formattedEndDate)) ||
+                (startDate === '' && endDate === '') ||
+                (startDate === '' && currentDate <= formattedEndDate) ||
+                (formattedStartDate <= currentDate && endDate === '') ||
+                (formattedStartDate <= currentDate && currentDate <= formattedEndDate)
+            ) {
+                return true;
+            }
+        });
+
+        // Trigger initial table draw
         table.draw();
+
+        // Update table on date change
+        $('#startDate, #endDate').on('change', function () {
+            table.draw();
+        });
     });
 
-    $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
-        var startDate = $('#startDate').val();
-        var endDate = $('#endDate').val();
-        var currentDate = new Date(data[1]);
-
-        var formattedStartDate = new Date(startDate);
-        var formattedEndDate = new Date(endDate);
-
-        if (
-            (isNaN(formattedStartDate) && isNaN(formattedEndDate)) ||
-            (startDate === '' && endDate === '') ||
-            (startDate === '' && currentDate <= formattedEndDate) ||
-            (formattedStartDate <= currentDate && endDate === '') ||
-            (formattedStartDate <= currentDate && currentDate <= formattedEndDate) ||
-            (formattedStartDate.getTime() === formattedEndDate.getTime())
-        ) {
-            return true;
-        }
-
-        return false;
-    });
-
-    $('.search-btn').on('click', function () {
-        table.draw();
-    });
-});
 </script>
