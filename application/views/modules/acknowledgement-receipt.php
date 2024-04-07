@@ -1059,102 +1059,110 @@
 
     });
 
-
     async function printDailyReport(startDate, endDate) {
-        const filteredData = _jsonData.filter(object => {
-            const modalStartDate = new Date($("#Daily_CollectionModal #modal_start_date").val());
-            const modalEndDate = new Date($("#Daily_CollectionModal #modal_end_date").val());
-            const objectDate = new Date(object.date);
-            return objectDate >= modalStartDate && objectDate <= modalEndDate;
-        });
+    const filteredData = _jsonData.filter(object => {
+        const modalStartDate = new Date($("#Daily_CollectionModal #modal_start_date").val());
+        const modalEndDate = new Date($("#Daily_CollectionModal #modal_end_date").val());
+        const objectDate = new Date(object.date);
+        return objectDate >= modalStartDate && objectDate <= modalEndDate;
+    });
 
-        let doc = new jspdf.jsPDF({
-            orientation: 'p',
-            unit: 'px'
-        });
+    let doc = new jspdf.jsPDF({
+        orientation: 'p',
+        unit: 'px'
+    });
 
-        let report_number = filteredData[0].report_no;
-        let pdf_date = filteredData[0].date;
+    let report_number = filteredData[0].report_no;
+    let pdf_date = filteredData[0].date;
 
-        let i = 0;
-        let totalCIAPPCAB = 0;
-        let totalLRF = 0;
-        let totalDST = 0;
-        let totalCollection = 0;
-        let currentPage = 1; // Track the current page number
+    let i = 0;
+    let totalCIAPPCAB = 0;
+    let totalLRF = 0;
+    let totalDST = 0;
+    let totalCollection = 0;
+    let currentPage = 1; // Track the current page number
+
+    // Define tableHeader variable
         const tableHeader = `
-    <thead>
-    <tr>
-        <th colspan="8" class="text-center">Collection</th>
-    </tr>
-    <tr>
-        <th style="width: 12%; border-bottom: none; ">Date & Time</th>
-        <th style="width: 12%; border-bottom: none; ">AR Number</th>
-        <th style="width: 14%; border-bottom: none; ">Name of Payor</th>
-        <th style="width: 14%; border-bottom: none;  ">Reference Number</th>
-        <th style="width: 20%;">CIAP-PCAB</th>
-        <th style="width: 20%;">LRF</th>
-        <th style="width: 20%;">DST</th>
-        <th style="width: 12%; border-bottom: none;">Total Collection</th>
-    </tr>
-    <tr>
-        <th style="width: 12%; border-top: none;"></th>
-        <th style="width: 12%; border-top: none;"></th>
-        <th style="width: 14%; border-top: none;"></th>
-        <th style="width: 14%; border-top: none;"></th>
-        <th>Account No.<br/>(0052-1684-30)</th>
-        <th>Account No.<br/>(3402-2866-00)</th>
-        <th>Account No.<br/>(3402-2866-19)</th>
-        <th style="width: 12%; border-top: none;"></th>
-    </tr>
-    </thead>`;
+        <thead>
+        <tr>
+            <th colspan="8" class="text-center">Collection</th>
+        </tr>
+        <tr>
+            <th style="width: 12%; border-bottom: none; ">Date & Time</th>
+            <th style="width: 12%; border-bottom: none; ">AR Number</th>
+            <th style="width: 14%; border-bottom: none; ">Name of Payor</th>
+            <th style="width: 14%; border-bottom: none;  ">Reference Number</th>
+            <th style="width: 20%;">CIAP-PCAB</th>
+            <th style="width: 20%;">LRF</th>
+            <th style="width: 20%;">DST</th>
+            <th style="width: 12%; border-bottom: none;">Total Collection</th>
+        </tr>
+        <tr>
+            <th style="width: 12%; border-top: none;"></th>
+            <th style="width: 12%; border-top: none;"></th>
+            <th style="width: 14%; border-top: none;"></th>
+            <th style="width: 14%; border-top: none;"></th>
+            <th>Account No.<br/>(0052-1684-30)</th>
+            <th>Account No.<br/>(3402-2866-00)</th>
+            <th>Account No.<br/>(3402-2866-19)</th>
+            <th style="width: 12%; border-top: none;"></th>
+        </tr>
+        </thead>`;
 
-        const content = row => `
-<tr>
-    <td class="cell" style="border: 1px solid black; width: 12px;">${row.last_modified ?? ""}</td>
-    <td class="cell" style="border: 1px solid black; width: 12px;">${row.reference_number ?? ""}</td>
-    <td class="cell" style="border: 1px solid black; width: 12px; white-space: pre-wrap; word-wrap: break-word;">${row.name_of_payor ?? ""}</td>
-    <td class="cell" style="border: 1px solid black; width: 12px;">${row.referenceNumber ?? ""}</td>
-    <td class="cell" style="border: 1px solid black; width: 12px;">${parseFloat(parseFloat(row.fees_pcab ?? 0)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-    <td class="cell" style="border: 1px solid black; width: 12px;">${parseFloat(parseFloat(row.legal_research_fund ?? 0)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-    <td class="cell" style="border: 1px solid black; width: 12px;">${parseFloat(parseFloat(row.document_stamp_tax ?? 0)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-    <td class="cell" style="border: 1px solid black; width: 12px;">${parseFloat(parseFloat(row.fees_pcab ?? 0) + parseFloat(row.legal_research_fund ?? 0) + parseFloat(row.document_stamp_tax ?? 0)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-</tr>
-`;
+    let rowsPerPageHtml = ''; // Variable to store HTML for rows per page
 
-        let rowsPerPageHtml = ''; // Variable to store HTML for rows per page
+    while (filteredData.length - (i * 35) > 0) {
+        let rows = filteredData.slice(i * 35, i * 35 + 35);
 
-        while (filteredData.length - (i * 35) > 0) {
-            let rows = filteredData.slice(i * 35, i * 35 + 35);
+        // Generate HTML for the current page
+        rowsPerPageHtml += `<div class="page-container" style="margin-top: 10rem; margin-left:2rem; width: 100%; text-align: center; margin-bottom;10rem;">
+        <div class="table-wrapper" style="display: inline-block; width: 66rem; margin-bottom:15rem; overflow-wrap: anywhere;  text-align: justify;">
+        <table class="report-table table-wrapper" style="width: 100%; border-collapse: collapse; border: 1px solid black; overflow-wrap: anywhere; text-align: justify;">
+            ${i == 0 ? tableHeader : ''}
+            <tbody>`;
 
-            // Calculate totals for the current page
-            rows.forEach(data => {
-                const CIAPPCAB = parseFloat(data.fees_pcab);
-                const LRF = parseFloat(data.legal_research_fund);
-                const DST = parseFloat(data.document_stamp_tax);
-                const collection = CIAPPCAB + LRF + DST;
+        rows.forEach(data => {
+            // Function to manually wrap text
+            const wrapText = (text, maxLength) => {
+                const words = text.split(' ');
+                let lines = [];
+                let currentLine = '';
 
-                totalCIAPPCAB += CIAPPCAB;
-                totalLRF += LRF;
-                totalDST += DST;
-                totalCollection += collection;
-            });
+                words.forEach(word => {
+                    if ((currentLine.length + word.length) <= maxLength) {
+                        currentLine += (currentLine.length > 0 ? ' ' : '') + word;
+                    } else {
+                        lines.push(currentLine);
+                        currentLine = word;
+                    }
+                });
 
-            // Generate HTML for the current page
-            rowsPerPageHtml += `<div class="page-container" style="margin-top: 10rem; margin-left:2rem; width: 100%; text-align: center; margin-bottom;10rem;">
-<div class="table-wrapper" style="display: inline-block; width: 66rem; margin-bottom:15rem ">
-<table class="report-table table-wrapper" style="width: 100%; border-collapse: collapse; border: 1px solid black;">
-    ${i == 0 ? tableHeader : ''}
-    <tbody>`;
+                if (currentLine.length > 0) {
+                    lines.push(currentLine);
+                }
 
-            rows.forEach(data => {
-                rowsPerPageHtml += content(data);
-            });
-            rowsPerPageHtml += `</tbody style="white-space: pre-wrap; word-wrap: break-word;">`;
+                return lines.join('\n');
+            };
 
-            // Add the footer only on the last page
-            if (i === Math.ceil(filteredData.length / 35) - 1) {
-                rowsPerPageHtml += `
+            rowsPerPageHtml += `
+            <tr>
+                <td class="cell" style="border: 1px solid black; width: 12px; word-wrap: break-word;">${wrapText(data.last_modified ?? "", 10)}</td>
+                <td class="cell" style="border: 1px solid black; width: 12px; word-wrap: break-word;">${wrapText(data.reference_number ?? "", 10)}</td>
+                <td class="cell" style="border: 1px solid black; width: 11px; text-align: justify; overflow: visible; word-wrap: break-word;">${wrapText(data.name_of_payor ?? "", 15)}</td>
+                <td class="cell" style="border: 1px solid black; width: 12px; word-wrap: break-word;">${wrapText(data.referenceNumber ?? "", 10)}</td>
+                <td class="cell" style="border: 1px solid black; width: 12px; word-wrap: break-word;">${parseFloat(parseFloat(data.fees_pcab ?? 0)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                <td class="cell" style="border: 1px solid black; width: 12px; word-wrap: break-word;">${parseFloat(parseFloat(data.legal_research_fund ?? 0)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                <td class="cell" style="border: 1px solid black; width: 12px; word-wrap: break-word;">${parseFloat(parseFloat(data.document_stamp_tax ?? 0)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                <td class="cell" style="border: 1px solid black; width: 12px; word-wrap: break-word;">${parseFloat(parseFloat(data.fees_pcab ?? 0) + parseFloat(data.legal_research_fund ?? 0) + parseFloat(data.document_stamp_tax ?? 0)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+            </tr>`;
+        });
+
+        rowsPerPageHtml += `</tbody>`;
+
+        // Add the footer only on the last page
+        if (i === Math.ceil(filteredData.length / 35) - 1) {
+            rowsPerPageHtml += `
             <tfoot>
                 <tr>
                     <td style="border: 1px solid black;"></td>
@@ -1167,90 +1175,83 @@
                     <td style="border: 1px solid black;">${totalCollection.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                 </tr>
             </tfoot>`;
-            }
-
-            rowsPerPageHtml += `</table>
-</div>
-</div>`;
-
-            // Add a page break if there are more rows to be processed
-            if (filteredData.length - ((i + 1) * 38) > 0) {
-                rowsPerPageHtml += `<div style="page-break-before: always; word-wrap: break-word; overflow-wrap: break-word;"></div>`;
-            }
-
-            i++;
         }
 
-
-        // Generate header and footer content
-        const header = `<div class="mx-auto d-flex flex-column border-dark" style="width:70rem;height:5rem;">
-        <div class="d-flex align-items-center justify-content-center" style="height: 250px;">
-            <div class="row justify-content-center mb-2">
-                <div class="col-md-3">
-                    <img  height="100px" style="margin-left:-1rem;" src="assets/images/ngsi-letterhead.png" alt="logo" class="logo-dark" />
-                </div>
-                <div class="col-md-4 mt-3"  style="margin-left:11rem;">
-                    <p class="font-weight-bold" style="font-family: Century Gothic; font-size:16px;">NET GLOBAL SOLUTIONS&nbsp;&nbsp; INC.</p>
-                    <p style="margin-top: -20px;margin-bottom: -5px; font-family: Century Gothic;">Tel. No. 632 82877374</p>
-                    <p style=" line-height: 80%; color:blue;margin-top: 10px;">Support@netglobalsolutions.net</p>
-                </div>
-            </div>
+        rowsPerPageHtml += `</table>
         </div>
-        <div class="d-flex align-items-center justify-content-center" style="height: 250px;">
-            <img width="100%" height="6px" style="margin-top: -10px; margin-left:30px; margin-right:30px;" src="assets/images/NGSI_header.png" alt="logo" class="logo-dark" />
-        </div>
-        <div class="d-flex align-items-center justify-content-center" style="height: 250px;">
-            <div class="text-center text-uppercase py-3">
-                <p class="font-weight-bold" style="color:black;">LIST &nbsp;OF &nbsp;DAILY &nbsp;COLLECTION<p>
-                <p style="color:black;margin-top:-20px;">Agency : &nbsp;CONSTRUCTION &nbsp INDUSTRY &nbsp; OF &nbsp; THE &nbsp;PHILIPPINES<p>
-                <p class="text-justify" style="color:black;margin-top:-20px;">Philippine &nbsp; Contractors &nbsp;&nbsp; Accreditation &nbsp; Board &nbsp;( PCAB )<p>
-                <p class="text-capitalize" style="color:black;margin-top:-20px;">Date : ${pdf_date}<p>
-            </div>
-        </div>
-        <p class="text-right" style="color:black;margin-top:-20px;margin-right:50px;">Report No :${report_number}<p>
-        <br>
         </div>`;
 
-        const footer = `<div class="mx-auto d-flex flex-column border-dark" style="width:70rem;height:5rem;margin-top:20px;">
-        <div class="d-flex align-items-center justify-content-center" style="height: 250px;">
-            <div class="row mt-4" style="margin:50px">
-                <div class="col-sm">
-                    <img style="margin-left:25%; background-position:center; margin-bottom:-15px;z-index:0;position:relative;transform:scale(1.1)"width="35%" height="35%" src="assets/images/ma'am_je.png" alt="logo" class="logo-dark" />
-                    <p style="position:relative;left:11px;margin:0;margin-top:-80px;">Prepared By: </p>
-                    <p style="margin-top:60px;margin-left:155px;font-size: 18px; font-family: Arial, Helvetica, sans-serif;z-index:1;position:relative;">Jeremie Soliveres </p>
-                    <p style=" margin-top:-20px; margin-left: 170px; font-family: Arial, Helvetica, sans-serif; font-size: 12px;">Accounting Specialist</p>
-                    <p style=" margin-top:-20px; margin-left: 165px; font-family: Arial, Helvetica, sans-serif; font-size: 12px;">Netglobal Solutions, Inc.</p>
-                </div>
-                <div class="col-sm">
-                    <img style="margin-left:13rem; margin-bottom:-15px;" width="35%" height="35%" src="assets/images/sir_peter1.png" alt="logo" class="logo-dark" />
-                    <p style="position:relative;left:5.7rem;margin:0;margin-top:-80px;">Approved By: </p>
-                    <p style="margin-top:60px;margin-left: 13.5rem;font-size: 18px; font-family: Arial, Helvetica, sans-serif;">Mischell A. Fernandez</p>
-                    <p style=" margin-top:-20px; margin-left: 233px; font-family: Arial, Helvetica, sans-serif; font-size: 12px;">Admin Officer III /Cashier II</p>
-                    <p style=" margin-top:-20px; margin-left: 260px; font-family: Arial, Helvetica, sans-serif; font-size: 12px;">CIAP - PCAB</p>
-                </div>
-            </div>
-        </div>
+        // Add a page break if there are more rows to be processed
+        if (filteredData.length - ((i + 1) * 38) > 0) {
+            rowsPerPageHtml += `<div style="page-break-before: always; word-wrap: break-word; overflow-wrap: break-word;"></div>`;
+        }
 
-        </div>`;
-
-        doc.html(header + rowsPerPageHtml + footer, {
-            html2canvas: {
-                scale: .40
-            },
-            async callback(pdf) {
-                const totalPages = pdf.internal.getNumberOfPages();
-
-                for (let i = 1; i <= totalPages; i++) {
-                    pdf.setPage(i);
-                    pdf.setFontSize(10);
-                    pdf.text(520, 800, `Page ${i} of ${totalPages}`);
-                }
-
-                const date = new Date();
-                await pdf.save(`list_of_colletion-${date.toLocaleDateString()}.pdf`);
-            },
-        });
+        i++;
     }
+
+    // Generate header and footer content
+    const header = `<div class="mx-auto d-flex flex-column border-dark" style="width:70rem;height:5rem;">
+    <div class="d-flex align-items-center justify-content-center" style="height: 250px;">
+        <div class="row justify-content-center mb-2">
+            <div class="col-md-3">
+                <img  height="100px" style="margin-left:-1rem;" src="assets/images/ngsi-letterhead.png" alt="logo" class="logo-dark" />
+            </div>
+            <div class="col-md-4 mt-3"  style="margin-left:11rem;">
+                <p class="font-weight-bold" style="font-family: Century Gothic; font-size:16px;">NET GLOBAL SOLUTIONS&nbsp;&nbsp; INC.</p>
+                <p style="margin-top: -20px;margin-bottom: -5px; font-family: Century Gothic;">Tel. No. 632 82877374</p>
+                <p style=" line-height: 80%; color:blue;margin-top: 10px;">Support@netglobalsolutions.net</p>
+            </div>
+        </div>
+    </div>
+    <div class="d-flex align-items-center justify-content-center" style="height: 250px;">
+        <img width="100%" height="6px" style="margin-top: -10px; margin-left:30px; margin-right:30px;" src="assets/images/NGSI_header.png" alt="logo" class="logo-dark" />
+    </div>
+    <div class="d-flex align-items-center justify-content-center" style="height: 250px;">
+        <div class="text-center text-uppercase py-3">
+            <p class="font-weight-bold" style="color:black;">LIST &nbsp;OF &nbsp;DAILY &nbsp;COLLECTION<p>
+            <p style="color:black;margin-top:-20px;">Agency : &nbsp;CONSTRUCTION &nbsp INDUSTRY &nbsp; OF &nbsp; THE &nbsp;PHILIPPINES<p>
+            <p class="text-justify" style="color:black;margin-top:-20px;">Philippine &nbsp; Contractors &nbsp;&nbsp; Accreditation &nbsp; Board &nbsp;( PCAB )<p>
+            <p class="text-capitalize" style="color:black;margin-top:-20px;">Date : ${pdf_date}<p>
+        </div>
+    </div>
+    <p class="text-right" style="color:black;margin-top:-20px;margin-right:50px;">Report No :${report_number}<p>
+    <br>
+    </div>`;
+
+    const footer = `<div class="mx-auto d-flex flex-column border-dark" style="width:70rem;height:5rem;margin-top:20px;">
+    <div class="d-flex align-items-center justify-content-center" style="height: 250px;">
+        <div class="row mt-4" style="margin:50px">
+            <div class="col-sm">
+                <img style="margin-left:25%; background-position:center; margin-bottom:-15px;z-index:0;position:relative;transform:scale(1.1)"width="35%" height="35%" src="assets/images/ma'am_je.png" alt="logo" class="logo-dark" />
+                <p style="position:relative;left:11px;margin:0;margin-top:-80px;">Prepared By: </p>
+                <p style="margin-top:60px;margin-left:155px;font-size: 18px; font-family: Arial, Helvetica, sans-serif;z-index:1;position:relative;">Jeremie Soliveres </p>
+                <p style=" margin-top:-20px; margin-left: 170px; font-family: Arial, Helvetica, sans-serif; font-size: 12px;">Accounting Specialist</p>
+                <p style=" margin-top:-20px; margin-left: 165px; font-family: Arial, Helvetica, sans-serif; font-size: 12px;">Netglobal Solutions, Inc.</p>
+            </div>
+            <div class="col-sm">
+                <img style="margin-left:13rem; margin-bottom:-15px;" width="35%" height="35%" src="assets/images/sir_peter1.png" alt="logo" class="logo-dark" />
+                <p style="position:relative;left:5.7rem;margin:0;margin-top:-80px;">Approved By: </p>
+                <p style="margin-top:60px;margin-left: 13.5rem;font-size: 18px; font-family: Arial, Helvetica, sans-serif;">Mischell A. Fernandez</p>
+                <p style=" margin-top:-20px; margin-left: 233px; font-family: Arial, Helvetica, sans-serif; font-size: 12px;">Admin Officer III /Cashier II</p>
+                <p style=" margin-top:-20px; margin-left: 260px; font-family: Arial, Helvetica, sans-serif; font-size: 12px;">CIAP - PCAB</p>
+            </div>
+        </div>
+    </div>
+    </div>`;
+
+    doc.html(header + rowsPerPageHtml + footer, {
+        html2canvas: {
+            logging: false,
+            useCORS: true
+        },
+        jsPDF: {
+            unit: 'px',
+            format: 'a4'
+        }
+    });
+
+    await doc.save('Daily_Collection_Report.pdf');
+}
 
     async function printRow(trans_id) {
         const rowData = _jsonData.find(obj => obj.trans_id == trans_id);
