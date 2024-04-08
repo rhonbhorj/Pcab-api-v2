@@ -944,7 +944,7 @@
             });
 
             modalTableBody.innerHTML += `<tr>
-            <td class="text-left" style='width:${100 / 9}%;padding-left:18px;'>${formatDate(row.last_modified)}</td>
+            <td class="text-left" style='width:${100 / 9}%;padding-left:18px;'>${row.last_modified}</td>
             <td class="text-center" style='width:${100 / 9}%;padding-left:18px;'>${row.ar_no}</td>
             <td style='width:${100 / 9}%;padding-left:18px; white-space: pre-wrap; word-wrap: break-word;'>${row.name_of_payor}</td>
             <td style='width:${100 / 9}%;padding-left:18px;'>${row.reference_number}</td>
@@ -1084,9 +1084,19 @@
 
         let rowsPerPageHtml = '';
 
-        // Define tableHeader variable
-        const tableHeader = `
-<thead>
+
+        async function printDailyReport(startDate, endDate) {
+            // Your existing code goes here...
+        }
+
+        while (filteredData.length - (i * 35) > 0) {
+            let rows = filteredData.slice(i * 35, i * 35 + 35);
+
+            // Generate HTML for the current page
+            rowsPerPageHtml += `<div class="page-container" style="margin-top: 10rem; margin-left:2rem; width: 100%; text-align: center; margin-bottom;10rem;">
+        <div class="table-wrapper" style="display: inline-block; width: 66rem; margin-bottom:11.5rem;">
+        <table class="report-table table-wrapper" style="width: 100%; border-collapse: collapse; border: 1px solid black;">
+        <thead>
 <tr>
     <th colspan="8" class="text-center">Collection</th>
 </tr>
@@ -1110,20 +1120,7 @@
     <th>Account No.<br/>(3402-2866-19)</th>
     <th style="width: 12%; border-top: none;"></th>
 </tr>
-</thead>`;
-
-        async function printDailyReport(startDate, endDate) {
-            // Your existing code goes here...
-        }
-
-        while (filteredData.length - (i * 35) > 0) {
-            let rows = filteredData.slice(i * 35, i * 35 + 35);
-
-            // Generate HTML for the current page
-            rowsPerPageHtml += `<div class="page-container" style="margin-top: 10rem; margin-left:2rem; width: 100%; text-align: center; margin-bottom;10rem;">
-        <div class="table-wrapper" style="display: inline-block; width: 66rem; margin-bottom:15rem; overflow-wrap: anywhere;  text-align: justify;">
-        <table class="report-table table-wrapper" style="width: 100%; border-collapse: collapse; border: 1px solid black;  overflow-wrap: anywhere; text-align: justify;">
-            ${i == 0 ? tableHeader : ''}
+</thead>
             <tbody>`;
 
             rows.forEach(data => {
@@ -1135,14 +1132,14 @@
 
                     words.forEach(word => {
                         if ((currentLine.length + word.length) <= maxLength) {
-                            currentLine += (currentLine.length > 0 ? ' ' : '') + word;
+                            currentLine += (currentLine.length > 3 ? ' ' : '') + word;
                         } else {
                             lines.push(currentLine);
                             currentLine = word;
                         }
                     });
 
-                    if (currentLine.length > 0) {
+                    if (currentLine.length > 3) {
                         lines.push(currentLine);
                     }
 
@@ -1151,7 +1148,7 @@
 
                 rowsPerPageHtml += `
             <tr>
-                <td class="cell" style="border: 1px solid black; width: 12px;">${wrapText(data.last_modified ?? "", 10)}</td>
+                <td class="cell" style="border: 1px solid black; width: 12px;">${wrapText(data.last_modified ?? "", 13)}</td>
                 <td class="cell" style="border: 1px solid black; width: 12px;">${wrapText(data.reference_number ?? "", 10)}</td>
                 <td class="cell" style="border: 1px solid black; width: 11px;">${wrapText(data.name_of_payor ?? "", 15)}</td>
                 <td class="cell" style="border: 1px solid black; width: 12px;">${wrapText(data.referenceNumber ?? "", 10)}</td>
