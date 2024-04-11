@@ -1095,7 +1095,7 @@
             // Generate HTML for the current page
             rowsPerPageHtml += `<div class="page-container" style="margin-top: 10rem; margin-left:2rem; width: 100%; text-align: center; margin-bottom;10rem;">
         <div class="table-wrapper" style="display: inline-block; width: 66rem; margin-bottom:11.5rem;">
-        <table class="report-table table-wrapper" style="width: 100%; border-collapse: collapse; border: 1px solid black;">
+        <table class="report-table table-wrapper" style="width: 100%; border-collapse: collapse; border: 1px solid black; table-layout: fixed;">
         <thead>
 <tr>
     <th colspan="8" class="text-center">Collection</th>
@@ -1150,7 +1150,7 @@
             <tr>
                 <td class="cell" style="border: 1px solid black; width: 12px;">${wrapText(data.last_modified ?? "", 13)}</td>
                 <td class="cell" style="border: 1px solid black; width: 12px;">${wrapText(data.reference_number ?? "", 10)}</td>
-                <td class="cell" style="border: 1px solid black; width: 100%;">&nbsp;&nbsp;${wrapText(data.name_of_payor ?? "", 15)}&nbsp;&nbsp;</td>
+                <td class="cell" style="border: 1px solid black; word-wrap: break-word; width: 12px;">&nbsp;&nbsp;${data.name_of_payor ?? ""}&nbsp;&nbsp;<br>awdawdawawdawd</td>
                 <td class="cell" style="border: 1px solid black; width: 12px;">${wrapText(data.referenceNumber ?? "", 10)}</td>
                 <td class="cell" style="border: 1px solid black; width: 12px;">${parseFloat(parseFloat(data.fees_pcab ?? 0)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                 <td class="cell" style="border: 1px solid black; width: 12px;">${parseFloat(parseFloat(data.legal_research_fund ?? 0)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
