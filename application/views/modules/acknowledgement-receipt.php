@@ -1089,8 +1089,8 @@
             // Your existing code goes here...
         }
 
-        while (filteredData.length - (i * 35) > 0) {
-            let rows = filteredData.slice(i * 35, i * 35 + 35);
+        while (filteredData.length - (i * 20) > 0) {
+            let rows = filteredData.slice(i * 20, i * 20 + 20);
 
             // Generate HTML for the current page
             rowsPerPageHtml += `<div class="page-container" style="margin-top: 10rem; margin-left:2rem; width: 100%; text-align: center; margin-bottom;10rem;">
@@ -1101,24 +1101,24 @@
     <th colspan="8" class="text-center">Collection</th>
 </tr>
 <tr>
-    <th style="width: 12%; border-bottom: none; ">Date & Time</th>
-    <th style="width: 12%; border-bottom: none; ">AR Number</th>
-    <th style="width: 14%; border-bottom: none; ">Name of Payor</th>
-    <th style="width: 14%; border-bottom: none;  ">Reference Number</th>
-    <th style="width: 20%;">CIAP-PCAB</th>
-    <th style="width: 20%;">LRF</th>
-    <th style="width: 20%;">DST</th>
-    <th style="width: 12%; border-bottom: none;">Total Collection</th>
+    <th style="text-wrap:nowrap; border-bottom: none; ">Date & Time</th>
+    <th style="text-wrap:nowrap; border-bottom: none; ">AR Number</th>
+    <th style="text-wrap:nowrap; border-bottom: none;">Name of Payor</th>
+    <th style="text-wrap:nowrap; border-bottom: none;  ">Reference Number</th>
+    <th style="text-wrap:nowrap;">CIAP-PCAB</th>
+    <th style="text-wrap:nowrap;">LRF</th>
+    <th style="text-wrap:nowrap;">DST</th>
+    <th style="text-wrap:nowrap; border-bottom: none;">Total Collection</th>
 </tr>
 <tr>
-    <th style="width: 12%; border-top: none;"></th>
-    <th style="width: 12%; border-top: none;"></th>
-    <th style="width: 14%; border-top: none;"></th>
-    <th style="width: 14%; border-top: none;"></th>
+    <th style="text-wrap:nowrap; border-top: none;"></th>
+    <th style="text-wrap:nowrap; border-top: none;"></th>
+    <th style="text-wrap:nowrap; border-top: none;"></th>
+    <th style="text-wrap:nowrap; border-top: none;"></th>
     <th>Account No.<br/>(0052-1684-30)</th>
     <th>Account No.<br/>(3402-2866-00)</th>
     <th>Account No.<br/>(3402-2866-19)</th>
-    <th style="width: 12%; border-top: none;"></th>
+    <th style="text-wrap:nowrap; border-top: none;"></th>
 </tr>
 </thead>
             <tbody>`;
@@ -1150,12 +1150,12 @@
             <tr>
                 <td class="cell" style="border: 1px solid black; width: 12px;">${wrapText(data.last_modified ?? "", 13)}</td>
                 <td class="cell" style="border: 1px solid black; width: 12px;">${wrapText(data.reference_number ?? "", 10)}</td>
-                <td class="cell" style="border: 1px solid black; word-wrap: break-word; width: 12px;">&nbsp;&nbsp;${data.name_of_payor ?? ""}&nbsp;&nbsp;<br>awdawdawawdawd</td>
+                <td class="cell" style="border: 1px solid black; text-wrap:wrap;">${data.name_of_payor ?? ""}</td>
                 <td class="cell" style="border: 1px solid black; width: 12px;">${wrapText(data.referenceNumber ?? "", 10)}</td>
                 <td class="cell" style="border: 1px solid black; width: 12px;">${parseFloat(parseFloat(data.fees_pcab ?? 0)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                 <td class="cell" style="border: 1px solid black; width: 12px;">${parseFloat(parseFloat(data.legal_research_fund ?? 0)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                 <td class="cell" style="border: 1px solid black; width: 12px;">${parseFloat(parseFloat(data.document_stamp_tax ?? 0)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                <td class="cell" style="border: 1px solid black; width: 12px;">${parseFloat(parseFloat(data.fees_pcab ?? 0) + parseFloat(data.legal_research_fund ?? 0) + parseFloat(data.document_stamp_tax ?? 0)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                <td class="cell" style="border: 1px solid black; width: 10px; height: 50px;vertical-align: bottom;">${parseFloat(parseFloat(data.fees_pcab ?? 0) + parseFloat(data.legal_research_fund ?? 0) + parseFloat(data.document_stamp_tax ?? 0)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
             </tr>`;
             });
 
