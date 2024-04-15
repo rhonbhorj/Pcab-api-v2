@@ -1085,43 +1085,39 @@
         let rowsPerPageHtml = '';
 
 
-        async function printDailyReport(startDate, endDate) {
-            // Your existing code goes here...
-        }
-
-        while (filteredData.length - (i * 20) > 0) {
-            let rows = filteredData.slice(i * 20, i * 20 + 20);
+        while (filteredData.length - (i * 21) > 0) {
+            let rows = filteredData.slice(i * 21, i * 21 + 21);
 
             // Generate HTML for the current page
-            rowsPerPageHtml += `<div class="page-container" style="margin-top: 10rem; margin-left:2rem; width: 100%; text-align: center; margin-bottom;10rem;">
-        <div class="table-wrapper" style="display: inline-block; width: 66rem; margin-bottom:11.5rem;">
-        <table class="report-table table-wrapper" style="width: 100%; border-collapse: collapse; border: 1px solid black; table-layout: fixed;">
-        <thead>
-<tr>
-    <th colspan="8" class="text-center">Collection</th>
-</tr>
-<tr>
-    <th style="text-wrap:nowrap; border-bottom: none; ">Date & Time</th>
-    <th style="text-wrap:nowrap; border-bottom: none; ">AR Number</th>
-    <th style="text-wrap:nowrap; border-bottom: none;">Name of Payor</th>
-    <th style="text-wrap:nowrap; border-bottom: none;  ">Reference Number</th>
-    <th style="text-wrap:nowrap;">CIAP-PCAB</th>
-    <th style="text-wrap:nowrap;">LRF</th>
-    <th style="text-wrap:nowrap;">DST</th>
-    <th style="text-wrap:nowrap; border-bottom: none;">Total Collection</th>
-</tr>
-<tr>
-    <th style="text-wrap:nowrap; border-top: none;"></th>
-    <th style="text-wrap:nowrap; border-top: none;"></th>
-    <th style="text-wrap:nowrap; border-top: none;"></th>
-    <th style="text-wrap:nowrap; border-top: none;"></th>
-    <th>Account No.<br/>(0052-1684-30)</th>
-    <th>Account No.<br/>(3402-2866-00)</th>
-    <th>Account No.<br/>(3402-2866-19)</th>
-    <th style="text-wrap:nowrap; border-top: none;"></th>
-</tr>
-</thead>
-            <tbody>`;
+            rowsPerPageHtml += `<div class="page-container" style="margin-top: 9rem; margin-left:2rem; width: 100%; text-align: center; margin-bottom;10rem;">
+                <div class="table-wrapper" style="display: inline-block; width: 66rem; margin-bottom:14rem;">
+                <table class="report-table " style="width: 100%; border-collapse: collapse; border: 1px solid black;">
+                <thead>
+        <tr>
+            <th colspan="8" class="text-center">Collection</th>
+        </tr>
+        <tr>
+            <th style="text-wrap:nowrap; border-bottom: none; ">Date & Time</th>
+            <th style="text-wrap:nowrap; border-bottom: none; ">AR Number</th>
+            <th style="text-wrap:nowrap; border-bottom: none;">Name of Payor</th>
+            <th style="text-wrap:nowrap; border-bottom: none;  ">Reference Number</th>
+            <th style="text-wrap:nowrap;">CIAP-PCAB</th>
+            <th style="text-wrap:nowrap;">LRF</th>
+            <th style="text-wrap:nowrap;">DST</th>
+            <th style="text-wrap:nowrap; border-bottom: none;">Total Collection</th>
+        </tr>
+        <tr>
+            <th style="text-wrap:nowrap; border-top: none;"></th>
+            <th style="text-wrap:nowrap; border-top: none;"></th>
+            <th style="text-wrap:nowrap; border-top: none;"></th>
+            <th style="text-wrap:nowrap; border-top: none;"></th>
+            <th>Account No.<br/>(0052-1684-30)</th>
+            <th>Account No.<br/>(3402-2866-00)</th>
+            <th>Account No.<br/>(3402-2866-19)</th>
+            <th style="text-wrap:nowrap; border-top: none;"></th>
+        </tr>
+        </thead>
+                    <tbody>`;
 
             rows.forEach(data => {
                 // Function to manually wrap text
@@ -1145,42 +1141,52 @@
 
                     return lines.join('\n');
                 };
+                // Calculate totals
+                const feesPCAB = parseFloat(data.fees_pcab ?? 0);
+                const legalResearchFund = parseFloat(data.legal_research_fund ?? 0);
+                const documentStampTax = parseFloat(data.document_stamp_tax ?? 0);
+                const totalForRow = feesPCAB + legalResearchFund + documentStampTax;
 
+                // Update totals
+                totalCIAPPCAB += feesPCAB;
+                totalLRF += legalResearchFund;
+                totalDST += documentStampTax;
+                totalCollection += totalForRow;
                 rowsPerPageHtml += `
-            <tr>
-                <td class="cell" style="border: 1px solid black; width: 12px;">${wrapText(data.last_modified ?? "", 13)}</td>
-                <td class="cell" style="border: 1px solid black; width: 12px;">${wrapText(data.reference_number ?? "", 10)}</td>
-                <td class="cell" style="border: 1px solid black; text-wrap:wrap;">${data.name_of_payor ?? ""}</td>
-                <td class="cell" style="border: 1px solid black; width: 12px;">${wrapText(data.referenceNumber ?? "", 10)}</td>
-                <td class="cell" style="border: 1px solid black; width: 12px;">${parseFloat(parseFloat(data.fees_pcab ?? 0)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                <td class="cell" style="border: 1px solid black; width: 12px;">${parseFloat(parseFloat(data.legal_research_fund ?? 0)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                <td class="cell" style="border: 1px solid black; width: 12px;">${parseFloat(parseFloat(data.document_stamp_tax ?? 0)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                <td class="cell" style="border: 1px solid black; width: 10px; height: 50px;vertical-align: bottom;">${parseFloat(parseFloat(data.fees_pcab ?? 0) + parseFloat(data.legal_research_fund ?? 0) + parseFloat(data.document_stamp_tax ?? 0)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-            </tr>`;
+                    <tr>
+                        <td class="cell" style="border: 1px solid black; width: 12px;">${wrapText(data.last_modified ?? "", 13)}</td>
+                        <td class="cell" style="border: 1px solid black; width: 12px;">${wrapText(data.reference_number ?? "", 10)}</td>
+                        <td class="cell" style="border: 1px solid black; text-wrap:wrap;">${data.name_of_payor ?? ""}</td>
+                        <td class="cell" style="border: 1px solid black; width: 12px;">${wrapText(data.referenceNumber ?? "", 10)}</td>
+                        <td class="cell" style="border: 1px solid black; width: 12px;">${parseFloat(parseFloat(data.fees_pcab ?? 0)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                        <td class="cell" style="border: 1px solid black; width: 12px;">${parseFloat(parseFloat(data.legal_research_fund ?? 0)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                        <td class="cell" style="border: 1px solid black; width: 12px;">${parseFloat(parseFloat(data.document_stamp_tax ?? 0)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                        <td class="cell" style="border: 1px solid black; width: 10px; height: 50px;vertical-align: bottom;">${parseFloat(parseFloat(data.fees_pcab ?? 0) + parseFloat(data.legal_research_fund ?? 0) + parseFloat(data.document_stamp_tax ?? 0)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                    </tr>`;
             });
 
             rowsPerPageHtml += `</tbody>`;
 
             // Add the footer only on the last page
-            if (i === Math.ceil(filteredData.length / 35) - 1) {
+            if (i === Math.ceil(filteredData.length / 21) - 1) {
                 rowsPerPageHtml += `
-                <tfoot>
-                    <tr>
-                        <td style="border: 1px solid black;"></td>
-                        <td style="border: 1px solid black;"></td>
-                        <td style="border: 1px solid black;"></td>
-                        <td style="border: 1px solid black;">Total :</td>
-                        <td style="border: 1px solid black;">${totalCIAPPCAB.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                        <td style="border: 1px solid black;">${totalLRF.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                        <td style="border: 1px solid black;">${totalDST.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                        <td style="border: 1px solid black;">${totalCollection.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                    </tr>
-                </tfoot>`;
+                        <tfoot>
+                            <tr>
+                                <td style="border: 1px solid black;"></td>
+                                <td style="border: 1px solid black;"></td>
+                                <td style="border: 1px solid black;"></td>
+                                <td style="border: 1px solid black;">Total :</td>
+                                <td style="border: 1px solid black;">${totalCIAPPCAB.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                                <td style="border: 1px solid black;">${totalLRF.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                                <td style="border: 1px solid black;">${totalDST.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                                <td style="border: 1px solid black;">${totalCollection.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                            </tr>
+                        </tfoot>`;
             }
 
             rowsPerPageHtml += `</table>
-    </div>
-    </div>`;
+            </div>
+            </div>`;
 
             // Add a page break if there are more rows to be processed
             if (filteredData.length - ((i + 1) * 38) > 0) {
@@ -1192,53 +1198,53 @@
 
         // Generate header and footer content
         const header = `<div class="mx-auto d-flex flex-column border-dark" style="width:70rem;height:5rem;">
-    <div class="d-flex align-items-center justify-content-center" style="height: 250px;">
-        <div class="row justify-content-center mb-2">
-            <div class="col-md-3">
-                <img  height="100px" style="margin-left:-1rem;" src="assets/images/ngsi-letterhead.png" alt="logo" class="logo-dark" />
+            <div class="d-flex align-items-center justify-content-center" style="height: 250px;">
+                <div class="row justify-content-center mb-2">
+                    <div class="col-md-3">
+                        <img  height="100px" style="margin-left:-1rem;" src="assets/images/ngsi-letterhead.png" alt="logo" class="logo-dark" />
+                    </div>
+                    <div class="col-md-4 mt-3"  style="margin-left:11rem;">
+                        <p class="font-weight-bold" style="font-family: Century Gothic; font-size:16px;">NET GLOBAL SOLUTIONS&nbsp;&nbsp; INC.</p>
+                        <p style="margin-top: -20px;margin-bottom: -5px; font-family: Century Gothic;">Tel. No. 632 82877374</p>
+                        <p style=" line-height: 80%; color:blue;margin-top: 10px;">Support@netglobalsolutions.net</p>
+                    </div>
+                </div>
             </div>
-            <div class="col-md-4 mt-3"  style="margin-left:11rem;">
-                <p class="font-weight-bold" style="font-family: Century Gothic; font-size:16px;">NET GLOBAL SOLUTIONS&nbsp;&nbsp; INC.</p>
-                <p style="margin-top: -20px;margin-bottom: -5px; font-family: Century Gothic;">Tel. No. 632 82877374</p>
-                <p style=" line-height: 80%; color:blue;margin-top: 10px;">Support@netglobalsolutions.net</p>
+            <div class="d-flex align-items-center justify-content-center" style="height: 250px;">
+                <img width="100%" height="6px" style="margin-top: -10px; margin-left:30px; margin-right:30px;" src="assets/images/NGSI_header.png" alt="logo" class="logo-dark" />
             </div>
-        </div>
-    </div>
-    <div class="d-flex align-items-center justify-content-center" style="height: 250px;">
-        <img width="100%" height="6px" style="margin-top: -10px; margin-left:30px; margin-right:30px;" src="assets/images/NGSI_header.png" alt="logo" class="logo-dark" />
-    </div>
-    <div class="d-flex align-items-center justify-content-center" style="height: 250px;">
-        <div class="text-center text-uppercase py-3">
-            <p class="font-weight-bold" style="color:black;">LIST &nbsp;OF &nbsp;DAILY &nbsp;COLLECTION<p>
-            <p style="color:black;margin-top:-20px;">Agency : &nbsp;CONSTRUCTION &nbsp INDUSTRY &nbsp; OF &nbsp; THE &nbsp;PHILIPPINES<p>
-            <p class="text-justify" style="color:black;margin-top:-20px;">Philippine &nbsp; Contractors &nbsp;&nbsp; Accreditation &nbsp; Board &nbsp;( PCAB )<p>
-            <p class="text-capitalize" style="color:black;margin-top:-20px;">Date : ${pdf_date}<p>
-        </div>
-    </div>
-    <p class="text-right" style="color:black;margin-top:-20px;margin-right:50px;">Report No :${report_number}<p>
-    <br>
-    </div>`;
+            <div class="d-flex align-items-center justify-content-center" style="height: 250px;">
+                <div class="text-center text-uppercase py-3">
+                    <p class="font-weight-bold" style="color:black;">LIST &nbsp;OF &nbsp;DAILY &nbsp;COLLECTION<p>
+                    <p style="color:black;margin-top:-20px;">Agency : &nbsp;CONSTRUCTION &nbsp INDUSTRY &nbsp; OF &nbsp; THE &nbsp;PHILIPPINES<p>
+                    <p class="text-justify" style="color:black;margin-top:-20px;">Philippine &nbsp; Contractors &nbsp;&nbsp; Accreditation &nbsp; Board &nbsp;( PCAB )<p>
+                    <p class="text-capitalize" style="color:black;margin-top:-20px;">Date : ${pdf_date}<p>
+                </div>
+            </div>
+            <p class="text-right" style="color:black;margin-top:-20px;margin-right:50px;">Report No :${report_number}<p>
+            <br>
+            </div>`;
 
         const footer = `<div class="mx-auto d-flex flex-column border-dark" style="width:70rem;height:5rem;margin-top:20px;">
-    <div class="d-flex align-items-center justify-content-center" style="height: 250px;">
-        <div class="row mt-4" style="margin:50px">
-            <div class="col-sm">
-                <img style="margin-left:25%; background-position:center; margin-bottom:-15px;z-index:0;position:relative;transform:scale(1.1)"width="35%" height="35%" src="assets/images/ma'am_je.png" alt="logo" class="logo-dark" />
-                <p style="position:relative;left:11px;margin:0;margin-top:-80px;">Prepared By: </p>
-                <p style="margin-top:60px;margin-left:155px;font-size: 18px; font-family: Arial, Helvetica, sans-serif;z-index:1;position:relative;">Jeremie Soliveres </p>
-                <p style=" margin-top:-20px; margin-left: 170px; font-family: Arial, Helvetica, sans-serif; font-size: 12px;">Accounting Specialist</p>
-                <p style=" margin-top:-20px; margin-left: 165px; font-family: Arial, Helvetica, sans-serif; font-size: 12px;">Netglobal Solutions, Inc.</p>
+            <div class="d-flex align-items-center justify-content-center" style="height: 250px;">
+                <div class="row mt-4" style="margin:50px">
+                    <div class="col-sm">
+                        <img style="margin-left:25%; background-position:center; margin-bottom:-15px;z-index:0;position:relative;transform:scale(1.1)"width="35%" height="35%" src="assets/images/ma'am_je.png" alt="logo" class="logo-dark" />
+                        <p style="position:relative;left:11px;margin:0;margin-top:-80px;">Prepared By: </p>
+                        <p style="margin-top:60px;margin-left:155px;font-size: 18px; font-family: Arial, Helvetica, sans-serif;z-index:1;position:relative;">Jeremie Soliveres </p>
+                        <p style=" margin-top:-20px; margin-left: 170px; font-family: Arial, Helvetica, sans-serif; font-size: 12px;">Accounting Specialist</p>
+                        <p style=" margin-top:-20px; margin-left: 165px; font-family: Arial, Helvetica, sans-serif; font-size: 12px;">Netglobal Solutions, Inc.</p>
+                    </div>
+                    <div class="col-sm">
+                        <img style="margin-left:13rem; margin-bottom:-15px;" width="35%" height="35%" src="assets/images/sir_peter1.png" alt="logo" class="logo-dark" />
+                        <p style="position:relative;left:5.7rem;margin:0;margin-top:-80px;">Approved By: </p>
+                        <p style="margin-top:60px;margin-left: 13.5rem;font-size: 18px; font-family: Arial, Helvetica, sans-serif;">Mischell A. Fernandez</p>
+                        <p style=" margin-top:-20px; margin-left: 233px; font-family: Arial, Helvetica, sans-serif; font-size: 12px;">Admin Officer III /Cashier II</p>
+                        <p style=" margin-top:-20px; margin-left: 260px; font-family: Arial, Helvetica, sans-serif; font-size: 12px;">CIAP - PCAB</p>
+                    </div>
+                </div>
             </div>
-            <div class="col-sm">
-                <img style="margin-left:13rem; margin-bottom:-15px;" width="35%" height="35%" src="assets/images/sir_peter1.png" alt="logo" class="logo-dark" />
-                <p style="position:relative;left:5.7rem;margin:0;margin-top:-80px;">Approved By: </p>
-                <p style="margin-top:60px;margin-left: 13.5rem;font-size: 18px; font-family: Arial, Helvetica, sans-serif;">Mischell A. Fernandez</p>
-                <p style=" margin-top:-20px; margin-left: 233px; font-family: Arial, Helvetica, sans-serif; font-size: 12px;">Admin Officer III /Cashier II</p>
-                <p style=" margin-top:-20px; margin-left: 260px; font-family: Arial, Helvetica, sans-serif; font-size: 12px;">CIAP - PCAB</p>
-            </div>
-        </div>
-    </div>
-    </div>`;
+            </div>`;
 
         doc.html(header + rowsPerPageHtml + footer, {
             html2canvas: {
