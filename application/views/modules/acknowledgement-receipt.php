@@ -1156,7 +1156,7 @@
                     <tr>
                         <td class="cell" style="border: 1px solid black; width: 12px;text-wrap:wrap;">${wrapText(data.last_modified ?? "", 13)}</td>
                         <td class="cell" style="border: 1px solid black; width: 12px;text-wrap:wrap ">${wrapText(data.reference_number ?? "", 10)}</td>
-                        <td class="cell" style="border: 1px solid black; text-wrap:wrap; word-spacing: 6px;">${data.name_of_payor ?? ""}</td>
+                        <td class="cell" style="border: 1px solid black; text-wrap:wrap; word-spacing: 6px;height: 70px;">${data.name_of_payor ?? ""}</td>
                         <td class="cell" style="border: 1px solid black; width: 12px;text-wrap:wrap;">${wrapText(data.referenceNumber ?? "", 10)}</td>
                         <td class="cell" style="border: 1px solid black; width: 12px;">${parseFloat(parseFloat(data.fees_pcab ?? 0)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                         <td class="cell" style="border: 1px solid black; width: 12px;">${parseFloat(parseFloat(data.legal_research_fund ?? 0)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
