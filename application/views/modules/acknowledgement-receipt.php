@@ -1085,12 +1085,12 @@
         let rowsPerPageHtml = '';
 
 
-        while (filteredData.length - (i * 21) > 0) {
-            let rows = filteredData.slice(i * 21, i * 21 + 21);
+        while (filteredData.length - (i * 15) > 0) {
+            let rows = filteredData.slice(i * 15, i * 15 + 15);
 
             // Generate HTML for the current page
             rowsPerPageHtml += `<br><div class="page-container" style="margin-top: 9rem; margin-left:2rem; width: 100%; text-align: center; margin-bottom;10rem;">
-                <div class="table-wrapper" style="display: inline-block; width: 66rem; margin-bottom:14rem;">
+                <div class="table-wrapper" style="display: inline-block; width: 66rem; margin-bottom:12rem;">
                 <table class="report-table " style="width: 100%; border-collapse: collapse; border: 1px solid black;">
                 <thead>
         <tr>
@@ -1154,21 +1154,21 @@
                 totalCollection += totalForRow;
                 rowsPerPageHtml += `
                     <tr>
-                        <td class="cell" style="border: 1px solid black; width: 12px;">${wrapText(data.last_modified ?? "", 13)}</td>
-                        <td class="cell" style="border: 1px solid black; width: 12px;">${wrapText(data.reference_number ?? "", 10)}</td>
+                        <td class="cell" style="border: 1px solid black; width: 12px;text-wrap:wrap;">${wrapText(data.last_modified ?? "", 13)}</td>
+                        <td class="cell" style="border: 1px solid black; width: 12px;text-wrap:wrap ">${wrapText(data.reference_number ?? "", 10)}</td>
                         <td class="cell" style="border: 1px solid black; text-wrap:wrap; word-spacing: 6px;">${data.name_of_payor ?? ""}</td>
-                        <td class="cell" style="border: 1px solid black; width: 12px;">${wrapText(data.referenceNumber ?? "", 10)}</td>
+                        <td class="cell" style="border: 1px solid black; width: 12px;text-wrap:wrap;">${wrapText(data.referenceNumber ?? "", 10)}</td>
                         <td class="cell" style="border: 1px solid black; width: 12px;">${parseFloat(parseFloat(data.fees_pcab ?? 0)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                         <td class="cell" style="border: 1px solid black; width: 12px;">${parseFloat(parseFloat(data.legal_research_fund ?? 0)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                         <td class="cell" style="border: 1px solid black; width: 12px;">${parseFloat(parseFloat(data.document_stamp_tax ?? 0)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                        <td class="cell" style="border: 1px solid black; width: 10px; height: 50px;vertical-align: bottom;">${parseFloat(parseFloat(data.fees_pcab ?? 0) + parseFloat(data.legal_research_fund ?? 0) + parseFloat(data.document_stamp_tax ?? 0)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                        <td class="cell" style="border: 1px solid black; width: 10px; height: 70px;vertical-align: bottom;">${parseFloat(parseFloat(data.fees_pcab ?? 0) + parseFloat(data.legal_research_fund ?? 0) + parseFloat(data.document_stamp_tax ?? 0)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                     </tr>`;
             });
 
             rowsPerPageHtml += `</tbody>`;
 
             // Add the footer only on the last page
-            if (i === Math.ceil(filteredData.length / 21) - 1) {
+            if (i === Math.ceil(filteredData.length / 15) - 1) {
                 rowsPerPageHtml += `
                         <tfoot>
                             <tr>
