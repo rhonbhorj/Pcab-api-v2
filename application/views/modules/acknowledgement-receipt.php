@@ -1089,7 +1089,7 @@
             let rows = filteredData.slice(i * 21, i * 21 + 21);
 
             // Generate HTML for the current page
-            rowsPerPageHtml += `<div class="page-container" style="margin-top: 9rem; margin-left:2rem; width: 100%; text-align: center; margin-bottom;10rem;">
+            rowsPerPageHtml += `<br><div class="page-container" style="margin-top: 9rem; margin-left:2rem; width: 100%; text-align: center; margin-bottom;10rem;">
                 <div class="table-wrapper" style="display: inline-block; width: 66rem; margin-bottom:14rem;">
                 <table class="report-table " style="width: 100%; border-collapse: collapse; border: 1px solid black;">
                 <thead>
@@ -1156,7 +1156,7 @@
                     <tr>
                         <td class="cell" style="border: 1px solid black; width: 12px;">${wrapText(data.last_modified ?? "", 13)}</td>
                         <td class="cell" style="border: 1px solid black; width: 12px;">${wrapText(data.reference_number ?? "", 10)}</td>
-                        <td class="cell" style="border: 1px solid black; text-wrap:wrap;">${data.name_of_payor ?? ""}</td>
+                        <td class="cell" style="border: 1px solid black; text-wrap:wrap; word-spacing: 6px;">${data.name_of_payor ?? ""}</td>
                         <td class="cell" style="border: 1px solid black; width: 12px;">${wrapText(data.referenceNumber ?? "", 10)}</td>
                         <td class="cell" style="border: 1px solid black; width: 12px;">${parseFloat(parseFloat(data.fees_pcab ?? 0)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                         <td class="cell" style="border: 1px solid black; width: 12px;">${parseFloat(parseFloat(data.legal_research_fund ?? 0)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
@@ -1222,7 +1222,7 @@
                 </div>
             </div>
             <p class="text-right" style="color:black;margin-top:-20px;margin-right:50px;">Report No :${report_number}<p>
-            <br>
+           
             </div>`;
 
         const footer = `<div class="mx-auto d-flex flex-column border-dark" style="width:70rem;height:5rem;margin-top:20px;">
