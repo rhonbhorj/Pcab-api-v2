@@ -1242,13 +1242,13 @@
            
             </div>`;
 
-        const footer = `<div class="mx-auto d-flex flex-column border-dark" style="width:70rem;height:5rem;margin-top:25px;">
+        const footer = `<div class="mx-auto d-flex flex-column border-dark" style="width:70rem;height:5rem;margin-top:-8rem;">
             <div class="d-flex align-items-center justify-content-center" style="height: 250px;">
                 <div class="row mt-4" style="margin:50px">
                     <div class="col-sm">
                         <img style="margin-left:25%; background-position:center; margin-bottom:-15px;z-index:0;position:relative;transform:scale(1.1)"width="35%" height="35%" src="assets/images/ma'am_je.png" alt="logo" class="logo-dark" />
                         <p style="position:relative;left:11px;margin:0;margin-top:-80px;">Prepared By: </p>
-                        <p style="margin-top:60px;margin-left:155px;font-size: 18px; font-family: Arial, Helvetica, sans-serif;z-index:1;position:relative;">Jeremie Soliveres </p>
+                        <p style="margin-top:60px;margin-left:155px;font-size 18px; font-family: Arial, Helvetica, sans-serif;z-index:1;position:relative;">Jeremie Soliveres </p>
                         <p style=" margin-top:-20px; margin-left: 170px; font-family: Arial, Helvetica, sans-serif; font-size: 12px;">Accounting Specialist</p>
                         <p style=" margin-top:-20px; margin-left: 165px; font-family: Arial, Helvetica, sans-serif; font-size: 12px;">Netglobal Solutions, Inc.</p>
                     </div>
