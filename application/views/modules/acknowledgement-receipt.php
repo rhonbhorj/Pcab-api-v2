@@ -325,7 +325,7 @@
                                                 echo "<td>" . date_format(date_create($row['last_modified']), "m/d/Y") . "</td>";
                                                 echo "<td>" . date("H:i:s", strtotime($row["last_modified"])) . "</td>";
                                                 echo "<td>" . $row["ar_no"] . "</td>";
-                                                echo "<td>" . $row["name_of_payor"] . "</td>";
+                                                echo '<td style="text-wrap: wrap;">' . $row["name_of_payor"] . '</td>';
                                                 echo "<td>" . $row["particulars"] . "</td>";
                                                 $total_per_AR = $row["fees_pcab"] + $row["document_stamp_tax"] + $row["legal_research_fund"];
                                                 $total["totalAR"] += $total_per_AR;
@@ -885,14 +885,24 @@
             $('#validationMessage').html('<span style="font-size:.8rem; color: red; text-align:center;" role="alert">Please select both start and end dates.</span>');
             return;
         }
+        function toDateString(date) {
+            // Convert the date to the ISO date string format and then take only the date portion (YYYY-MM-DD)
+            return date.toISOString().split('T')[0];
+        }
 
-        // Your existing code for data filtering and display goes here
+        // Convert start and end date strings to Date objects
+        var modalStartDateObj = new Date(modalStartDate);
+        var modalEndDateObj = new Date(modalEndDate);
+
+        // Filter the data based on date range
         const filteredData = _jsonData.filter(item => {
-            let itemDate = new Date(item.date);
-            let modalStartDateObj = new Date(modalStartDate);
-            let modalEndDateObj = new Date(modalEndDate);
+            // Convert item's last_modified date to date string and compare with modal date range
+            let itemDateStr = toDateString(new Date(item.last_modified));
+            let modalStartDateStr = toDateString(modalStartDateObj);
+            let modalEndDateStr = toDateString(modalEndDateObj);
 
-            return itemDate >= modalStartDateObj && itemDate <= modalEndDateObj;
+            // Return true if the item's date is within the date range
+            return itemDateStr >= modalStartDateStr && itemDateStr <= modalEndDateStr;
         });
 
         if (!filteredData.length) {
@@ -946,7 +956,7 @@
             modalTableBody.innerHTML += `<tr>
             <td class="text-left" style='width:${100 / 9}%;padding-left:18px;'>${row.last_modified}</td>
             <td class="text-center" style='width:${100 / 9}%;padding-left:18px;'>${row.ar_no}</td>
-            <td style='width:${100 / 9}%;padding-left:18px; white-space: pre-wrap; word-wrap: break-word;'>${row.name_of_payor}</td>
+            <td style='width:${100 / 9}%;padding-left:18px; text-wrap: wrap;'>${row.name_of_payor}</td>
             <td style='width:${100 / 9}%;padding-left:18px;'>${row.reference_number}</td>
             <td class="text-right" style='width:${100 / 9}%;'>${formatter.format(CIAPPCAB)}</td>
             <td class="text-right" style='width:${100 / 9}%;'>${formatter.format(LRF)}</td>
@@ -1225,7 +1235,7 @@
            
             </div>`;
 
-        const footer = `<div class="mx-auto d-flex flex-column border-dark" style="width:70rem;height:5rem;margin-top:20px;">
+        const footer = `<div class="mx-auto d-flex flex-column border-dark" style="width:70rem;height:5rem;margin-top:25px;">
             <div class="d-flex align-items-center justify-content-center" style="height: 250px;">
                 <div class="row mt-4" style="margin:50px">
                     <div class="col-sm">
