@@ -879,7 +879,7 @@
         var modalStartDate = $('#modal_start_date').val();
         var modalEndDate = $('#modal_end_date').val();
 
-
+        
         // Validation for start and end date
         if (!modalStartDate || !modalEndDate) {
             $('#validationMessage').html('<span style="font-size:.8rem; color: red; text-align:center;" role="alert">Please select both start and end dates.</span>');
@@ -891,19 +891,21 @@
         }
 
         // Convert start and end date strings to Date objects
-        var modalStartDateObj = new Date(modalStartDate);
-        var modalEndDateObj = new Date(modalEndDate);
+        // var modalStartDateObj = new Date(modalStartDate);
+        // var modalEndDateObj = new Date(modalEndDate);
 
+        // console.log(modalStartDateObj)
+        // console.log(modalEndDateObj)
         // Filter the data based on date range
         const filteredData = _jsonData.filter(item => {
             // Convert item's last_modified date to date string and compare with modal date range
             let itemDateStr = toDateString(new Date(item.last_modified));
-            let modalStartDateStr = toDateString(modalStartDateObj);
-            let modalEndDateStr = toDateString(modalEndDateObj);
+            // let modalStartDateStr = modalStartDate;
+            // let modalEndDateStr = modalEndDate;
 
             // Return true if the item's date is within the date range
-            return itemDateStr >= modalStartDateStr && itemDateStr <= modalEndDateStr;
-        });
+            return itemDateStr >= modalStartDate && itemDateStr <= modalEndDate;
+        });3
 
         if (!filteredData.length) {
             $('#validationMessage').html('<span style="font-size:.8rem; color: red; text-align:center;" role="alert">No data found for the selected date range.</span>');
