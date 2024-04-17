@@ -879,7 +879,7 @@
         var modalStartDate = $('#modal_start_date').val();
         var modalEndDate = $('#modal_end_date').val();
 
-        
+
         // Validation for start and end date
         if (!modalStartDate || !modalEndDate) {
             $('#validationMessage').html('<span style="font-size:.8rem; color: red; text-align:center;" role="alert">Please select both start and end dates.</span>');
@@ -903,9 +903,14 @@
             // let modalStartDateStr = modalStartDate;
             // let modalEndDateStr = modalEndDate;
 
+            const parts = item.last_modified.split(' ');
+            // Take the first part, which is the date
+            const datePart = parts[0];
+            console.log(datePart); // Output: "2024-02-15"
+
             // Return true if the item's date is within the date range
-            return itemDateStr >= modalStartDate && itemDateStr <= modalEndDate;
-        });3
+            return datePart == modalStartDate && datePart == modalEndDate;
+        });
 
         if (!filteredData.length) {
             $('#validationMessage').html('<span style="font-size:.8rem; color: red; text-align:center;" role="alert">No data found for the selected date range.</span>');
@@ -1071,7 +1076,7 @@
 
     });
 
-    async function printDailyReport(startDate, endDate) {
+    async function printDailyReport(modalStartDate, modalEndDate) {
         const filteredData = _jsonData.filter(object => {
             const modalStartDate = new Date($("#Daily_CollectionModal #modal_start_date").val());
             const modalEndDate = new Date($("#Daily_CollectionModal #modal_end_date").val());
@@ -1101,7 +1106,7 @@
             let rows = filteredData.slice(i * 15, i * 15 + 15);
 
             // Generate HTML for the current page
-            rowsPerPageHtml += `<br><div class="page-container" style="margin-top: 9rem; margin-left:2rem; width: 100%; text-align: center; margin-bottom;10rem;">
+            rowsPerPageHtml += `<br><div class="page-container" style="margin-top: 9rem; margin-left:2rem; width: 100%; text-align: center; margin-bottom;15rem;">
                 <div class="table-wrapper" style="display: inline-block; width: 66rem; margin-bottom:12rem;">
                 <table class="report-table " style="width: 100%; border-collapse: collapse; border: 1px solid black;">
                 <thead>
