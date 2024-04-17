@@ -1106,7 +1106,7 @@
             let rows = filteredData.slice(i * 15, i * 15 + 15);
 
             // Generate HTML for the current page
-            rowsPerPageHtml += `<br><div class="page-container" style="margin-top: 9rem; margin-left:2rem; width: 100%; text-align: center; margin-bottom;15rem;">
+            rowsPerPageHtml += `<br><div class="page-container" style="margin-top: 9rem; margin-left:2rem; width: 100%; text-align: center; margin-bottom;8rem;">
                 <div class="table-wrapper" style="display: inline-block; width: 66rem; margin-bottom:12rem;">
                 <table class="report-table " style="width: 100%; border-collapse: collapse; border: 1px solid black;">
                 <thead>
