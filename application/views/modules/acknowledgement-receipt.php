@@ -236,8 +236,8 @@
                                     <div class="modal-footer bg-white border-top-0 d-flex ">
                                         <button type="button"
                                             class="btn-sm btn-outline-dark mr-3 mb-2 rounded preview-btn-modal">Preview</button>
-                                        <button type="button" onclick="printDailyReport()"
-                                            class="btn-sm btn-outline-dark mr-3 mb-2 rounded">Download</button>
+                                        <button type="button"
+                                            class="download-btn-modal btn-sm btn-outline-dark mr-3 mb-2 rounded">Download</button>
                                         <?php if ($_SESSION['usertype'] == "SUPERADMIN")
                                             echo '<button type="button" class="btn-sm btn-outline-dark mr-3 mb-2 rounded " data-toggle="modal" data-target="#Submit_deposit" id="submit-deposit" data-backdrop="static" data-keyboard="false">Submit Deposit</button>' ?>
 
@@ -890,12 +890,7 @@
             return date.toISOString().split('T')[0];
         }
 
-        // Convert start and end date strings to Date objects
-        // var modalStartDateObj = new Date(modalStartDate);
-        // var modalEndDateObj = new Date(modalEndDate);
 
-        // console.log(modalStartDateObj)
-        // console.log(modalEndDateObj)
         // Filter the data based on date range
         const filteredData = _jsonData.filter(item => {
             // Convert item's last_modified date to date string and compare with modal date range
@@ -906,8 +901,8 @@
             const parts = item.last_modified.split(' ');
             // Take the first part, which is the date
             const datePart = parts[0];
-            console.log(datePart); // Output: "2024-02-15"
-
+           
+        
             // Return true if the item's date is within the date range
             return datePart >= modalStartDate && datePart <= modalEndDate;
         });
@@ -1078,17 +1073,26 @@
 
     async function printDailyReport(modalStartDate, modalEndDate) {
         const filteredData = _jsonData.filter(object => {
-            const modalStartDate = new Date($("#Daily_CollectionModal #modal_start_date").val());
-            const modalEndDate = new Date($("#Daily_CollectionModal #modal_end_date").val());
-            const objectDate = new Date(object.date);
-            return objectDate >= modalStartDate && objectDate <= modalEndDate;
+            // const modalStartDate = new Date($("#Daily_CollectionModal #modal_start_date").val());
+            // const modalEndDate =new Date( $("#Daily_CollectionModal #modal_end_date").val());
+
+
+            
+            const partss = object.last_modified.split(' ');
+            // Take the first part, which is the date
+            const dateParts = partss[0];
+           
+
+     
+
+            return dateParts >= modalStartDate && dateParts <= modalEndDate;
         });
 
         let doc = new jspdf.jsPDF({
             orientation: 'p',
             unit: 'px'
         });
-
+       
         let report_number = filteredData[0].report_no;
         let pdf_date = filteredData[0].date;
 
@@ -1102,12 +1106,12 @@
         let rowsPerPageHtml = '';
 
 
-        while (filteredData.length - (i * 15) > 0) {
-            let rows = filteredData.slice(i * 15, i * 15 + 15);
+        while (filteredData.length - (i * 13) > 0) {
+            let rows = filteredData.slice(i * 13, i * 13 + 13);
 
             // Generate HTML for the current page
-            rowsPerPageHtml += `<br><div class="page-container" style="margin-top: 9rem; margin-left:2rem; width: 100%; text-align: center; margin-bottom;8rem;">
-                <div class="table-wrapper" style="display: inline-block; width: 66rem; margin-bottom:12rem;">
+            rowsPerPageHtml += `<br><div class="page-container" style="margin-top: 9rem; margin-left:2rem; width: 100%; text-align: center;margin-bottom:8rem; ">
+                <div class="table-wrapper" style="display: inline-block; width: 66rem; margin-bottom:5rem;">
                 <table class="report-table " style="width: 100%; border-collapse: collapse; border: 1px solid black;">
                 <thead>
         <tr>
@@ -1173,19 +1177,19 @@
                     <tr>
                         <td class="cell" style="border: 1px solid black; width: 12px;text-wrap:wrap;">${wrapText(data.last_modified ?? "", 13)}</td>
                         <td class="cell" style="border: 1px solid black; width: 12px;text-wrap:wrap ">${wrapText(data.reference_number ?? "", 10)}</td>
-                        <td class="cell" style="border: 1px solid black; text-wrap:wrap; word-spacing: 6px;height: 70px;">${data.name_of_payor ?? ""}</td>
+                        <td class="cell" style="border: 1px solid black; text-wrap:wrap; word-spacing: 6px; height:80px;">${data.name_of_payor ?? ""}</td>
                         <td class="cell" style="border: 1px solid black; width: 12px;text-wrap:wrap;">${wrapText(data.referenceNumber ?? "", 10)}</td>
                         <td class="cell" style="border: 1px solid black; width: 12px;">${parseFloat(parseFloat(data.fees_pcab ?? 0)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                         <td class="cell" style="border: 1px solid black; width: 12px;">${parseFloat(parseFloat(data.legal_research_fund ?? 0)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                         <td class="cell" style="border: 1px solid black; width: 12px;">${parseFloat(parseFloat(data.document_stamp_tax ?? 0)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                        <td class="cell" style="border: 1px solid black; width: 10px; height: 70px;vertical-align: bottom;">${parseFloat(parseFloat(data.fees_pcab ?? 0) + parseFloat(data.legal_research_fund ?? 0) + parseFloat(data.document_stamp_tax ?? 0)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                        <td class="cell" style="border: 1px solid black; width: 10px; height:80px;vertical-align: bottom;">${parseFloat(parseFloat(data.fees_pcab ?? 0) + parseFloat(data.legal_research_fund ?? 0) + parseFloat(data.document_stamp_tax ?? 0)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                     </tr>`;
             });
 
             rowsPerPageHtml += `</tbody>`;
 
             // Add the footer only on the last page
-            if (i === Math.ceil(filteredData.length / 15) - 1) {
+            if (i === Math.ceil(filteredData.length / 13) - 1) {
                 rowsPerPageHtml += `
                         <tfoot>
                             <tr>
@@ -1206,7 +1210,7 @@
             </div>`;
 
             // Add a page break if there are more rows to be processed
-            if (filteredData.length - ((i + 1) * 38) > 0) {
+            if (filteredData.length - ((i + 1) * 13) > 0) {
                 rowsPerPageHtml += `<div style="page-break-before: always; word-wrap: break-word; overflow-wrap: break-word;"></div>`;
             }
 
