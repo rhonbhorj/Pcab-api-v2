@@ -909,7 +909,7 @@
             console.log(datePart); // Output: "2024-02-15"
 
             // Return true if the item's date is within the date range
-            return datePart == modalStartDate && datePart == modalEndDate;
+            return datePart >= modalStartDate && datePart <= modalEndDate;
         });
 
         if (!filteredData.length) {
