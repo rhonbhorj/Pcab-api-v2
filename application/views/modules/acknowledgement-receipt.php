@@ -1249,15 +1249,15 @@
                         <img style="margin-left:25%; background-position:center; margin-bottom:-15px;z-index:0;position:relative;transform:scale(1.1)"width="35%" height="35%" src="assets/images/ma'am_je.png" alt="logo" class="logo-dark" />
                         <p style="position:relative;left:11px;margin:0;margin-top:-80px;">Prepared By: </p>
                         <p style="margin-top:60px;margin-left:155px;font-size 18px; font-family: Arial, Helvetica, sans-serif;z-index:1;position:relative;">Jeremie Soliveres </p>
-                        <p style=" margin-top:-20px; margin-left: 170px; font-family: Arial, Helvetica, sans-serif; font-size: 12px;">Accounting Specialist</p>
-                        <p style=" margin-top:-20px; margin-left: 165px; font-family: Arial, Helvetica, sans-serif; font-size: 12px;">Netglobal Solutions, Inc.</p>
+                        <p style=" margin-top:-20px; margin-left: 159px; font-family: Arial, Helvetica, sans-serif; font-size: 12px;">Accounting Specialist</p>
+                        <p style=" margin-top:-20px; margin-left: 154px; font-family: Arial, Helvetica, sans-serif; font-size: 12px;">Netglobal Solutions, Inc.</p>
                     </div>
                     <div class="col-sm">
                         <img style="margin-left:13rem; margin-bottom:-15px;" width="35%" height="35%" src="assets/images/sir_peter1.png" alt="logo" class="logo-dark" />
                         <p style="position:relative;left:5.7rem;margin:0;margin-top:-80px;">Approved By: </p>
-                        <p style="margin-top:60px;margin-left: 13.5rem;font-size: 18px; font-family: Arial, Helvetica, sans-serif;">Mischell A. Fernandez</p>
-                        <p style=" margin-top:-20px; margin-left: 233px; font-family: Arial, Helvetica, sans-serif; font-size: 12px;">Admin Officer III /Cashier II</p>
-                        <p style=" margin-top:-20px; margin-left: 260px; font-family: Arial, Helvetica, sans-serif; font-size: 12px;">CIAP - PCAB</p>
+                        <p style="margin-top:55px;margin-left: 13.5rem;font-size: 15px; font-family: Arial, Helvetica, sans-serif;">Mischell A. Fernandez</p>
+                        <p style=" margin-top:-20px; margin-left: 217px; font-family: Arial, Helvetica, sans-serif; font-size: 12px;">Admin Officer III /Cashier II</p>
+                        <p style=" margin-top:-20px; margin-left: 255px; font-family: Arial, Helvetica, sans-serif; font-size: 12px;">CIAP - PCAB</p>
                     </div>
                 </div>
             </div>
