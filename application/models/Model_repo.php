@@ -75,10 +75,23 @@ class Model_repo extends CI_Model
 
     public function total_txn_amount($request)
     {
-        $result = "SELECT sum(no_ngsi_fee) as total_collection, sum(document_stamp_tax) as total_dst, sum(legal_research_fund) as total_lrf, sum(fees_pcab) as total_pcab_fee
+    //     $results = "SELECT sum(no_ngsi_fee) as total_collection, sum(document_stamp_tax) as total_dst, sum(legal_research_fund) as total_lrf, sum(fees_pcab) as total_pcab_fee
     
-      FROM pcab_db.transactions where status ='SUCCESS' and date BETWEEN 
-      '" . $request['collection_date_from'] . "' AND '" . $request['collection_date_to'] . "';";
+    //   FROM pcab_db.transactions where status ='SUCCESS' and last_modified BETWEEN 
+    //   '" . $request['collection_date_from'] . "' AND '" . $request['collection_date_to'] . "';";
+
+
+$result = "SELECT 
+    SUM(no_ngsi_fee) AS total_collection, 
+    SUM(document_stamp_tax) AS total_dst, 
+    SUM(legal_research_fund) AS total_lrf, 
+    SUM(fees_pcab) AS total_pcab_fee 
+FROM 
+    pcab_db.transactions 
+WHERE 
+    status = 'SUCCESS' 
+    AND last_modified BETWEEN 
+        '" . $request['collection_date_from'] . " 00:00:00' AND '" . $request['collection_date_from'] . " 23:59:59'";
         $data = $this->db->query($result);
         return $data->row_array() ? $data->row_array() : false;
     }

@@ -621,7 +621,7 @@ class Middleware extends REST_Controller
 
             $this->response( [
                 'status' => true,
-                'message' => 'Success.                                                                                                                                                  ',
+                'message' => 'Success.',
                 'data' =>  $amountData,
 
             ], Rest_Controller::HTTP_OK);
