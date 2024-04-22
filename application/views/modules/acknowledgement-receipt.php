@@ -1553,7 +1553,7 @@
             if (!regex.test(this.value))
                 this.parentElement.classList.add("error")
             else {
-                this.value = toLocalCurrency(this.value.replace(",", ""))
+                this.value = toLocalCurrency(this.value.replaceAll(",", ""))
                 depositTotal()
             }
         } else {
@@ -1561,7 +1561,7 @@
         }
     })
     $("#amount input").on("focus", function () {
-        this.value = this.value.replace(',', '')
+        this.value = this.value.replaceAll(',', '')
     })
 
     $("#cancelDeposit").on("click", async () => {
