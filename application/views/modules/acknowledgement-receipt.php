@@ -1437,8 +1437,9 @@
     const depositTotal = () => {
         let total = 0
         $("#Submit_deposit #amount input").each(function () {
-            total += parseFloat(this.value ? this.value.replace(",", "") : 0)
+            total += parseFloat(this.value ? this.value.replaceAll(",", "") : 0)
         })
+        console.log(total)
         $("#Submit_deposit .sum-of-deposit p").text(toLocalCurrency(total))
     }
 
