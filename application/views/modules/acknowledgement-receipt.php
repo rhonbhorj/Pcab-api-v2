@@ -1564,7 +1564,7 @@
         this.value = this.value.replaceAll(',', '')
     })
 
-    $("#cancelDeposit").on("click", async () => {
+    $("#cancelDeposit, #Submit_deposit .close[data-dismiss=modal]").on("click", async () => {
         $("#Submit_deposit .message").text("").removeClass("success");
         $("#Submit_deposit .filled").removeClass("filled");
         $("#Submit_deposit .error").removeClass("error");
