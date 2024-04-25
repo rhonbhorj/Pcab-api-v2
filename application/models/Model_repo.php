@@ -67,8 +67,8 @@ class Model_repo extends CI_Model
         sum(document_stamp_tax) as ds_tax,
         sum(fees_pcab) as feespcab,sum(no_ngsi_fee) as nongsifee,
         sum(ngsi_convenience_fee) as ngsi_convfee
-          FROM pcab_db.transactions where status ='SUCCESS' and date BETWEEN 
-          '" . $request['collection_date_from'] . "' AND '" . $request['collection_date_to'] . "';";
+          FROM pcab_db.transactions where status ='SUCCESS' and last_modified BETWEEN 
+          '" . $request['collection_date_from'] . " 00:00:00 ' AND '" . $request['collection_date_to'] . " 23:59:59'";
         $data = $this->db->query($result);
         return $data->row_array() ? $data->row_array() : false;
     }
@@ -91,7 +91,7 @@ FROM
 WHERE 
     status = 'SUCCESS' 
     AND last_modified BETWEEN 
-        '" . $request['collection_date_from'] . " 00:00:00' AND '" . $request['collection_date_from'] . " 23:59:59'";
+        '" . $request['collection_date_from'] . " 00:00:00' AND '" . $request['collection_date_to'] . " 23:59:59'";
         $data = $this->db->query($result);
         return $data->row_array() ? $data->row_array() : false;
     }
