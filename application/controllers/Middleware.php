@@ -345,6 +345,8 @@ class Middleware extends REST_Controller
     public function deposit_log_post()
  {
 
+    if($this->is_user_logged_in()){
+
         $this->form_validation->set_rules( 'deposited_date', 'deposited date', 'required' );
         // $this->form_validation->set_rules( 'deposited_amount', 'deposited amount', 'required' );
         // $this->form_validation->set_rules( 'deposit_reference_no', 'deposit reference number', 'required' );
@@ -510,6 +512,13 @@ class Middleware extends REST_Controller
             // }
 
         }
+    }else{
+        $this->response( [
+            'status' => false,
+            'message' => 'access denied',
+          
+        ], Rest_Controller::HTTP_FORBIDDEN );
+    }
     }
 
     public function validateBalance( $data )
@@ -530,6 +539,8 @@ class Middleware extends REST_Controller
 
     public function all_deposit_data_get()
  {
+
+    if($this->is_user_logged_in()){
         $depositData = $this->model->allDepositData();
 
         $deposit_transations_added = array_map( function ( $data ) {
@@ -550,7 +561,26 @@ class Middleware extends REST_Controller
             'message' => 'succes',
             'data' =>  $deposit_transations_added,
         ], Rest_Controller::HTTP_OK );
+
+    }else{
+
+        $this->response( [
+            'status' => false,
+            'message' => 'access denied',
+          
+        ], Rest_Controller::HTTP_FORBIDDEN );
+
     }
+
+      
+    }
+
+
+	private function is_user_logged_in()
+	{
+		
+		return $this->session->userdata('logged_in') === TRUE;
+	}
 
     public function all_transaction_data_get()
  {
