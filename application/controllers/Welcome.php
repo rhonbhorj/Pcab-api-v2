@@ -17,7 +17,8 @@ class Welcome extends CI_Controller
 
 
 
-	public function genqr(){
+	public function genqr()
+	{
 
 		$this->load->view('test.php');
 	}
@@ -82,6 +83,10 @@ class Welcome extends CI_Controller
 						$data["last_deposit_transactions"] = $last_transactions[0] ?? null;
 						return $data;
 					}, $deposits ? $deposits : []);
+					$latest_deposit = $this->crud->last_data_deposit();
+					$result["last_deposit"] = $latest_deposit ? $this->crud->get_deposit_transactions([$latest_deposit["dep_id"]])[0] : null;
+					$result["last_deposit_date"] = $latest_deposit ? $latest_deposit["deposited_date"] : null;
+
 					$result["data"] = $deposit_transations_added;
 				} else {
 					$result["data"] = false;
@@ -89,17 +94,15 @@ class Welcome extends CI_Controller
 			}
 
 
-			if ($result["route"] == "transaction-table" ) {
-				if( $_SESSION['usertype'] == "SUPERADMIN"){
+			if ($result["route"] == "transaction-table") {
+				if ($_SESSION['usertype'] == "SUPERADMIN") {
 					$result['data'] = $this->crud->get_all_transaction_data();
-				}
-				else {
+				} else {
 					redirect('login');
 				}
-				
 			}
-		
-			
+
+
 
 			$this->load->view('index', $result);
 		} else {
@@ -186,7 +189,8 @@ class Welcome extends CI_Controller
 		return $this->session->userdata('logged_in') === TRUE;
 	}
 
-	public function test_data(){
+	public function test_data()
+	{
 		$result['data'] = $this->crud->get_all_transaction_data();
 		echo json_encode($result);
 	}
