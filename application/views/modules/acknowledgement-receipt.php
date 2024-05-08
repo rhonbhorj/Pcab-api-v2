@@ -1238,7 +1238,7 @@
             <div class="d-flex align-items-center justify-content-center" style="height: 250px;">
                 <div class="text-center text-uppercase py-3">
                     <p class="font-weight-bold" style="color:black;">LIST &nbsp;OF &nbsp;DAILY &nbsp;COLLECTION<p>
-                    <p style="color:black;margin-top:-20px;">Agency : &nbsp;CONSTRUCTION &nbsp INDUSTRY &nbsp; OF &nbsp; THE &nbsp;PHILIPPINES<p>
+                    <p style="color:black;margin-top:-20px;">Agency : &nbsp;CONSTRUCTION &nbsp INDUSTRY &nbsp;AUTHORITY &nbsp; OF &nbsp; THE &nbsp;PHILIPPINES<p>
                     <p class="text-justify" style="color:black;margin-top:-20px;">Philippine &nbsp; Contractors &nbsp;&nbsp; Accreditation &nbsp; Board &nbsp;( PCAB )<p>
                     <p class="text-capitalize" style="color:black;margin-top:-20px;">Date : ${pdf_date}<p>
                 </div>
