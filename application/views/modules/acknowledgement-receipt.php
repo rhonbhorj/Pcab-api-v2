@@ -1095,7 +1095,8 @@
         });
        
         let report_number = filteredData[0].report_no;
-        let pdf_date = filteredData[0].last_modified;
+        let date = filteredData[0].last_modified;
+        let pdf_date=date.split(' ')[0];
 
         let i = 0;
         let totalCIAPPCAB = 0;
