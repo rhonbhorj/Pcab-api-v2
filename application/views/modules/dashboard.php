@@ -1,191 +1,238 @@
-<?php $dash_report = array_slice($data, 0, 5) ?>
+<?php
+// $dash_report = array_slice($data, 0, 5) 
+?>
+<style>
+  #bar-chart {
+  width: 800px;
+  height: 300px;
+  position: relative;
+}
+#line-chart {
+  width: 800px;
+  height: 300px;
+  position: relative;
+}
+#bar-chart::before, #line-chart::before {
+  content: "";
+  position: absolute;
+  display: block;
+  width: 240px;
+  height: 30px;
+  left: 305px;
+  top: 254px;
+  background: #FAFAFA;
+  box-shadow: 2px 2px 5px 0 #DDD;
+}
+</style>
 <div class="dashboard-container d-flex flex-direction-row">
-    <div class="card w-100 p-3 pb-5">
-        <div class="row d-flex flex-wrap">
-            <div class="col-6">
-                <div class="card">
-                    <div class="card-title">
-                        ack. report table
-                        <a class=" btn-success btn-view-all-ack " href="acknowledgement-receipt" style="background: #555!important;">View All</a>
-                    </div>
+  <div class="card w-100 p-3 pb-5">
+    <section>
+      <div class="row">
+        <div class="col-md-12 grid-margin">
+          <div class="card">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="d-sm-flex align-items-baseline report-summary-header">
+                    <h5 class="font-weight-semibold">Report Summary</h5> <span class="ml-auto">Updated Report</span>
+                    <button class="btn btn-icons border-0 p-2"><i class="icon-refresh"></i></button>
+                  </div>
+                </div>
+              </div>
+              <div class="row report-inner-cards-wrapper">
+                <div class=" col-md -6 col-xl report-inner-card">
+                  <div class="inner-card-text">
+                    <span class="report-title">EXPENSE</span>
+                    <h4>$32123</h4>
+                    <span class="report-count"> 2 Reports</span>
+                  </div>
+                  <div class="inner-card-icon bg-success">
+                    <i class="icon-rocket"></i>
+                  </div>
+                </div>
+                <div class="col-md-6 col-xl report-inner-card">
+                  <div class="inner-card-text">
+                    <span class="report-title">PURCHASE</span>
+                    <h4>95,458</h4>
+                    <span class="report-count"> 3 Reports</span>
+                  </div>
+                  <div class="inner-card-icon bg-danger">
+                    <i class="icon-briefcase"></i>
+                  </div>
+                </div>
+                <div class="col-md-6 col-xl report-inner-card">
+                  <div class="inner-card-text">
+                    <span class="report-title">QUANTITY</span>
+                    <h4>2650</h4>
+                    <span class="report-count"> 5 Reports</span>
+                  </div>
+                  <div class="inner-card-icon bg-warning">
+                    <i class="icon-globe-alt"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section>
+    <section>
+      <div class="row">
+        <div class="col-md-6">
+          <h5>Daily Page Hits</h5>
+          <div id="bar-chart-daily"></div>
+        </div>
+        <div class="col-md-6">
+          <h5>Monthly Page Hits</h5>
+          <div id="bar-chart-monthly"></div>
+        </div>
+      </div>
+    </section>
 
-                    <div class="card-body">
-                        <table class="ack-table">
-                            <thead>
-                                <tr>
-                                    <th>Date</th>
-                                    <th>AR Number</th>
-                                    <th>Reference No.</th>
-                                    <th>Name of Payor</th>
-                                    <th class="text-right pr-3">(₱) Total Amount</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php
-                                foreach ($dash_report as $row) {
-                                    echo "<tr>";
-                                    echo "<td>" . date_format(date_create($row['date']), "m/d/Y") . "</td>";
-                                    echo "<td>" . str_pad($row['reference_number'], 10, "0", STR_PAD_LEFT) . "</td>";
-                                    echo "<td>" . str_pad($row['referenceNumber'], 10, "0", STR_PAD_LEFT) . "</td>";
-                                    echo "<td>" . $row['name_of_payor'] . "</td>";
-                                    echo "<td class='text-right'>" . number_format((float) $row["txn_amount"], 2, '.', '') . "</td>";
-                                    echo "</tr>";
-                                }
-                                ;
-                                ?>
-                            </tbody>
-                        </table>
-                    </div>
+    </section>
+    <section>
+      <div class="row">
+        <div class="col-md-12 grid-margin">
+          <div class="card">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="d-sm-flex align-items-baseline report-summary-header">
+                    <h5 class="font-weight-semibold">Report Summary</h5> <span class="ml-auto">Updated Report</span>
+                    <button class="btn btn-icons border-0 p-2"><i class="icon-refresh"></i></button>
+                  </div>
                 </div>
+              </div>
+              <div class="row report-inner-cards-wrapper">
+                <div class=" col-md -6 col-xl report-inner-card">
+                  <div class="inner-card-text">
+                    <span class="report-title">EXPENSE</span>
+                    <h4>$32123</h4>
+                    <span class="report-count"> 2 Reports</span>
+                  </div>
+                  <div class="inner-card-icon bg-success">
+                    <i class="icon-rocket"></i>
+                  </div>
+                </div>
+                <div class="col-md-6 col-xl report-inner-card">
+                  <div class="inner-card-text">
+                    <span class="report-title">PURCHASE</span>
+                    <h4>95,458</h4>
+                    <span class="report-count"> 3 Reports</span>
+                  </div>
+                  <div class="inner-card-icon bg-danger">
+                    <i class="icon-briefcase"></i>
+                  </div>
+                </div>
+                <div class="col-md-6 col-xl report-inner-card">
+                  <div class="inner-card-text">
+                    <span class="report-title">QUANTITY</span>
+                    <h4>2650</h4>
+                    <span class="report-count"> 5 Reports</span>
+                  </div>
+                  <div class="inner-card-icon bg-warning">
+                    <i class="icon-globe-alt"></i>
+                  </div>
+                </div>
+                <div class="col-md-6 col-xl report-inner-card">
+                  <div class="inner-card-text">
+                    <span class="report-title">RETURN</span>
+                    <h4>25,542</h4>
+                    <span class="report-count"> 9 Reports</span>
+                  </div>
+                  <div class="inner-card-icon bg-primary">
+                    <i class="icon-diamond"></i>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="col-6">
-                <div class="card-title">
-                    deposit table
-                    <a class=" btn-success btn-view-all" href="deposit"style="background: #555!important;" >View All</a>
-                </div>
-                <div class="card-body">
-                    <table class="deposit-table">
-                        <thead>
-                            <tr>
-                                <th>Date</th>
-                                <th>AR Number</th>
-                                <th>Reference No.</th>
-                                <th>Name of Payor</th>
-                                <th class="text-right pr-3">(₱) Total Amount</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php
-                            foreach ($dash_report as $key => $row) {
-                                echo "<tr>";
-                                echo "<td>" . date_format(date_create($row['date']), "m/d/Y") . "</td>";
-                                echo "<td>" . str_pad($row['reference_number'], 10, "0", STR_PAD_LEFT) . "</td>";
-                                echo "<td>" . str_pad($row['referenceNumber'], 10, "0", STR_PAD_LEFT) . "</td>";
-                                echo "<td>" . $row['name_of_payor'] . "</td>";
-                                echo "<td class='text-right'>123" . number_format((float) $row["txn_amount"], 2, '.', '') . "</td>";
-                                echo "</tr>";
-                            }
-                            ;
-                            ?>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+          </div>
         </div>
-        <div class="row">
-            <div class="col">
-                <div class="card">
-                    <div class="card-title">
-                        Reports Statistics
-                    </div>
-                    <div class="card-body pt-2">
-                        <div class="row summary-chart-container mt-3">
-                            <div class="col-md-12">
-                                <div class="ct-chart" id="income-expense-summary-chart"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+      </div>
+    </section>
+
+  </div>
 </div>
-
+<script src="https://www.gstatic.com/charts/loader.js"></script>
 <script>
-    $(document).ready(() => {
-        const jsonData = JSON.parse('<?php echo json_encode($data) ?>')
-        const data = {
-            // A labels array that can contain any sort of values
-            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-            // Our series array that contains series objects or in this case series data arrays
-            series: [
-                [200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 796],
-                [700, 430, 725, 390, 686, 392, 757, 500, 820, 400, 962, 420]
-            ]
-        };
-        var options = {
-            height: 300,
-            // width: 300,
-            fullWidth: true,
-            axisY: {
-                high: 1000,
-                low: 0,
-                referenceValue: 1000,
-                type: Chartist.AutoScaleAxis,
-                ticks: [0, 250, 500, 750, 1000]
-            },
-            showArea: true,
-            showPoint: false,
-            chartPadding: 30,
-        }
+google.charts.load('current', {'packages':['corechart']});
+google.charts.setOnLoadCallback(drawCharts);
 
-        const responsiveOptions = [
-            ['screen and (max-width: 480px)', {
-                height: 150,
-                axisX: {
-                    labelInterpolationFnc: function (value) {
-                        return value;
-                    }
-                }
-            }]
-        ];
-        // Create a new line chart object where as first parameter we pass in a selector
-        // that is resolving to our chart container element. The Second parameter
-        // is the actual data object.
-        new Chartist.Line('#income-expense-summary-chart', data, options, responsiveOptions);
-        // $(".row.summary-chart-container").addClass("p-0")
-    })  
+function drawCharts() {
+  // Static data for daily page hits
+  var dailyData = google.visualization.arrayToDataTable([
+    ['Day', 'Success', 'Failed'],
+    ['Sun', 1050, 600],
+    ['Mon', 1370, 910],
+    ['Tue', 660, 400],
+    ['Wed', 1030, 540],
+    ['Thu', 1000, 480],
+    ['Fri', 1170, 960],
+    ['Sat', 660, 320]
+  ]);
+
+  // Static data for monthly page hits
+  var monthlyData = google.visualization.arrayToDataTable([
+    ['Month', 'Success', 'Failed'],
+    ['Jan', 22000, 15000],
+    ['Feb', 24000, 16000],
+    ['Mar', 28000, 18000],
+    ['Apr', 25000, 16000],
+    ['May', 26000, 17000],
+    ['Jun', 29000, 19000]
+  ]);
+
+  // Options for bar charts
+  var barOptions = {
+    backgroundColor: 'transparent',
+    colors: ['#24f211', '#fc0303'],
+    fontName: 'Open Sans',
+    chartArea: {
+      left: 50,
+      top: 10,
+      width: '100%',
+      height: '70%'
+    },
+    bar: {
+      groupWidth: '70%'
+    },
+    hAxis: {
+      textStyle: {
+        fontSize: 11
+      }
+    },
+    vAxis: {
+      minValue: 0,
+      baselineColor: '#6ad4cd',
+      gridlines: {
+        color: '#6ad4cd',
+        count: 4
+      },
+      textStyle: {
+        fontSize: 11
+      }
+    },
+    legend: {
+      position: 'bottom',
+      textStyle: {
+        fontSize: 12
+      }
+    },
+    animation: {
+      duration: 1200,
+      easing: 'out'
+    }
+  };
+
+  // Draw the daily page hits bar chart
+  var dailyChart = new google.visualization.ColumnChart(document.getElementById('bar-chart-daily'));
+  dailyChart.draw(dailyData, barOptions);
+
+  // Draw the monthly page hits bar chart
+  var monthlyChart = new google.visualization.ColumnChart(document.getElementById('bar-chart-monthly'));
+  monthlyChart.draw(monthlyData, barOptions);
+}
 </script>
 
-<style>
-    .btn-view-all {
-        position: absolute;
-        border: 0;
-        left: 8.5rem;
-        font-size: 10px;
-        color: #FFFFFF;
-        padding: 4px 8px;
-        width: 6rem;
-        text-align: center;
-        transition-duration: 1.4s;
-        text-decoration: none;
-        overflow: hidden;
-        cursor: pointer;
-        margin-top: 0rem;
-    }
-    .btn-view-all-ack {
-        position: absolute;
-        border: 0;
-        left: 10rem;
-        font-size: 10px;
-        color: #FFFFFF;
-        padding: 4px 8px;
-        width: 6rem;
-        text-align: center;
-        transition-duration: 1.4s;
-        text-decoration: none;
-        overflow: hidden;
-        cursor: pointer;
-        margin-top: 0rem;
-    }
-
-    /* .dashboard-container .col-6 {
-        padding: auto -1.1rem !important;
-    } */
-
-    @media screen and (max-width: 1450px) {
-        .dashboard-container .col-6 {
-            min-width: 100%;
-            transition: all 2s;
-        }
-    }
-
-    .card .card-title {
-        color: #343a40;
-        margin-bottom: -1.25rem;
-        text-transform: capitalize;
-        font-family: "Open Sans", sans-serif;
-        font-weight: 600;
-        font-size: 1.125rem;
-    }
-</style>
+</script>
