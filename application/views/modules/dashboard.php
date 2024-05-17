@@ -89,8 +89,8 @@ defined('BASEPATH') or exit('No direct script access allowed');
                   </div>
                 </div>
               </div>
-              <div class="row report-inner-cards-wrapper bg-secondary">
-                <div class="col-md-6 col-xl report-inner-card">
+              <div class="row report-inner-cards-wrapper bg-secondary" style="height:120px;">
+                <div class="col-md-6 col-xl report-inner-card bg-warning">
                   <div class="inner-card-text">
                     <span class="report-title">YTD total transactions</span>
                     <h4>$32123</h4>
@@ -100,7 +100,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
                     <i class="icon-rocket"></i>
                   </div>
                 </div>
-                <div class="col-md-6 col-xl report-inner-card">
+                <div class="col-md-6 col-xl report-inner-card bg-primary">
                   <div class="inner-card-text">
                     <span class="report-title">Daily Transactions - Amount</span>
                     <h4>95,458</h4>
@@ -110,7 +110,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
                     <i class="icon-briefcase"></i>
                   </div>
                 </div>
-                <div class="col-md-6 col-xl report-inner-card">
+                <div class="col-md-6 col-xl report-inner-card bg-success">
                   <div class="inner-card-text">
                     <span class="report-title">Yesterday Transactions</span>
                     <h4>2650</h4>
@@ -153,9 +153,9 @@ defined('BASEPATH') or exit('No direct script access allowed');
                 </div>
               </div>
               <div class="row report-inner-cards-wrapper bg-secondary">
-                <div class="col-md-6 col-xl report-inner-card ">
+                <div class="col-md-6 col-xl report-inner-card bg-warning ">
                   <div class="inner-card-text">
-                    <span class="report-title">EXPENSE</span>
+                    <span class="report-title">YTD total transactions</span>
                     <h4>$32123</h4>
                     <span class="report-count">2 Reports</span>
                   </div>
@@ -163,9 +163,9 @@ defined('BASEPATH') or exit('No direct script access allowed');
                     <i class="icon-rocket"></i>
                   </div>
                 </div>
-                <div class="col-md-6 col-xl report-inner-card">
+                <div class="col-md-6 col-xl report-inner-card bg-primary">
                   <div class="inner-card-text">
-                    <span class="report-title">PURCHASE</span>
+                    <span class="report-title">Daily Transactions - Amount</span>
                     <h4>95,458</h4>
                     <span class="report-count">3 Reports</span>
                   </div>
@@ -173,24 +173,14 @@ defined('BASEPATH') or exit('No direct script access allowed');
                     <i class="icon-briefcase"></i>
                   </div>
                 </div>
-                <div class="col-md-6 col-xl report-inner-card">
+                <div class="col-md-6 col-xl report-inner-card bg-success">
                   <div class="inner-card-text">
-                    <span class="report-title">QUANTITY</span>
+                    <span class="report-title">Yesterday Transactions </span>
                     <h4>2650</h4>
                     <span class="report-count">5 Reports</span>
                   </div>
                   <div class="inner-card-icon bg-warning">
                     <i class="icon-globe-alt"></i>
-                  </div>
-                </div>
-                <div class="col-md-6 col-xl report-inner-card">
-                  <div class="inner-card-text">
-                    <span class="report-title">RETURN</span>
-                    <h4>25,542</h4>
-                    <span class="report-count">9 Reports</span>
-                  </div>
-                  <div class="inner-card-icon bg-primary">
-                    <i class="icon-diamond"></i>
                   </div>
                 </div>
               </div>
@@ -216,8 +206,9 @@ function drawCharts() {
     ['Tue', 660, 400],
     ['Wed', 1030, 540],
     ['Thu', 1000, 480],
-    ['Fri', 1170, 960],
-    ['Sat', 660, 320]
+    ['Fri', 0, 0],
+    ['Sat', 0, 0],
+    ['Sun', 0, 0]
   ]);
 
   // Static data for monthly page hits
@@ -225,16 +216,16 @@ function drawCharts() {
     ['Month', 'Success', 'Failed'],
     ['Jan', 22000, 15000],
     ['Feb', 24000, 16000],
-    ['Mar', 28000, 18000],
-    ['Apr', 25000, 16000],
-    ['May', 26000, 17000],
-    ['Jun', 29000, 19000],
-    ['Jul', 22000, 15000],
-    ['Aug', 24000, 16000],
-    ['Sep', 28000, 18000],
-    ['Oct', 25000, 16000],
-    ['Nov', 26000, 17000],
-    ['Dec', 29000, 19000]
+    ['Mar', 0, 0],
+    ['Apr', 0, 0],
+    ['May', 0, 0],
+    ['Jun', 0, 0],
+    ['Jul', 0, 0],
+    ['Aug', 0, 0],
+    ['Sep', 0, 0],
+    ['Oct', 0, 0],
+    ['Nov', 0, 0],
+    ['Dec', 0, 0]
   ]);
 
   // Options for bar charts
