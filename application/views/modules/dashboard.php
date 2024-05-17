@@ -1,6 +1,56 @@
 <?php
-// $dash_report = array_slice($data, 0, 5) 
+defined('BASEPATH') or exit('No direct script access allowed');
 ?>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Admin Dashboard</title>
+    <!-- plugins:css -->
+    
+    <link rel="stylesheet" href="<?php echo base_url('/assets/css/main.css'); ?>" />
+    <link rel="stylesheet" href="<?php echo base_url('/assets/vendors/simple-line-icons/css/simple-line-icons.css'); ?>" />
+    <link rel="stylesheet" href="<?php echo base_url('/assets/vendors/flag-icon-css/css/flag-icon.min.css'); ?>" />
+    <link rel="stylesheet" href="<?php echo base_url('/assets/vendors/css/vendor.bundle.base.css'); ?>" />
+
+    <!-- endinject -->
+    <!-- Plugin css for this page -->
+    <link rel="stylesheet" href="<?php echo base_url('/assets/vendors/daterangepicker/daterangepicker.css'); ?>" />
+    <link rel="stylesheet" href="<?php echo base_url('/assets/vendors/chartist/chartist.min.css'); ?>" />
+
+    <!-- inject:css -->
+    <!-- endinject -->
+    <!-- Layout styles -->
+    <link rel="stylesheet" href="<?php echo base_url('/assets/css/style.css'); ?>" />
+    <!-- End layout styles -->
+    <link rel="shortcut icon" href="<?php echo base_url('/assets/images/pcab_logo.png'); ?>" />
+
+    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+        integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous"> -->
+    <!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
+        </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+        integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous">
+        </script> -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+    <!-- <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script> -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" integrity="sha512-qZvrmS2ekKPF2mSznTQsxqPgnpkI4DNTlrdUmTzrDgektczlKNRRhy5X5AAOnx5S09ydFYWWNSfcEqDTTHgtNA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.6/purify.min.js" integrity="sha512-H+rglffZ6f5gF7UJgvH4Naa+fGCgjrHKMgoFOGmcPTRwR6oILo5R+gtzNrpDp7iMV3udbymBVjkeZGNz1Em4rQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoEyYGjTe+vXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script> -->
+</head>
+
+<body>
 <style>
   #bar-chart {
   width: 800px;
@@ -39,12 +89,12 @@
                   </div>
                 </div>
               </div>
-              <div class="row report-inner-cards-wrapper">
-                <div class=" col-md -6 col-xl report-inner-card">
+              <div class="row report-inner-cards-wrapper bg-secondary">
+                <div class="col-md-6 col-xl report-inner-card">
                   <div class="inner-card-text">
                     <span class="report-title">YTD total transactions</span>
                     <h4>$32123</h4>
-                    <span class="report-count"> 2 Reports</span>
+                    <span class="report-count">2 Reports</span>
                   </div>
                   <div class="inner-card-icon bg-success">
                     <i class="icon-rocket"></i>
@@ -52,9 +102,9 @@
                 </div>
                 <div class="col-md-6 col-xl report-inner-card">
                   <div class="inner-card-text">
-                    <span class="report-title"> Daily Transactions - Amount</span>
+                    <span class="report-title">Daily Transactions - Amount</span>
                     <h4>95,458</h4>
-                    <span class="report-count"> 3 Reports</span>
+                    <span class="report-count">3 Reports</span>
                   </div>
                   <div class="inner-card-icon bg-danger">
                     <i class="icon-briefcase"></i>
@@ -62,9 +112,9 @@
                 </div>
                 <div class="col-md-6 col-xl report-inner-card">
                   <div class="inner-card-text">
-                    <span class="report-title">Yesterday Transactions </span>
+                    <span class="report-title">Yesterday Transactions</span>
                     <h4>2650</h4>
-                    <span class="report-count"> 5 Reports</span>
+                    <span class="report-count">5 Reports</span>
                   </div>
                   <div class="inner-card-icon bg-warning">
                     <i class="icon-globe-alt"></i>
@@ -76,7 +126,6 @@
         </div>
       </div>
     </section>
-    <section>
     <section>
       <div class="row">
         <div class="col-md-6">
@@ -90,7 +139,6 @@
       </div>
     </section>
 
-    </section>
     <section>
       <div class="row">
         <div class="col-md-12 grid-margin">
@@ -104,12 +152,12 @@
                   </div>
                 </div>
               </div>
-              <div class="row report-inner-cards-wrapper" >
-                <div class=" col-md -6 col-xl report-inner-card bg-danger">
+              <div class="row report-inner-cards-wrapper bg-secondary">
+                <div class="col-md-6 col-xl report-inner-card ">
                   <div class="inner-card-text">
                     <span class="report-title">EXPENSE</span>
                     <h4>$32123</h4>
-                    <span class="report-count"> 2 Reports</span>
+                    <span class="report-count">2 Reports</span>
                   </div>
                   <div class="inner-card-icon bg-success">
                     <i class="icon-rocket"></i>
@@ -119,7 +167,7 @@
                   <div class="inner-card-text">
                     <span class="report-title">PURCHASE</span>
                     <h4>95,458</h4>
-                    <span class="report-count"> 3 Reports</span>
+                    <span class="report-count">3 Reports</span>
                   </div>
                   <div class="inner-card-icon bg-danger">
                     <i class="icon-briefcase"></i>
@@ -129,7 +177,7 @@
                   <div class="inner-card-text">
                     <span class="report-title">QUANTITY</span>
                     <h4>2650</h4>
-                    <span class="report-count"> 5 Reports</span>
+                    <span class="report-count">5 Reports</span>
                   </div>
                   <div class="inner-card-icon bg-warning">
                     <i class="icon-globe-alt"></i>
@@ -139,7 +187,7 @@
                   <div class="inner-card-text">
                     <span class="report-title">RETURN</span>
                     <h4>25,542</h4>
-                    <span class="report-count"> 9 Reports</span>
+                    <span class="report-count">9 Reports</span>
                   </div>
                   <div class="inner-card-icon bg-primary">
                     <i class="icon-diamond"></i>
@@ -182,7 +230,7 @@ function drawCharts() {
     ['May', 26000, 17000],
     ['Jun', 29000, 19000],
     ['Jul', 22000, 15000],
-    ['Agu', 24000, 16000],
+    ['Aug', 24000, 16000],
     ['Sep', 28000, 18000],
     ['Oct', 25000, 16000],
     ['Nov', 26000, 17000],
@@ -240,5 +288,5 @@ function drawCharts() {
   monthlyChart.draw(monthlyData, barOptions);
 }
 </script>
-
-</script>
+</body>
+</html>
