@@ -206,6 +206,7 @@
                 <thead>
                     <tr>
                         <th class="font-weight-bold">ID</th>
+                        <th class="text-center">Date Created<i class="m-0">(mm/dd/yyyy)</i></th>
                         <th class="text-center">Date<i class="m-0">(mm/dd/yyyy)</i></th>
                         <th class="font-weight-bold">Time</th>
                         <th class="font-weight-bold">Status</th>
@@ -233,6 +234,7 @@
                             $date = date_create($row['date']);
                             echo "<tr>";
                             echo "<td>" . $row["trans_id"] . "</td>";
+                            echo "<td>" .  date_format(date_create($row["date_created"]), "m/d/Y H:i:s") . "</td>";
                             echo "<td>" . date_format(date_create($row['last_modified']), "m/d/Y") . "</td>";
                             echo "<td>" . date("H:i:s", strtotime($row["last_modified"])) . "</td>";
                             echo "<td>" . $row["status"] . "</td>";
@@ -317,7 +319,7 @@
             }
             var startDate = $('#startDate').val();
             var endDate = $('#endDate').val();
-            var currentDate = new Date(data[1]);
+            var currentDate = new Date(data[2]);
 
             var formattedStartDate = new Date(startDate);
             var formattedEndDate = new Date(endDate);

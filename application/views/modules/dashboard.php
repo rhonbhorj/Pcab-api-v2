@@ -34,7 +34,7 @@
               <div class="row">
                 <div class="col-md-12">
                   <div class="d-sm-flex align-items-baseline report-summary-header">
-                    <h5 class="font-weight-semibold">Report Summary</h5> <span class="ml-auto">Updated Report</span>
+                    <h5 class="font-weight-semibold">Value - amount</h5> <span class="ml-auto">Updated Report</span>
                     <button class="btn btn-icons border-0 p-2"><i class="icon-refresh"></i></button>
                   </div>
                 </div>
@@ -42,7 +42,7 @@
               <div class="row report-inner-cards-wrapper">
                 <div class=" col-md -6 col-xl report-inner-card">
                   <div class="inner-card-text">
-                    <span class="report-title">EXPENSE</span>
+                    <span class="report-title">YTD total transactions</span>
                     <h4>$32123</h4>
                     <span class="report-count"> 2 Reports</span>
                   </div>
@@ -52,7 +52,7 @@
                 </div>
                 <div class="col-md-6 col-xl report-inner-card">
                   <div class="inner-card-text">
-                    <span class="report-title">PURCHASE</span>
+                    <span class="report-title"> Daily Transactions - Amount</span>
                     <h4>95,458</h4>
                     <span class="report-count"> 3 Reports</span>
                   </div>
@@ -62,7 +62,7 @@
                 </div>
                 <div class="col-md-6 col-xl report-inner-card">
                   <div class="inner-card-text">
-                    <span class="report-title">QUANTITY</span>
+                    <span class="report-title">Yesterday Transactions </span>
                     <h4>2650</h4>
                     <span class="report-count"> 5 Reports</span>
                   </div>
@@ -99,13 +99,13 @@
               <div class="row">
                 <div class="col-md-12">
                   <div class="d-sm-flex align-items-baseline report-summary-header">
-                    <h5 class="font-weight-semibold">Report Summary</h5> <span class="ml-auto">Updated Report</span>
+                    <h5 class="font-weight-semibold">Value - No. of transactions per status (Success, Failed, etc.)</h5>
                     <button class="btn btn-icons border-0 p-2"><i class="icon-refresh"></i></button>
                   </div>
                 </div>
               </div>
-              <div class="row report-inner-cards-wrapper">
-                <div class=" col-md -6 col-xl report-inner-card">
+              <div class="row report-inner-cards-wrapper" >
+                <div class=" col-md -6 col-xl report-inner-card bg-danger">
                   <div class="inner-card-text">
                     <span class="report-title">EXPENSE</span>
                     <h4>$32123</h4>
@@ -180,7 +180,13 @@ function drawCharts() {
     ['Mar', 28000, 18000],
     ['Apr', 25000, 16000],
     ['May', 26000, 17000],
-    ['Jun', 29000, 19000]
+    ['Jun', 29000, 19000],
+    ['Jul', 22000, 15000],
+    ['Agu', 24000, 16000],
+    ['Sep', 28000, 18000],
+    ['Oct', 25000, 16000],
+    ['Nov', 26000, 17000],
+    ['Dec', 29000, 19000]
   ]);
 
   // Options for bar charts

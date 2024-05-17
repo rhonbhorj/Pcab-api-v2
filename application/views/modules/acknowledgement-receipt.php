@@ -296,9 +296,11 @@
                                                         <th rowspan="3" class="text-center">Payor</th>
                                                         <th rowspan="3" class="text-center">Particulars</th>
 
-                                                        <th colspan="4" class="text-center">Amount</th>
+                                                        <th colspan="5" class="text-center">Amount</th>
                                                     </tr>
                                                     <tr>
+                                                    <th rowspan="2" class="text-center">Date Created<i
+                                                                class="m-0">(mm/dd/yyyy)</i></th>
                                                         <th rowspan="2" class="text-center">Date<i
                                                                 class="m-0">(mm/dd/yyyy)</i></th>
                                                         <th rowspan="2" class="text-center">Time</th>
@@ -323,6 +325,7 @@
                                             $total = ["totalAR" => 0, "totalFee" => 0, "totalDST" => 0, "totalLRF" => 0];
                                             foreach ($data as $row) {
                                                 echo "<tr>";
+                                                echo "<td>" .  date_format(date_create($row["date_created"]), "m/d/Y H:i:s") . "</td>";
                                                 echo "<td>" . date_format(date_create($row['last_modified']), "m/d/Y") . "</td>";
                                                 echo "<td>" . date("H:i:s", strtotime($row["last_modified"])) . "</td>";
                                                 echo "<td>" . $row["ar_no"] . "</td>";
@@ -368,6 +371,7 @@
 
 
                             <th class="font-weight-bold">Txn. ID</th>
+                            <th class="text-center">Date Created<i class="m-0">(mm/dd/yyyy)</i></th>
                             <th class="text-center">Date<i class="m-0">(mm/dd/yyyy)</i></th>
                             <th class="font-weight-bold">Time</th>
                             <th class="font-weight-bold">Reference No.</th>
@@ -394,6 +398,7 @@
 
 
                                 echo "<td>" . $row["trans_id"] . "</td>";
+                                echo "<td>" .  date_format(date_create($row["date_created"]), "m/d/Y H:i:s") . "</td>";
                                 echo "<td>" . date_format(date_create($row['last_modified']), "m/d/Y") . "</td>";
                                 echo "<td>" . date("H:i:s", strtotime($row["last_modified"])) . "</td>";
                                 echo "<td>" . $row["reference_number"] . "</td>";
@@ -637,7 +642,7 @@
             }
             var startDate = $('#startDate').val();
             var endDate = $('#endDate').val();
-            var currentDate = new Date(data[1]);
+            var currentDate = new Date(data[2]);
 
             var formattedStartDate = new Date(startDate);
             var formattedEndDate = new Date(endDate);
@@ -832,7 +837,7 @@
             }
             var e_start_Date = $('#e-collection_start_date').datepicker('getDate');
             var e_ende_date = $('#e-collection_end_date').datepicker('getDate');
-            var E_CurrentDate = new Date(data[0]);
+            var E_CurrentDate = new Date(data[1]);
 
             if (
                 (e_start_Date === null || e_ende_date === null) ||
@@ -933,7 +938,7 @@
 
         var modalTableHead = document.createElement('thead');
         modalTableHead.classList.add('thead'); // Added light background for the table head
-        modalTableHead.innerHTML = ` <tr><th colspan="8" class="text-center">Collection</th></tr><tr><th style="width:${100 / 9}%;" rowspan="2">Date & Time</th><th style="width:${100 / 9}%;" rowspan="2">AR Number</th><th style="width:${100 / 9}%;" rowspan="2">Name of Payor</th><th style="width:${100 / 9}%;" rowspan="2">Reference Number</th><th style="width:${100 / 9}%;">CIAP-PCAB</th><th style="width:${100 / 9}%;">LRF</th><th style="width:${100 / 9}%;">DST</th><th style="width:${100 / 9}%;" rowspan="2">Total Collection</th></tr><tr><th>Account No.<br/>(0052-1684-30)</th><th>Account No.<br/>(3402-2866-00)</th><th>Account No.<br/>(3402-2866-19)</th></tr>`;
+        modalTableHead.innerHTML = ` <tr><th colspan="9" class="text-center">Collection</th></tr><tr><th style="width:${100 / 9}%;" rowspan="2">Date & Time</th><th style="width:${100 / 9}%;" rowspan="2">Date Created & Time</th><th style="width:${100 / 9}%;" rowspan="2">AR Number</th><th style="width:${100 / 9}%;" rowspan="2">Name of Payor</th><th style="width:${100 / 9}%;" rowspan="2">Reference Number</th><th style="width:${100 / 9}%;">CIAP-PCAB</th><th style="width:${100 / 9}%;">LRF</th><th style="width:${100 / 9}%;">DST</th><th style="width:${100 / 9}%;" rowspan="2">Total Collection</th></tr><tr><th>Account No.<br/>(0052-1684-30)</th><th>Account No.<br/>(3402-2866-00)</th><th>Account No.<br/>(3402-2866-19)</th></tr>`;
 
         var modalTableBody = document.createElement('tbody');
 
@@ -958,6 +963,7 @@
 
             modalTableBody.innerHTML += `<tr>
             <td class="text-left" style='width:${100 / 9}%;padding-left:18px;'>${row.last_modified}</td>
+            <td class="text-left" style='width:${100 / 9}%;padding-left:18px;'>${row.date_created}</td>
             <td class="text-center" style='width:${100 / 9}%;padding-left:18px;'>${row.ar_no}</td>
             <td style='width:${100 / 9}%;padding-left:18px; text-wrap: wrap;'>${row.name_of_payor}</td>
             <td style='width:${100 / 9}%;padding-left:18px;'>${row.reference_number}</td>
@@ -1029,8 +1035,10 @@
 
         // Initialize DataTable for the modal table with sorting enabled
         var table = $('#modalDataTable').DataTable({
-            dom: '<"pull-left"b><"pull-right"f>rt<"row"<"col-sm-4"l><"col-sm-4"i><"col-sm-4"p>>',
-
+            dom: 'frtip',   
+            scrollX: '100%',
+            scrollCollapse: true,
+            ordering: false,
         });
     });
 
