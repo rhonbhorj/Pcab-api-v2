@@ -30,7 +30,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
     <link rel="shortcut icon" href="<?php echo base_url('/assets/images/pcab_logo.png'); ?>" />
 
     <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
-        integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous"> -->
+        integrity="sha384-GJzQnFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous"> -->
     <!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
         </script>
@@ -92,7 +92,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
               <div class="row report-inner-cards-wrapper bg-secondary" style="height:120px;">
                 <div class="col-md-6 col-xl report-inner-card bg-warning">
                   <div class="inner-card-text">
-                    <span class="report-title">YTD total transactions</span>
+                    <span class="report-title">YTD Total Amount</span>
                     <h4>$32123</h4>
                     <span class="report-count">2 Reports</span>
                   </div>
@@ -102,7 +102,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
                 </div>
                 <div class="col-md-6 col-xl report-inner-card bg-primary">
                   <div class="inner-card-text">
-                    <span class="report-title">Daily Transactions - Amount</span>
+                    <span class="report-title">Daily Total Amonut</span>
                     <h4>95,458</h4>
                     <span class="report-count">3 Reports</span>
                   </div>
@@ -112,7 +112,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
                 </div>
                 <div class="col-md-6 col-xl report-inner-card bg-success">
                   <div class="inner-card-text">
-                    <span class="report-title">Yesterday Transactions</span>
+                    <span class="report-title">Yesterday Total Amonut</span>
                     <h4>2650</h4>
                     <span class="report-count">5 Reports</span>
                   </div>
@@ -134,7 +134,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
         </div>
         <div class="col-md-6">
           <h5>Monthly Page Hits</h5>
-          <div id="bar-chart-monthly"></div>
+          <div id="line-chart-monthly"></div>
         </div>
       </div>
     </section>
@@ -152,10 +152,10 @@ defined('BASEPATH') or exit('No direct script access allowed');
                   </div>
                 </div>
               </div>
-              <div class="row report-inner-cards-wrapper bg-secondary">
-                <div class="col-md-6 col-xl report-inner-card bg-warning ">
+              <div class="row report-inner-cards-wrapper bg-secondary" style="height:120px;">
+                <div class="col-md-6 col-xl report-inner-card bg-warning">
                   <div class="inner-card-text">
-                    <span class="report-title">YTD total transactions</span>
+                    <span class="report-title">YTD Total No. of Transactions</span>
                     <h4>$32123</h4>
                     <span class="report-count">2 Reports</span>
                   </div>
@@ -165,7 +165,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
                 </div>
                 <div class="col-md-6 col-xl report-inner-card bg-primary">
                   <div class="inner-card-text">
-                    <span class="report-title">Daily Transactions - Amount</span>
+                    <span class="report-title">Daily Total No. of Transactions</span>
                     <h4>95,458</h4>
                     <span class="report-count">3 Reports</span>
                   </div>
@@ -175,7 +175,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
                 </div>
                 <div class="col-md-6 col-xl report-inner-card bg-success">
                   <div class="inner-card-text">
-                    <span class="report-title">Yesterday Transactions </span>
+                    <span class="report-title">Yesterday Total No. of Transactions</span>
                     <h4>2650</h4>
                     <span class="report-count">5 Reports</span>
                   </div>
@@ -212,12 +212,12 @@ function drawCharts() {
   ]);
 
   // Static data for monthly page hits
-  var monthlyData = google.visualization.arrayToDataTable([
+  var monthlyDataArray = [
     ['Month', 'Success', 'Failed'],
     ['Jan', 22000, 15000],
     ['Feb', 24000, 16000],
-    ['Mar', 0, 0],
-    ['Apr', 0, 0],
+    ['Mar', 10000, 20000],
+    ['Apr', 10000, 30000],
     ['May', 0, 0],
     ['Jun', 0, 0],
     ['Jul', 0, 0],
@@ -226,7 +226,14 @@ function drawCharts() {
     ['Oct', 0, 0],
     ['Nov', 0, 0],
     ['Dec', 0, 0]
-  ]);
+  ];
+
+  // Filter out months with zero values
+  var filteredMonthlyDataArray = monthlyDataArray.filter(function(row) {
+    return row[1] !== 0 || row[2] !== 0;
+  });
+
+  var monthlyData = google.visualization.arrayToDataTable(filteredMonthlyDataArray);
 
   // Options for bar charts
   var barOptions = {
@@ -270,13 +277,54 @@ function drawCharts() {
     }
   };
 
+  // Options for line chart
+  var lineOptions = {
+    backgroundColor: 'transparent',
+    colors: ['#24f211', '#fc0303'],
+    fontName: 'Open Sans',
+    chartArea: {
+      left: 50,
+      top: 10,
+      width: '100%',
+      height: '70%'
+    },
+    hAxis: {
+      textStyle: {
+        fontSize: 11
+      }
+    },
+    vAxis: {
+      minValue: 0,
+      baselineColor: '#6ad4cd',
+      gridlines: {
+        color: '#6ad4cd',
+        count: 4
+      },
+      textStyle: {
+        fontSize: 11
+      }
+    },
+    legend: {
+      position: 'bottom',
+      textStyle: {
+        fontSize: 12
+      }
+    },
+    animation: {
+      duration: 1200,
+      easing: 'out'
+    },
+    lineWidth: 2,
+    pointSize: 5
+  };
+
   // Draw the daily page hits bar chart
   var dailyChart = new google.visualization.ColumnChart(document.getElementById('bar-chart-daily'));
   dailyChart.draw(dailyData, barOptions);
 
-  // Draw the monthly page hits bar chart
-  var monthlyChart = new google.visualization.ColumnChart(document.getElementById('bar-chart-monthly'));
-  monthlyChart.draw(monthlyData, barOptions);
+  // Draw the monthly page hits line chart
+  var monthlyChart = new google.visualization.LineChart(document.getElementById('line-chart-monthly'));
+  monthlyChart.draw(monthlyData, lineOptions);
 }
 </script>
 </body>
