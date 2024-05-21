@@ -32,7 +32,7 @@ class Dashboard extends CI_Controller
                 // $i = 0;
                 // $yesterday[] = date('Y-m-d', strtotime("days", strtotime($today)));
 
-                for ($i = 0; $i < 5; $i ++) {
+                for ($i = 0; $i < 1; $i ++) {
                     $yesterday[] = date('Y-m-d', strtotime("-$i days", strtotime($today)));
                 }
                 break;

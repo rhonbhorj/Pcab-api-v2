@@ -55,8 +55,10 @@ class Dashboard_repo extends CI_Model
             $data = $this->db->query($sql);
 
             $resultArray[$i] = $data->num_rows() > 0 ? $data->row_array() : false;
+            $qry = "SELECT count(txn_amount) as total_count_failed FROM transactions where  last_modified like " . $likePatterns[$i] . " and status='FAILED'";
 
-        
+            $data2 = $this->db->query($qry);
+            $resultArray2[$i] = $data2->num_rows() > 0 ? $data2->row_array() : false;
         }
 
         $dayresult = [];
@@ -67,10 +69,12 @@ class Dashboard_repo extends CI_Model
             $dayresult[] = $dayOfWeek;
         }
 
-        $result = [];
+        // $result = [];
 
         foreach ($dayresult as $index => $day) {
-            $result[$day] = $resultArray[$index];
+            $result[$day]  =$resultArray[$index]+ $resultArray2[$index];
+        //   $resultArray2[$index];
+        //     array_push($result[$day], $resultArray2[$index]);
         }
 
         return $result;
