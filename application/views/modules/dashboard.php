@@ -89,12 +89,14 @@ defined('BASEPATH') or exit('No direct script access allowed');
                   </div>
                 </div>
               </div>
+           
+
               <div class="row report-inner-cards-wrapper bg-secondary" style="height:120px;">
                 <div class="col-md-6 col-xl report-inner-card bg-warning">
                   <div class="inner-card-text">
                     <span class="report-title">YTD Total Amount</span>
-                    <h4>$32123</h4>
-                    <span class="report-count">2 Reports</span>
+                    <h4 id='total-txn-amount'></h4>
+                    <!-- <span class="report-count">2 Reports</span> -->
                   </div>
                   <div class="inner-card-icon bg-success">
                     <i class="icon-rocket"></i>
@@ -193,6 +195,36 @@ defined('BASEPATH') or exit('No direct script access allowed');
   </div>
 </div>
 <script src="https://www.gstatic.com/charts/loader.js"></script>
+
+<script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get the JSON data passed from the controller
+            var responseData = <?php echo $json_data; ?>;
+            
+            // Log the data to the console (for debugging)
+            console.log(responseData);
+
+            console.log(responseData.alltransaction.total_txn_amount);
+            // Example: Display the total transaction amount for all transactions
+            var totalTxnAmount = responseData.alltransaction.total_txn_amount;
+            var totalCount = responseData.alltransaction.total_count;
+
+            // Display in HTML
+            document.getElementById('total-txn-amount').textContent = totalTxnAmount;
+            document.getElementById('total-count').textContent = 'Total Count: ' + totalCount;
+
+            // Display today's transaction
+            var todayTxnAmount = responseData.today_transaction.total_txn_amount_total;
+            var todayCount = responseData.today_transaction.total_count_totay;
+
+            document.getElementById('today-txn-amount').textContent = 'Today\'s Transaction Amount: ' + todayTxnAmount;
+            document.getElementById('today-count').textContent = 'Today\'s Count: ' + todayCount;
+        });
+
+</script>
+
+
+
 <script>
 google.charts.load('current', {'packages':['corechart']});
 google.charts.setOnLoadCallback(drawCharts);
