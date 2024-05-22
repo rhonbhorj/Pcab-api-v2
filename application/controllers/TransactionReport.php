@@ -10,11 +10,37 @@ class TransactionReport extends CI_Controller
         $this->load->model( 'Dashboard_repo', 'repo' );
     }
 
-    public function dasboardRepoertDdata()
+    public function dasboardReportData()
  {
-        $data[ 'alltransaction' ] = $this->repo->all_transaction_data();
-        $data[ 'today_transaction' ] = $this->repo->all_transaction_today();
-        $data[ 'yesterday_transaction' ] = $this->repo->all_transaction_yesterday();
+
+        $alltransaction = $this->repo->all_transaction_data();
+        $data[ 'alltransaction' ] = [
+            'total_txn_amount' => number_format( ( float )$alltransaction[ 'total_txn_amount' ], 2, '.', ',' ),
+            'total_count' => number_format( ( float )$alltransaction[ 'total_count' ], 0, '.', ',' )
+        ];
+
+        $allTransactionToday = $this->repo->all_transaction_today();
+        $data[ 'today_transaction' ] = [
+            'total_txn_amount_today' => number_format( ( float )$allTransactionToday[ 'total_txn_amount_today' ], 2, '.', ',' ),
+            'total_count_today' => number_format( ( float )$allTransactionToday[ 'total_count_today' ], 0, '.', ',' )
+        ];
+
+        $all_transaction_yesterday = $this->repo->all_transaction_yesterday();
+
+        $data[ 'yesterday_transaction' ] =  [
+            'total_txn_amount_yesterday' => number_format( ( float )$all_transaction_yesterday[ 'total_txn_amount_yesterday' ], 2, '.', ',' ),
+            'total_count_transaction' => number_format( ( float )$all_transaction_yesterday[ 'total_count_transaction' ], 0, '.', ',' )
+        ];
+
+        $data[ 'all_transaction_this_week' ] = $this->day_count();
+        $data[ 'monthly_transaction' ] = $this->month_count();
+        // echo json_encode( $data );
+        $this->load->view( 'modules/dashboard', $data );
+    }
+
+    public function day_count()
+ {
+
         $today = date( 'l' );
 
         // Initialize the $yesterday array
@@ -24,60 +50,60 @@ class TransactionReport extends CI_Controller
         switch ( $today ) {
             case 'Monday':
             // Only today's date
-                // $i = 0;
-                // $yesterday[] = date('Y-m-d', strtotime("days", strtotime($today)));
+            // $i = 0;
+            // $yesterday[] = date('Y-m-d', strtotime("days", strtotime($today)));
 
-                for ($i = 0; $i < 1; $i ++) {
-                    $yesterday[] = date('Y-m-d', strtotime("-$i days", strtotime($today)));
-                }
-                break;
+            for ($i = 0; $i < 1; $i ++) {
+                $yesterday[] = date('Y-m-d', strtotime("-$i days", strtotime($today)));
+            }
+            break;
 
-            case 'Tuesday':
+        case 'Tuesday':
 
-                for ($i = 0; $i < 2; $i ++) {
-                    $yesterday['data' . ($i + 1)] = date('Y-m-d', strtotime("-$i days", strtotime($today)));
-                }
-                break;
+            for ($i = 0; $i < 2; $i ++) {
+                $yesterday['data' . ($i + 1)] = date('Y-m-d', strtotime("-$i days", strtotime($today)));
+            }
+            break;
 
-            case 'Wednesday':
-                for ($i = 0; $i < 3; $i ++) {
-                    $yesterday['data' . ($i + 1)] = date('Y-m-d', strtotime("-$i days", strtotime($today)));
-                }
-                break;
+        case 'Wednesday':
+            for ($i = 0; $i < 3; $i ++) {
+                $yesterday['data' . ($i + 1)] = date('Y-m-d', strtotime("-$i days", strtotime($today)));
+            }
+            break;
 
-            case 'Thursday':
+        case 'Thursday':
 
-                for ($i = 0; $i < 4; $i ++) {
-                    $yesterday['data' . ($i + 1)] = date('Y-m-d', strtotime("-$i days", strtotime($today)));
-                }
-                break;
+            for ($i = 0; $i < 4; $i ++) {
+                $yesterday['data' . ($i + 1)] = date('Y-m-d', strtotime("-$i days", strtotime($today)));
+            }
+            break;
 
-            case 'Friday':
+        case 'Friday':
 
-                for ($i = 0; $i < 5; $i ++) {
-                    $yesterday['data' . ($i + 1)] = date('Y-m-d', strtotime("-$i days", strtotime($today)));
-                }
-                break;
+            for ($i = 0; $i < 5; $i ++) {
+                $yesterday['data' . ($i + 1)] = date('Y-m-d', strtotime("-$i days", strtotime($today)));
+            }
+            break;
 
-            case 'Saturday':
+        case 'Saturday':
 
-                for ($i = 0; $i < 6; $i ++) {
-                    $yesterday['data' . ($i + 1)] = date('Y-m-d', strtotime("-$i days", strtotime($today)));
-                }
-                break;
+            for ($i = 0; $i < 6; $i ++) {
+                $yesterday['data' . ($i + 1)] = date('Y-m-d', strtotime("-$i days", strtotime($today)));
+            }
+            break;
 
-            case 'Sunday':
+        case 'Sunday':
 
-                for ($i = 0; $i < 7; $i ++) {
-                    $yesterday['data' . ($i + 1)] = date('Y-m-d', strtotime("-$i days", strtotime($today)));
-                }
-                break;
+            for ($i = 0; $i < 7; $i ++) {
+                $yesterday['data' . ($i + 1)] = date('Y-m-d', strtotime("-$i days", strtotime($today)));
+            }
+            break;
 
-            default:
-                // Default case to handle any unexpected input
-                $yesterday['data'] = $today;
-                break;
-        }
+        default:
+            // Default case to handle any unexpected input
+            $yesterday['data'] = $today;
+            break;
+    }
 
         $data[ 'all_transaction_this_week' ] = $this->repo->all_transaction_this_week( $yesterday, $i );
 
@@ -92,7 +118,7 @@ class TransactionReport extends CI_Controller
 
     }
 
-
+    
     public function month_count()
     {
         $currentMonthName = date( 'F' );

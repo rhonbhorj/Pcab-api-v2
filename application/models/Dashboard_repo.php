@@ -17,11 +17,12 @@ class Dashboard_repo extends CI_Model
  {
         date_default_timezone_set( 'Asia/Manila' );
         $today = date( 'Y-m-d' );
-        $result = "SELECT  SUM(txn_amount) AS total_txn_amount_total ,count(txn_amount) as total_count_totay 
+        $result = "SELECT  SUM(txn_amount) AS total_txn_amount_today ,count(txn_amount) as total_count_today 
                   FROM transactions  where   last_modified like '%" . $today . "%'";
 
         $data = $this->db->query( $result );
-        return $data->row_array() ? $data->row_array() : false;
+        // $data->row_array() ? $data->row_array() : false;
+        return $data->num_rows() > 0 ? $data->row_array() : false;
     }
 
     public function all_transaction_yesterday()
@@ -30,7 +31,7 @@ class Dashboard_repo extends CI_Model
         $today = date( 'Y-m-d' );
 
         $yesterday = date( 'Y-m-d', strtotime( '-1 days', strtotime( $today ) ) );
-        $result = "SELECT  SUM(txn_amount) AS total_txn_amount_total ,count(txn_amount) as total_count_totay 
+        $result = "SELECT  SUM(txn_amount) AS total_txn_amount_yesterday ,count(txn_amount) as total_count_transaction 
         FROM transactions  where   last_modified like '%" . $yesterday . "%'";
         $data = $this->db->query( $result );
         return $data->row_array() ? $data->row_array() : false;
