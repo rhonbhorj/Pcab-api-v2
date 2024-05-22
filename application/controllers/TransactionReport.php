@@ -10,7 +10,7 @@ class TransactionReport extends CI_Controller
         $this->load->model( 'Dashboard_repo', 'repo' );
     }
 
-    public function dasboardRepoertData()
+    public function dasboardReportData()
  {
 
         $alltransaction = $this->repo->all_transaction_data();
