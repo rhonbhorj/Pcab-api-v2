@@ -81,9 +81,15 @@ class TransactionReport extends CI_Controller
 
         $data[ 'all_transaction_this_week' ] = $this->repo->all_transaction_this_week( $yesterday, $i );
 
-       $data['monthly_transaction']= $this->month_count();
-        echo json_encode($data);
-        // $this->load->view('modules/dashboard',$data);
+        $data['monthly_transaction']= $this->month_count();
+
+        // echo json_encode($data);
+
+        $json_data = json_encode($data);
+        $data['json_data'] = $json_data;
+        // echo '<pre>'; print_r($data); echo '</pre>';        
+        $this->load->view('modules/dashboard.php', $data);
+
     }
 
 

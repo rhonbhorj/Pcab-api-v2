@@ -96,7 +96,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
                   <div class="inner-card-text">
                     <span class="report-title">YTD Total Amount</span>
                     <h4 id='total-txn-amount'></h4>
-                    <!-- <span class="report-count">2 Reports</span> -->
+                    <span class="report-count">2 Reports</span>
                   </div>
                   <div class="inner-card-icon bg-success">
                     <i class="icon-rocket"></i>
@@ -104,8 +104,8 @@ defined('BASEPATH') or exit('No direct script access allowed');
                 </div>
                 <div class="col-md-6 col-xl report-inner-card bg-primary">
                   <div class="inner-card-text">
-                    <span class="report-title">Daily Total Amonut</span>
-                    <h4>95,458</h4>
+                    <span class="report-title">Daily Total Amount</span>
+                    <h4 id='total_txn_amount_today'></h4>
                     <span class="report-count">3 Reports</span>
                   </div>
                   <div class="inner-card-icon bg-danger">
@@ -115,7 +115,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
                 <div class="col-md-6 col-xl report-inner-card bg-success">
                   <div class="inner-card-text">
                     <span class="report-title">Yesterday Total Amonut</span>
-                    <h4>2650</h4>
+                    <h4 id='total_txn_amount_yesterday'></h4>
                     <span class="report-count">5 Reports</span>
                   </div>
                   <div class="inner-card-icon bg-warning">
@@ -198,27 +198,26 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Get the JSON data passed from the controller
+            
             var responseData = <?php echo $json_data; ?>;
             
-            // Log the data to the console (for debugging)
             console.log(responseData);
+          
+            var totalTxnAmount = responseData.alltransaction.total_txn_amount != null ? responseData.alltransaction.total_txn_amount : 0;
+            var total_txn_amount_today = responseData.today_transaction.total_txn_amount_total != null ? responseData.today_transaction.total_txn_amount_total : 0.00;
+            var total_txn_amount_yesterday = responseData.yesterday_transaction.total_txn_amount_total != null ? responseData.yesterday_transaction.total_txn_amount_total : 0.00;
 
-            console.log(responseData.alltransaction.total_txn_amount);
-            // Example: Display the total transaction amount for all transactions
-            var totalTxnAmount = responseData.alltransaction.total_txn_amount;
-            var totalCount = responseData.alltransaction.total_count;
+            var totalCount= responseData.alltransaction.total_count != null ? responseData.alltransaction.total_countt : 0;
 
+            // var formattedTotalTxnAmount = '₱' + totalTxnAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            
             // Display in HTML
-            document.getElementById('total-txn-amount').textContent = totalTxnAmount;
-            document.getElementById('total-count').textContent = 'Total Count: ' + totalCount;
+            document.getElementById('total-txn-amount').textContent = '₱' + totalTxnAmount;
+            document.getElementById('total_txn_amount_today').textContent = '₱'+ total_txn_amount_today;
+            document.getElementById('total_txn_amount_yesterday').textContent = '₱'+ total_txn_amount_yesterday;
 
-            // Display today's transaction
-            var todayTxnAmount = responseData.today_transaction.total_txn_amount_total;
-            var todayCount = responseData.today_transaction.total_count_totay;
 
-            document.getElementById('today-txn-amount').textContent = 'Today\'s Transaction Amount: ' + todayTxnAmount;
-            document.getElementById('today-count').textContent = 'Today\'s Count: ' + todayCount;
+
         });
 
 </script>
