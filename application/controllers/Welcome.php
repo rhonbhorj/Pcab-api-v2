@@ -53,7 +53,7 @@ class Welcome extends CI_Controller
             $result[ 'route' ] = $this->uri->segment( 1 );
 
             if ( $result[ 'route' ] == 'dashboard' ) {
-                redirect( '/acknowledgement-receipt' );
+                redirect( '/transaction-dashboard' );
                 return;
             }
 
@@ -94,6 +94,13 @@ class Welcome extends CI_Controller
                     redirect( 'login' );
                 }
             }
+
+			if ( $result[ 'route' ] == 'transaction-dashboard' ) {
+
+			}
+
+
+
 
             $this->load->view( 'index', $result );
         } else {

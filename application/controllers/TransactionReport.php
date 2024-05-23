@@ -34,12 +34,17 @@ class TransactionReport extends CI_Controller
 
         $data[ 'all_transaction_this_week' ] = $this->day_count();
         $data[ 'monthly_transaction' ] = $this->month_count();
-        // echo json_encode( $data );
         
-        $json_data = json_encode($data);
-        $data['json_data'] = $json_data;
         
-        $this->load->view( 'modules/dashboard', $data );
+        echo json_encode( $data );
+        
+       
+        // $json_data = json_encode($data);
+        // $data['json_data'] = $json_data;
+
+        // echo $data;
+        
+        // $this->load->view( 'modules/transaction-dashboard', $data );
     }
 
     public function day_count()
