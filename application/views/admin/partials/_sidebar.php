@@ -6,7 +6,12 @@
         <i class="icon-screen-desktop menu-icon"></i>
       </a>
     </li> -->
-  
+    <li class="nav-item">
+      <a class="nav-link" href="dashboard">
+        <span class="menu-title text-capitalize">Dashboard</span>
+        <i class=" icon-screen-desktop  menu-icon"></i>
+      </a>
+    </li>
     <li class="nav-item">
       <a class="nav-link" href="acknowledgement-receipt">
         <span class="menu-title text-capitalize">Acknowledgements</span>
@@ -25,7 +30,7 @@
     '<li class="nav-item">
       <a class="nav-link" href="transaction-table">
         <span class="menu-title text-capitalize"> Transactions</span>
-        <i class="icon-grid  menu-icon"></i>
+        <i class=" icon-list    menu-icon"></i>
       </a>
     </li> '
     
