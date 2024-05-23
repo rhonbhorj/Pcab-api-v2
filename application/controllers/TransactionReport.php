@@ -35,7 +35,7 @@ class TransactionReport extends CI_Controller
         $data[ 'all_transaction_this_week' ] = $this->day_count();
         $data[ 'monthly_transaction' ] = $this->month_count();
         // echo json_encode( $data );
-        $this->load->view( 'modules/dashboard', $data );
+        // $this->load->view( 'modules/dashboard', $data );
     }
 
     public function day_count()

@@ -66,7 +66,7 @@ $route['acknowledgement-receipt']  = 'welcome/index';
 $route['deposit']  = 'welcome/index';
 $route['dashboard']  = 'welcome/index';
 $route['get-transactions']  = 'welcome/getTransactions';
-$route['transaction-report']  = 'TransactionReport/dasboardRepoertData';
+$route['transaction-report']  = 'TransactionReport/dasboardReportData';
 
 // $route['get-data']  = 'welcome/get_data';
 //api  deposit_log

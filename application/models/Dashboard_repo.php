@@ -54,11 +54,13 @@ class Dashboard_repo extends CI_Model
 
             $data = $this->db->query( $sql );
 
-            $resultArray[ $i ] = $data->num_rows() > 0 ? $data->row_array() : false;
+            // $resultArray[ $i ] = $data->num_rows() > 0 ? $data->row_array() : false;
+            $resultArray[ $i ][ 'total_count' ] = $data->num_rows() > 0 ?( int ) $data->row()->total_count : false;
             $qry = 'SELECT count(txn_amount) as total_count_failed FROM transactions where  last_modified like ' . $likePatterns[ $i ] . " and status='FAILED'";
 
             $data2 = $this->db->query( $qry );
-            $resultArray2[ $i ] = $data2->num_rows() > 0 ? $data2->row_array() : false;
+            // $resultArray2[ $i ] = $data2->num_rows() > 0 ? $data2->row_array() : false;
+            $resultArray2[ $i ][ 'total_count_failed' ] = $data2->num_rows() > 0 ?( int ) $data2->row()->total_count_failed : false;
         }
 
         $dayresult = [];
@@ -96,11 +98,13 @@ class Dashboard_repo extends CI_Model
 
             $data = $this->db->query( $sql );
 
-            $resultArray[ $i ] = $data->num_rows() > 0 ? $data->row_array() : false;
+            // $resultArray[ $i ] = $data->num_rows() > 0 ? $data->row_array() : false;
+            $resultArray[ $i ][ 'total_count' ] = $data->num_rows() > 0 ?( int ) $data->row()->total_count : false;
             $qry = 'SELECT count(txn_amount) as total_count_failed FROM transactions where  last_modified like ' . $likePatterns[ $i ] . " and status='FAILED'";
 
             $data2 = $this->db->query( $qry );
-            $resultArray2[ $i ] = $data2->num_rows() > 0 ? $data2->row_array() : false;
+            $resultArray2[ $i ][ 'total_count_failed' ] = $data2->num_rows() > 0 ?( int ) $data2->row()->total_count_failed : false;
+
         }
 
         foreach ( $months as $date ) {
@@ -111,7 +115,7 @@ class Dashboard_repo extends CI_Model
 
         foreach ( $dayresult as $index => $day ) {
             $result[ $day ]  = $resultArray[ $index ]+$resultArray2[ $index ];
-            ;
+
         }
         return $result;
     }
