@@ -158,7 +158,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
                 <div class="col-md-6 col-xl report-inner-card bg-warning">
                   <div class="inner-card-text">
                     <span class="report-title">YTD Total No. of Transactions</span>
-                    <h4>$32123</h4>
+                    <h4 id = 'totalCount'></h4>
                     <span class="report-count">2 Reports</span>
                   </div>
                   <div class="inner-card-icon bg-success">
@@ -168,7 +168,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
                 <div class="col-md-6 col-xl report-inner-card bg-primary">
                   <div class="inner-card-text">
                     <span class="report-title">Daily Total No. of Transactions</span>
-                    <h4>95,458</h4>
+                    <h4 id= 'totalCount_today'></h4>
                     <span class="report-count">3 Reports</span>
                   </div>
                   <div class="inner-card-icon bg-danger">
@@ -178,7 +178,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
                 <div class="col-md-6 col-xl report-inner-card bg-success">
                   <div class="inner-card-text">
                     <span class="report-title">Yesterday Total No. of Transactions</span>
-                    <h4>2650</h4>
+                    <h4 id= 'totalCount_yesterday'>totalCount_yesterday</h4>
                     <span class="report-count">5 Reports</span>
                   </div>
                   <div class="inner-card-icon bg-warning">
@@ -207,26 +207,24 @@ defined('BASEPATH') or exit('No direct script access allowed');
             var total_txn_amount_today = responseData.today_transaction.total_txn_amount_total != null ? responseData.today_transaction.total_txn_amount_total : 0.00;
             var total_txn_amount_yesterday = responseData.yesterday_transaction.total_txn_amount_total != null ? responseData.yesterday_transaction.total_txn_amount_total : 0.00;
 
-            var totalCount= responseData.alltransaction.total_count != null ? responseData.alltransaction.total_countt : 0;
-
-            // var formattedTotalTxnAmount = '₱' + totalTxnAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            var totalCount= responseData.alltransaction.total_count ;
+            var totalCount_today = responseData.today_transaction.total_count_today;
+            var totalCount_yesterday = responseData.yesterday_transaction.total_count_transaction           
             
             // Display in HTML
             document.getElementById('total-txn-amount').textContent = '₱' + totalTxnAmount;
             document.getElementById('total_txn_amount_today').textContent = '₱'+ total_txn_amount_today;
             document.getElementById('total_txn_amount_yesterday').textContent = '₱'+ total_txn_amount_yesterday;
 
+            document.getElementById('totalCount').textContent = totalCount;
+            document.getElementById('totalCount_today').textContent = totalCount_today;
+            document.getElementById('totalCount_yesterday').textContent = totalCount_yesterday;
 
 
-        });
-
-</script>
 
 
-
-<script>
-google.charts.load('current', {'packages':['corechart']});
-google.charts.setOnLoadCallback(drawCharts);
+            google.charts.load('current', {'packages':['corechart']});
+            google.charts.setOnLoadCallback(drawCharts);
 
 function drawCharts() {
   // Static data for daily page hits
@@ -357,6 +355,17 @@ function drawCharts() {
   var monthlyChart = new google.visualization.LineChart(document.getElementById('line-chart-monthly'));
   monthlyChart.draw(monthlyData, lineOptions);
 }
+
+
+
+        });
+
+</script>
+
+
+
+<script>
+
 </script>
 </body>
 </html>
