@@ -218,33 +218,37 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 function drawCharts() {
   // Static data for daily page hits
+
+  function getSafeValue(data, defaultValue) {
+            return data != null ? data : defaultValue;
+  }
   var dailyData = google.visualization.arrayToDataTable([
     ['Day', 'Success', 'Failed'],
-    ['Sun', 1050, 600],
-    ['Mon', 1370, 910],
-    ['Tue', 660, 400],
-    ['Wed', 1030, 540],
-    ['Thu', 1000, 480],
-    ['Fri', 0, 0],
-    ['Sat', 0, 0],
-    ['Sun', 0, 0]
+   
+    ['Mon', responseData.all_transaction_this_week.Monday?.total_count?? 0, responseData.all_transaction_this_week.Monday?.total_count_failed] ?? 0,
+    ['Tue', responseData.all_transaction_this_week.Tuesday?.total_count?? 0, responseData.all_transaction_this_week.Tuesday?.total_count_failed ?? 0],
+    ['Wed', responseData.all_transaction_this_week.Wednesday?.total_count?? 0, responseData.all_transaction_this_week.Wednesday?.total_count_failed ?? 0],
+    ['Thu', responseData.all_transaction_this_week.Thursday?.total_count ?? 0, responseData.all_transaction_this_week.Thursday?.total_count_failed ?? 0],
+    ['Fri', responseData.all_transaction_this_week.Friday?.total_count ?? 0, responseData.all_transaction_this_week.Friday?.total_count_failed ?? 0],
+    ['Sat', responseData.all_transaction_this_week.Saturday?.total_count ?? 0, responseData.all_transaction_this_week.Saturday?.total_count_failed ?? 0],
+    ['Sun', responseData.all_transaction_this_week.Sunday?.total_count ?? 0, responseData.all_transaction_this_week.Sunday?.total_count_failed ?? 0]
   ]);
 
   // Static data for monthly page hits
   var monthlyDataArray = [
     ['Month', 'Success', 'Failed'],
-    ['Jan', 22000, 15000],
-    ['Feb', 24000, 16000],
-    ['Mar', 0, 0],
-    ['Apr', 0, 0],
-    ['May', 0, 0],
-    ['Jun', 0, 0],
-    ['Jul', 0, 0],
-    ['Aug', 0, 0],
-    ['Sep', 0, 0],
-    ['Oct', 0, 0],
-    ['Nov', 0, 0],
-    ['Dec', 0, 0]
+    ['Jan', responseData.monthly_transaction.January?.total_count ?? 0, responseData.monthly_transaction.January?.total_count_failed ?? 0],
+    ['Feb', responseData.monthly_transaction.February?.total_count ?? 0, responseData.monthly_transaction.February?.total_count_failed ?? 0],
+    ['Mar', responseData.monthly_transaction.March?.total_count ?? 0, responseData.monthly_transaction.March?.total_count_failed ?? 0],
+    ['Apr', responseData.monthly_transaction.April?.total_count ?? 0, responseData.monthly_transaction.April?.total_count_failed ?? 0],
+    ['May', responseData.monthly_transaction.May?.total_count ?? 0, responseData.monthly_transaction.May?.total_count_failed ?? 0],
+    ['Jun', responseData.monthly_transaction.June?.total_count ?? 0, responseData.monthly_transaction.June?.total_count_failed ?? 0],
+    ['Jul', responseData.monthly_transaction.July?.total_count ?? 0, responseData.monthly_transaction.July?.total_count_failed ?? 0],
+    ['Aug', responseData.monthly_transaction.August?.total_count ?? 0, responseData.monthly_transaction.August?.total_count_failed ?? 0],
+    ['Sep', responseData.monthly_transaction.September?.total_count ?? 0, responseData.monthly_transaction.September?.total_count_failed ?? 0],
+    ['Oct', responseData.monthly_transaction.October?.total_count ?? 0, responseData.monthly_transaction.October?.total_count_failed ?? 0],
+    ['Nov', responseData.monthly_transaction.November?.total_count ?? 0, responseData.monthly_transaction.November?.total_count_failed ?? 0],
+    ['Dec', responseData.monthly_transaction.December?.total_count ?? 0, responseData.monthly_transaction.December?.total_count_failed ?? 0]
   ];
 
   // Filter out months with zero values
