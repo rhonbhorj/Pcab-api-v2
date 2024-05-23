@@ -166,8 +166,8 @@
         console.log(responseData);
 
         var totalTxnAmount = responseData.alltransaction.total_txn_amount != null ? responseData.alltransaction.total_txn_amount : 0;
-        var total_txn_amount_today = responseData.today_transaction.total_txn_amount_total != null ? responseData.today_transaction.total_txn_amount_total : 0.00;
-        var total_txn_amount_yesterday = responseData.yesterday_transaction.total_txn_amount_total != null ? responseData.yesterday_transaction.total_txn_amount_total : 0.00;
+        var total_txn_amount_today = responseData.today_transaction.total_txn_amount_today != null ? responseData.today_transaction.total_txn_amount_today : 0;
+        var total_txn_amount_yesterday = responseData.yesterday_transaction.total_txn_amount_yesterday != null ? responseData.yesterday_transaction.total_txn_amount_yesterday : 0;
 
         var totalCount = responseData.alltransaction.total_count;
         var totalCount_today = responseData.today_transaction.total_count_today;
