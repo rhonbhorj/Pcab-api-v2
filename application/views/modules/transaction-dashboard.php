@@ -23,9 +23,81 @@
     background: #FAFAFA;
     box-shadow: 2px 2px 5px 0 #DDD;
   }
+  .dashboard-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+/*  */
+
+  .report-inner-cards-wrapper {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+  span.report-title{
+    color: #FFF!important;
+    margin-bottom: 20px;
+    font-size: 16px !important;
+  }
+  /* .h4{
+    margin-top: -22px !important;
+  } */
+  .report-inner-card {
+    background: #00507A;
+    height:130px;
+    flex: 1;
+    margin: 0.5rem;
+    padding: 1rem;
+    border-radius: 8px;
+    color: #FFF;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .inner-card-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .inner-card-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem;
+    border-radius: 50%;
+    font-size: 35px !important;
+  }
+
+  .bg-warning {
+    background-color: #FFC107;
+  }
+
+  .bg-primary {
+    background-color: #007BFF;
+  }
+
+  .bg-success {
+    background-color: #28A745;
+  }
+
+  .bg-danger {
+    background-color: #DC3545;
+  }
+
+  #bar-chart-daily, #line-chart-monthly {
+    width: 100%;
+    height: 300px;
+  }
+
+  .chart-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 </style>
-
-
 <div class="dashboard-container d-flex flex-direction-row">
   <div class="card w-100 p-3 pb-5">
     <section>
@@ -33,44 +105,34 @@
         <div class="col-md-12 grid-margin">
           <div class="card">
             <div class="card-body">
-              <div class="row">
-                <div class="col-md-12">
-                  <div class="d-sm-flex align-items-baseline report-summary-header">
-                    <h5 class="font-weight-semibold">Value - amount</h5> <span class="ml-auto">Updated Report</span>
-                    <button class="btn btn-icons border-0 p-2"><i class="icon-refresh"></i></button>
-                  </div>
-                </div>
-              </div>
-
-
-              <div class="row report-inner-cards-wrapper bg-secondary" style="height:120px;">
-                <div class="col-md-6 col-xl report-inner-card bg-warning">
+              <div class="row report-inner-cards-wrapper">
+                <div class="col-md-6 col-xl report-inner-card ">
                   <div class="inner-card-text">
                     <span class="report-title">YTD Total Amount</span>
                     <h4 id='total-txn-amount'></h4>
-                    <span class="report-count">2 Reports</span>
+
                   </div>
-                  <div class="inner-card-icon bg-success">
+                  <div class="inner-card-icon ">
                     <i class="icon-rocket"></i>
                   </div>
                 </div>
-                <div class="col-md-6 col-xl report-inner-card bg-primary">
+                <div class="col-md-6 col-xl report-inner-card">
                   <div class="inner-card-text">
                     <span class="report-title">Daily Total Amount</span>
                     <h4 id='total_txn_amount_today'></h4>
-                    <span class="report-count">3 Reports</span>
+
                   </div>
-                  <div class="inner-card-icon bg-danger">
+                  <div class="inner-card-icon ">
                     <i class="icon-briefcase"></i>
                   </div>
                 </div>
-                <div class="col-md-6 col-xl report-inner-card bg-success">
+                <div class="col-md-6 col-xl report-inner-card ">
                   <div class="inner-card-text">
-                    <span class="report-title">Yesterday Total Amonut</span>
+                    <span class="report-title">Yesterday Total Amount</span>
                     <h4 id='total_txn_amount_yesterday'></h4>
-                    <span class="report-count">5 Reports</span>
+
                   </div>
-                  <div class="inner-card-icon bg-warning">
+                  <div class="inner-card-icon">
                     <i class="icon-globe-alt"></i>
                   </div>
                 </div>
@@ -98,42 +160,31 @@
         <div class="col-md-12 grid-margin">
           <div class="card">
             <div class="card-body">
-              <div class="row">
-                <div class="col-md-12">
-                  <div class="d-sm-flex align-items-baseline report-summary-header">
-                    <h5 class="font-weight-semibold">Value - No. of transactions per status (Success, Failed, etc.)</h5>
-                    <button class="btn btn-icons border-0 p-2"><i class="icon-refresh"></i></button>
-                  </div>
-                </div>
-              </div>
-              <div class="row report-inner-cards-wrapper bg-secondary" style="height:120px;">
-                <div class="col-md-6 col-xl report-inner-card bg-warning">
+              <div class="row report-inner-cards-wrapper">
+                <div class="col-md-6 col-xl report-inner-card ">
                   <div class="inner-card-text">
                     <span class="report-title">YTD Total No. of Transactions</span>
                     <h4 id='totalCount'></h4>
-                    <span class="report-count">2 Reports</span>
                   </div>
-                  <div class="inner-card-icon bg-success">
+                  <div class="inner-card-icon ">
                     <i class="icon-rocket"></i>
                   </div>
                 </div>
-                <div class="col-md-6 col-xl report-inner-card bg-primary">
+                <div class="col-md-6 col-xl report-inner-card ">
                   <div class="inner-card-text">
                     <span class="report-title">Daily Total No. of Transactions</span>
                     <h4 id='totalCount_today'></h4>
-                    <span class="report-count">3 Reports</span>
                   </div>
-                  <div class="inner-card-icon bg-danger">
+                  <div class="inner-card-icon ">
                     <i class="icon-briefcase"></i>
                   </div>
                 </div>
-                <div class="col-md-6 col-xl report-inner-card bg-success">
+                <div class="col-md-6 col-xl report-inner-card">
                   <div class="inner-card-text">
                     <span class="report-title">Yesterday Total No. of Transactions</span>
                     <h4 id='totalCount_yesterday'>totalCount_yesterday</h4>
-                    <span class="report-count">5 Reports</span>
                   </div>
-                  <div class="inner-card-icon bg-warning">
+                  <div class="inner-card-icon ">
                     <i class="icon-globe-alt"></i>
                   </div>
                 </div>
@@ -148,12 +199,10 @@
 </div>
 <script src="https://www.gstatic.com/charts/loader.js"></script>
 
-
-
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
+  document.addEventListener('DOMContentLoaded', function () {
     // URL to your CodeIgniter controller method
-    const url = '<?php echo base_url()?>/TransactionReport/dasboardReportData';
+    const url = '<?php echo base_url() ?>/TransactionReport/dasboardReportData';
 
     // Fetch data from the controller
     fetch(url)
@@ -161,7 +210,6 @@
       .then(responseData => {
         // Handle the JSON data here
         // console.log(data);
-
 
         console.log(responseData);
 
@@ -171,7 +219,7 @@
 
         var totalCount = responseData.alltransaction.total_count;
         var totalCount_today = responseData.today_transaction.total_count_today;
-        var totalCount_yesterday = responseData.yesterday_transaction.total_count_transaction
+        var totalCount_yesterday = responseData.yesterday_transaction.total_count_transaction;
 
         // Display in HTML
         document.getElementById('total-txn-amount').textContent = '₱' + totalTxnAmount;
@@ -189,14 +237,9 @@
 
         function drawCharts() {
           // Static data for daily page hits
-
-          function getSafeValue(data, defaultValue) {
-            return data != null ? data : defaultValue;
-          }
           var dailyData = google.visualization.arrayToDataTable([
             ['Day', 'Success', 'Failed'],
-
-            ['Mon', responseData.all_transaction_this_week.Monday?.total_count ?? 0, responseData.all_transaction_this_week.Monday?.total_count_failed] ?? 0,
+            ['Mon', responseData.all_transaction_this_week.Monday?.total_count ?? 0, responseData.all_transaction_this_week.Monday?.total_count_failed ?? 0],
             ['Tue', responseData.all_transaction_this_week.Tuesday?.total_count ?? 0, responseData.all_transaction_this_week.Tuesday?.total_count_failed ?? 0],
             ['Wed', responseData.all_transaction_this_week.Wednesday?.total_count ?? 0, responseData.all_transaction_this_week.Wednesday?.total_count_failed ?? 0],
             ['Thu', responseData.all_transaction_this_week.Thursday?.total_count ?? 0, responseData.all_transaction_this_week.Thursday?.total_count_failed ?? 0],
@@ -206,7 +249,7 @@
           ]);
 
           // Static data for monthly page hits
-          var monthlyDataArray = [
+          var monthlyData = google.visualization.arrayToDataTable([
             ['Month', 'Success', 'Failed'],
             ['Jan', responseData.monthly_transaction.January?.total_count ?? 0, responseData.monthly_transaction.January?.total_count_failed ?? 0],
             ['Feb', responseData.monthly_transaction.February?.total_count ?? 0, responseData.monthly_transaction.February?.total_count_failed ?? 0],
@@ -220,19 +263,12 @@
             ['Oct', responseData.monthly_transaction.October?.total_count ?? 0, responseData.monthly_transaction.October?.total_count_failed ?? 0],
             ['Nov', responseData.monthly_transaction.November?.total_count ?? 0, responseData.monthly_transaction.November?.total_count_failed ?? 0],
             ['Dec', responseData.monthly_transaction.December?.total_count ?? 0, responseData.monthly_transaction.December?.total_count_failed ?? 0]
-          ];
-
-          // Filter out months with zero values
-          var filteredMonthlyDataArray = monthlyDataArray.filter(function(row) {
-            return row[1] !== 0 || row[2] !== 0;
-          });
-
-          var monthlyData = google.visualization.arrayToDataTable(filteredMonthlyDataArray);
+          ]);
 
           // Options for bar charts
           var barOptions = {
             backgroundColor: 'transparent',
-            colors: ['#4285F4', '#EA4335'], // Use Google brand colors
+            colors: ['#00507A', '#f08078'], // Use Google brand colors
             fontName: 'Open Sans',
             chartArea: {
               left: 50,
@@ -274,7 +310,7 @@
           // Options for line chart
           var lineOptions = {
             backgroundColor: 'transparent',
-            colors: ['#4285F4', '#EA4335'], // Use Google brand colors
+            colors: ['#00507A', '#f08078'], // Use Google brand colors
             fontName: 'Open Sans',
             chartArea: {
               left: 50,
@@ -320,7 +356,6 @@
           var monthlyChart = new google.visualization.LineChart(document.getElementById('line-chart-monthly'));
           monthlyChart.draw(monthlyData, lineOptions);
         }
-
 
       })
       .catch(error => {
