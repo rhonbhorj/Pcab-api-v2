@@ -143,16 +143,8 @@
       </div>
     </section>
     <section>
-      <div class="row">
-        <div class="col-md-6">
-          <h5>Daily Page Hits</h5>
-          <div id="bar-chart-daily"></div>
-        </div>
-        <div class="col-md-6">
-          <h5>Monthly Page Hits</h5>
-          <div id="line-chart-monthly"></div>
-        </div>
-      </div>
+      <!-- Amount graph -->
+     
     </section>
 
     <section>
@@ -194,7 +186,18 @@
         </div>
       </div>
     </section>
-
+    <section>
+      <div class="row">
+        <div class="col-md-6">
+          <h5>Daily Page Hits</h5>
+          <div id="bar-chart-daily"></div>
+        </div>
+        <div class="col-md-6">
+          <h5>Monthly Page Hits</h5>
+          <div id="line-chart-monthly"></div>
+        </div>
+      </div>
+    </section>
   </div>
 </div>
 <script src="https://www.gstatic.com/charts/loader.js"></script>
