@@ -50,14 +50,23 @@ class Dashboard_repo extends CI_Model
 
         for ( $i = 0; $i < $count; $i ++ ) {
 
-            $sql = 'SELECT count(txn_amount) as total_count FROM transactions where  last_modified like ' . $likePatterns[ $i ] . " and status='SUCCESS'";
+            $sql = 'SELECT count(txn_amount) as total_count,
+            sum(txn_amount)  as total_txn_amount,
+            sum(fees_pcab) as pcab_fee,
+            sum(legal_research_fund) as lrf,
+            sum(ngsi_convenience_fee) as ngsi_convenience_fee
+            
+            
+             FROM transactions where  last_modified like ' . $likePatterns[ $i ] . " and status='SUCCESS'";
 
             $data = $this->db->query( $sql );
 
             // $resultArray[ $i ] = $data->num_rows() > 0 ? $data->row_array() : false;
-            $resultArray[ $i ][ 'total_count' ] = $data->num_rows() > 0 ?( int ) $data->row()->total_count : false;
-            $qry = 'SELECT count(txn_amount) as total_count_failed FROM transactions where  last_modified like ' . $likePatterns[ $i ] . " and status='FAILED'";
+            $resultArray[ $i ][ 'total_count' ] =  $data->num_rows() > 0 ?( int ) $data->row()->total_count : false;
 
+            $resultArray[ $i ][ 'ngsi_convenience_fee' ] = $data->num_rows() > 0 ?( int ) $data->row()->ngsi_convenience_fee : false;
+
+            $qry = 'SELECT count(txn_amount) as total_count_failed FROM transactions where  last_modified like ' . $likePatterns[ $i ] . " and status='FAILED'";
             $data2 = $this->db->query( $qry );
             // $resultArray2[ $i ] = $data2->num_rows() > 0 ? $data2->row_array() : false;
             $resultArray2[ $i ][ 'total_count_failed' ] = $data2->num_rows() > 0 ?( int ) $data2->row()->total_count_failed : false;
@@ -94,16 +103,28 @@ class Dashboard_repo extends CI_Model
 
         for ( $i = 0; $i < $count; $i ++ ) {
 
-            $sql = 'SELECT count(txn_amount) as total_count FROM transactions where  last_modified like ' . $likePatterns[ $i ] . " and status='SUCCESS'";
+            $sql = 'SELECT count(txn_amount) as total_count,
+            sum(txn_amount)  as total_txn_amount,
+            sum(fees_pcab) as pcab_fee,
+            sum(legal_research_fund) as lrf,
+            sum(ngsi_convenience_fee) as ngsi_convenience_fee
+            
+            
+             FROM transactions where  last_modified like ' . $likePatterns[ $i ] . " and status='SUCCESS'";
 
             $data = $this->db->query( $sql );
 
-            // $resultArray[ $i ] = $data->num_rows() > 0 ? $data->row_array() : false;
+            // $resultArray[ $i ]  $data->num_rows() > 0 ? $data->row_array() : false;
             $resultArray[ $i ][ 'total_count' ] = $data->num_rows() > 0 ?( int ) $data->row()->total_count : false;
-            $qry = 'SELECT count(txn_amount) as total_count_failed FROM transactions where  last_modified like ' . $likePatterns[ $i ] . " and status='FAILED'";
+            $resultArray[ $i ][ 'total_txn_amount' ] = $data->num_rows() > 0 ?number_format( ( float )$data->row()->total_txn_amount, 2, '.', ',' ) : false;
+            $resultArray[ $i ][ 'pcab_fee' ] = $data->num_rows() > 0 ? number_format( ( float )$data->row()->total_txn_amount, 2, '.', ',' ) : false;
+            $resultArray[ $i ][ 'lrf' ] = $data->num_rows() > 0 ?number_format( ( float )$data->row()->lrf, 2, '.', ',' ) : false;
+            $resultArray[ $i ][ 'ngsi_convenience_fee' ] = $data->num_rows() > 0 ?( int ) $data->row()->ngsi_convenience_fee : false;
 
+            $qry = 'SELECT count(txn_amount) as total_count_failed,sum(txn_amount) as sum_amount FROM transactions where  last_modified like ' . $likePatterns[ $i ] . " and status='FAILED'";
             $data2 = $this->db->query( $qry );
-            $resultArray2[ $i ][ 'total_count_failed' ] = $data2->num_rows() > 0 ?( int ) $data2->row()->total_count_failed : false;
+            $resultArray2[ $i ][ 'total_count_failed' ] = $data2->num_rows() > 0 ?( int )$data2->row()->total_count_failed : false;
+            // $resultArray2[ $i ][ 'sum_amount' ] = $data2->num_rows() > 0 ?( int )$data2->row()->sum_amount : false;
 
         }
 

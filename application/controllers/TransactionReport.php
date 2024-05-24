@@ -9,23 +9,20 @@ class TransactionReport extends CI_Controller
         parent::__construct();
         $this->load->model( 'Dashboard_repo', 'repo' );
 
-
         // if ( $this->session->userdata( 'logged_in' ) === !TRUE ) {
-        //     redirect('login');
+        //     redirect( 'login' );
         // }
-
 
     }
 
     public function dasboardReportData()
  {
 
-        if (!$this->is_user_logged_in()) {
+        if ( !$this->is_user_logged_in() ) {
             // Redirect to the login page
-            redirect('login');
+            redirect( 'login' );
             return;
         }
-       
 
         $alltransaction = $this->repo->all_transaction_data();
         $data[ 'alltransaction' ] = [
@@ -48,23 +45,13 @@ class TransactionReport extends CI_Controller
 
         $data[ 'all_transaction_this_week' ] = $this->day_count();
         $data[ 'monthly_transaction' ] = $this->month_count();
-        
-        
-        echo json_encode( $data );
-        
-       
-        // $json_data = json_encode($data);
-        // $data['json_data'] = $json_data;
 
+        // echo json_encode( $data );
 
+        // $json_data = json_encode( $data );
+        // $data[ 'json_data' ] = $json_data;
 
     }
-
-      
-
-
-
-
 
     public function day_count()
  {
@@ -242,8 +229,8 @@ class TransactionReport extends CI_Controller
     }
 
     private function is_user_logged_in()
-	{
-		// Check if the 'logged_in' session variable exists and is set to TRUE
-		return $this->session->userdata('logged_in') === TRUE;
-	}
+ {
+        // Check if the 'logged_in' session variable exists and is set to TRUE
+        return $this->session->userdata( 'logged_in' ) === TRUE;
+    }
 }
