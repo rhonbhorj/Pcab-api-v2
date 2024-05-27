@@ -143,7 +143,18 @@
       </div>
     </section>
     <section>
-      <!-- Amount graph -->
+    <section>
+      <div class="row">
+        <div class="col-md-6">
+          <h5>Daily Page Hits</h5>
+          <div id="bar-chart-daily"></div>
+        </div>
+        <div class="col-md-6">
+          <h5>Monthly Page Hits</h5>
+          <div id="line-chart-monthly"></div>
+        </div>
+      </div>
+    </section>
      
     </section>
 
@@ -186,18 +197,7 @@
         </div>
       </div>
     </section>
-    <section>
-      <div class="row">
-        <div class="col-md-6">
-          <h5>Daily Page Hits</h5>
-          <div id="bar-chart-daily"></div>
-        </div>
-        <div class="col-md-6">
-          <h5>Monthly Page Hits</h5>
-          <div id="line-chart-monthly"></div>
-        </div>
-      </div>
-    </section>
+<!-- amount graph -->
   </div>
 </div>
 <script src="https://www.gstatic.com/charts/loader.js"></script>
@@ -237,27 +237,27 @@
             ['Day', 'Success', { role: 'tooltip', 'p': {'html': true}}],
             ['Mon', parseFloat((responseData.all_transaction_this_week.Monday?.total_txn_amount ?? '0').replace(/,/g, '')), createCustomTooltip(responseData.all_transaction_this_week.Monday)],
             ['Tue', parseFloat((responseData.all_transaction_this_week.Tuesday?.total_txn_amount ?? '0').replace(/,/g, '')), createCustomTooltip(responseData.all_transaction_this_week.Tuesday)],
-            ['Wed', responseData.all_transaction_this_week.Wednesday?.total_count ?? 0, createCustomTooltip(responseData.all_transaction_this_week.Wednesday)],
-            ['Thu', responseData.all_transaction_this_week.Thursday?.total_count ?? 0, createCustomTooltip(responseData.all_transaction_this_week.Thursday)],
-            ['Fri', responseData.all_transaction_this_week.Friday?.total_count ?? 0, createCustomTooltip(responseData.all_transaction_this_week.Friday)],
-            ['Sat', responseData.all_transaction_this_week.Saturday?.total_count ?? 0, createCustomTooltip(responseData.all_transaction_this_week.Saturday)],
-            ['Sun', responseData.all_transaction_this_week.Sunday?.total_count ?? 0, createCustomTooltip(responseData.all_transaction_this_week.Sunday)]
+            ['Wed', parseFloat((responseData.all_transaction_this_week.Wednesday?.total_txn_amount ?? '0').replace(/,/g, '')), createCustomTooltip(responseData.all_transaction_this_week.Wednesday)],
+            ['Thu', parseFloat((responseData.all_transaction_this_week.Thursday?.total_txn_amount ?? '0').replace(/,/g, '')), createCustomTooltip(responseData.all_transaction_this_week.Thursday)],
+            ['Fri', parseFloat((responseData.all_transaction_this_week.Friday?.total_txn_amount ?? '0').replace(/,/g, '')), createCustomTooltip(responseData.all_transaction_this_week.Friday)],
+            ['Sat', parseFloat((responseData.all_transaction_this_week.Saturday?.total_txn_amount ?? '0').replace(/,/g, '')), createCustomTooltip(responseData.all_transaction_this_week.Saturday)],
+            ['Sun', parseFloat((responseData.all_transaction_this_week.Sunday?.total_txn_amount ?? '0').replace(/,/g, '')), createCustomTooltip(responseData.all_transaction_this_week.Sunday)]
           ]);
 
           var monthlyData = google.visualization.arrayToDataTable([
             ['Month', 'Success', { role: 'tooltip', 'p': {'html': true}}],
-            ['Jan', responseData.monthly_transaction.January?.total_count ?? 0, createCustomTooltip(responseData.monthly_transaction.January)],
-            ['Feb', responseData.monthly_transaction.February?.total_count ?? 0, createCustomTooltip(responseData.monthly_transaction.February)],
-            ['Mar', responseData.monthly_transaction.March?.total_count ?? 0, createCustomTooltip(responseData.monthly_transaction.March)],
-            ['Apr', responseData.monthly_transaction.April?.total_count ?? 0, createCustomTooltip(responseData.monthly_transaction.April)],
-            ['May', responseData.monthly_transaction.May?.total_count ?? 0,  createCustomTooltip(responseData.monthly_transaction.May)],
-            ['Jun', responseData.monthly_transaction.June?.total_count ?? 0,  createCustomTooltip(responseData.monthly_transaction.June)],
-            ['Jul', responseData.monthly_transaction.July?.total_count ?? 0,  createCustomTooltip(responseData.monthly_transaction.July)],
-            ['Aug', responseData.monthly_transaction.August?.total_count ?? 0,  createCustomTooltip(responseData.monthly_transaction.August)],
-            ['Sep', responseData.monthly_transaction.September?.total_count ?? 0, createCustomTooltip(responseData.monthly_transaction.September)],
-            ['Oct', responseData.monthly_transaction.October?.total_count ?? 0, createCustomTooltip(responseData.monthly_transaction.October)],
-            ['Nov', responseData.monthly_transaction.November?.total_count ?? 0,  createCustomTooltip(responseData.monthly_transaction.November)],
-            ['Dec', responseData.monthly_transaction.December?.total_count ?? 0,  createCustomTooltip(responseData.monthly_transaction.December)]
+            ['Jan', parseFloat((responseData.monthly_transaction.January?.total_txn_amount ?? '0').replace(/,/g, '')), createCustomTooltip(responseData.monthly_transaction.January)],
+            ['Feb', parseFloat((responseData.monthly_transaction.February?.total_txn_amount ?? '0').replace(/,/g, '')), createCustomTooltip(responseData.monthly_transaction.February)],
+            ['Mar', parseFloat((responseData.monthly_transaction.March?.total_txn_amount ?? '0').replace(/,/g, '')), createCustomTooltip(responseData.monthly_transaction.March)],
+            ['Apr', parseFloat((responseData.monthly_transaction.April?.total_txn_amount ?? '0').replace(/,/g, '')), createCustomTooltip(responseData.monthly_transaction.April)],
+            ['May', parseFloat((responseData.monthly_transaction.May?.total_txn_amount ?? '0').replace(/,/g, '')),  createCustomTooltip(responseData.monthly_transaction.May)],
+            ['Jun', parseFloat((responseData.monthly_transaction.June?.total_txn_amount ?? '0').replace(/,/g, '')),  createCustomTooltip(responseData.monthly_transaction.June)],
+            ['Jul', parseFloat((responseData.monthly_transaction.July?.total_txn_amount ?? '0').replace(/,/g, '')),  createCustomTooltip(responseData.monthly_transaction.July)],
+            ['Aug', parseFloat((responseData.monthly_transaction.August?.total_txn_amount ?? '0').replace(/,/g, '')),  createCustomTooltip(responseData.monthly_transaction.August)],
+            ['Sep', parseFloat((responseData.monthly_transaction.September?.total_txn_amount ?? '0').replace(/,/g, '')), createCustomTooltip(responseData.monthly_transaction.September)],
+            ['Oct', parseFloat((responseData.monthly_transaction.October?.total_txn_amount ?? '0').replace(/,/g, '')), createCustomTooltip(responseData.monthly_transaction.October)],
+            ['Nov', parseFloat((responseData.monthly_transaction.November?.total_txn_amount ?? '0').replace(/,/g, '')),  createCustomTooltip(responseData.monthly_transaction.November)],
+            ['Dec', parseFloat((responseData.monthly_transaction.December?.total_txn_amount ?? '0').replace(/,/g, '')),  createCustomTooltip(responseData.monthly_transaction.December)]
           ]);
 
           var barOptions = {
@@ -355,9 +355,13 @@
           if (!data) {
             return '<div>No data available</div>';
           }
-          return '<div style="padding:10px;"><strong>' + 'Monday' + '</strong><br>' +
-            'Total Transactions: ' + data.total_count + '<br>' +
-            'Total Amount: ₱' + data.total_txn_amount + '</div>';
+          return '<div style="padding:10px;"><strong>' + '' + '</strong><br>' +
+            'Total Txn Amount: ₱' + data.total_txn_amount + '<br><br>' +
+            'Pcab Fee: ₱' + data.pcab_fee + '<br>' +
+            'LRF: ₱' + data.lrf + '<br>' +
+            'Doc Stamp: ₱' + data.ds_tax + '<br>' +
+            'NGSI Fee: ₱' + data.ngsi_convenience_fee + '<br>' +
+            '</div>';
         }
       })
       .catch(error => {
