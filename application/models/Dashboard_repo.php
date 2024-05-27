@@ -54,13 +54,14 @@ class Dashboard_repo extends CI_Model
             sum(txn_amount)  as total_txn_amount,
             sum(fees_pcab) as pcab_fee,
             sum(legal_research_fund) as lrf,
-            sum(ngsi_convenience_fee) as ngsi_convenience_fee
+            sum(ngsi_convenience_fee) as ngsi_convenience_fee,
+            sum(document_stamp_tax) as ds_tax
             
             
              FROM transactions where  last_modified like ' . $likePatterns[ $i ] . " and status='SUCCESS'";
 
             $data = $this->db->query( $sql );
-
+            $resultArray[ $i ][ 'ds_tax' ] = $data->num_rows() > 0 ?number_format( ( float )$data->row()->ds_tax, 2, '.', ',' ) : false;
             // $resultArray[ $i ] = $data->num_rows() > 0 ? $data->row_array() : false;
             $resultArray[ $i ][ 'total_count' ] =  $data->num_rows() > 0 ?( int ) $data->row()->total_count : false;
 
@@ -109,13 +110,13 @@ class Dashboard_repo extends CI_Model
             sum(txn_amount)  as total_txn_amount,
             sum(fees_pcab) as pcab_fee,
             sum(legal_research_fund) as lrf,
-            sum(ngsi_convenience_fee) as ngsi_convenience_fee
-            
+            sum(ngsi_convenience_fee) as ngsi_convenience_fee,
+            sum(document_stamp_tax) as ds_tax
             
              FROM transactions where  last_modified like ' . $likePatterns[ $i ] . " and status='SUCCESS'";
 
             $data = $this->db->query( $sql );
-
+            $resultArray[ $i ][ 'ds_tax' ] = $data->num_rows() > 0 ?number_format( ( float )$data->row()->ds_tax, 2, '.', ',' ) : false;
             // $resultArray[ $i ]  $data->num_rows() > 0 ? $data->row_array() : false;
             $resultArray[ $i ][ 'total_count' ] = $data->num_rows() > 0 ?( int ) $data->row()->total_count : false;
             $resultArray[ $i ][ 'total_txn_amount' ] = $data->num_rows() > 0 ?number_format( ( float )$data->row()->total_txn_amount, 2, '.', ',' ) : false;
