@@ -143,10 +143,17 @@
       </div>
     </section>
     <section>
-      <!-- Amount graph -->
-     
+      <div class="row">
+        <div class="col-md-6">
+          <h5 style="margin-left: 30px;">Daily Amount Hits</h5>
+          <div id="bar-chart-daily"></div>
+        </div>
+        <div class="col-md-6">
+          <h5>Monthly Amount Hits</h5>
+          <div id="line-chart-monthly"></div>
+        </div>
+      </div>
     </section>
-
     <section>
       <div class="row">
         <div class="col-md-12 grid-margin">
@@ -190,11 +197,11 @@
       <div class="row">
         <div class="col-md-6">
           <h5>Daily Page Hits</h5>
-          <div id="bar-chart-daily"></div>
+          <div id="bar-chart-daily1"></div>
         </div>
         <div class="col-md-6">
           <h5>Monthly Page Hits</h5>
-          <div id="line-chart-monthly"></div>
+          <div id="line-chart-monthly1"></div>
         </div>
       </div>
     </section>
@@ -238,40 +245,41 @@
         });
         google.charts.setOnLoadCallback(drawCharts);
 
+        
         function drawCharts() {
           // Static data for daily page hits
           var dailyData = google.visualization.arrayToDataTable([
-            ['Day', 'Success', 'Failed'],
-            ['Mon', responseData.all_transaction_this_week.Monday?.total_count ?? 0, responseData.all_transaction_this_week.Monday?.total_count_failed ?? 0],
-            ['Tue', responseData.all_transaction_this_week.Tuesday?.total_count ?? 0, responseData.all_transaction_this_week.Tuesday?.total_count_failed ?? 0],
-            ['Wed', responseData.all_transaction_this_week.Wednesday?.total_count ?? 0, responseData.all_transaction_this_week.Wednesday?.total_count_failed ?? 0],
-            ['Thu', responseData.all_transaction_this_week.Thursday?.total_count ?? 0, responseData.all_transaction_this_week.Thursday?.total_count_failed ?? 0],
-            ['Fri', responseData.all_transaction_this_week.Friday?.total_count ?? 0, responseData.all_transaction_this_week.Friday?.total_count_failed ?? 0],
-            ['Sat', responseData.all_transaction_this_week.Saturday?.total_count ?? 0, responseData.all_transaction_this_week.Saturday?.total_count_failed ?? 0],
-            ['Sun', responseData.all_transaction_this_week.Sunday?.total_count ?? 0, responseData.all_transaction_this_week.Sunday?.total_count_failed ?? 0]
+            ['Day', 'LRF  ','DSF', 'PCAB Fees'],
+            ['Mon', 50,30,20],
+            ['Tue', 100,11,50],
+            ['Wed', 13,15,30],
+            ['Thu', 32,50,30],
+            ['Fri', 45,70,10],
+            ['Sat', 56,10,40],
+            ['Sun', 76,50,56]
           ]);
 
           // Static data for monthly page hits
           var monthlyData = google.visualization.arrayToDataTable([
-            ['Month', 'Success', 'Failed'],
-            ['Jan', responseData.monthly_transaction.January?.total_count ?? 0, responseData.monthly_transaction.January?.total_count_failed ?? 0],
-            ['Feb', responseData.monthly_transaction.February?.total_count ?? 0, responseData.monthly_transaction.February?.total_count_failed ?? 0],
-            ['Mar', responseData.monthly_transaction.March?.total_count ?? 0, responseData.monthly_transaction.March?.total_count_failed ?? 0],
-            ['Apr', responseData.monthly_transaction.April?.total_count ?? 0, responseData.monthly_transaction.April?.total_count_failed ?? 0],
-            ['May', responseData.monthly_transaction.May?.total_count ?? 0, responseData.monthly_transaction.May?.total_count_failed ?? 0],
-            ['Jun', responseData.monthly_transaction.June?.total_count ?? 0, responseData.monthly_transaction.June?.total_count_failed ?? 0],
-            ['Jul', responseData.monthly_transaction.July?.total_count ?? 0, responseData.monthly_transaction.July?.total_count_failed ?? 0],
-            ['Aug', responseData.monthly_transaction.August?.total_count ?? 0, responseData.monthly_transaction.August?.total_count_failed ?? 0],
-            ['Sep', responseData.monthly_transaction.September?.total_count ?? 0, responseData.monthly_transaction.September?.total_count_failed ?? 0],
-            ['Oct', responseData.monthly_transaction.October?.total_count ?? 0, responseData.monthly_transaction.October?.total_count_failed ?? 0],
-            ['Nov', responseData.monthly_transaction.November?.total_count ?? 0, responseData.monthly_transaction.November?.total_count_failed ?? 0],
-            ['Dec', responseData.monthly_transaction.December?.total_count ?? 0, responseData.monthly_transaction.December?.total_count_failed ?? 0]
+            ['Month', 'LRF', 'DSF', 'PCAB Fees'],
+            ['Jan', responseData.monthly_transaction.January?.total_count ?? 0, responseData.monthly_transaction.January?.total_count_failed ?? 0,100],
+            ['Feb', responseData.monthly_transaction.February?.total_count ?? 0, responseData.monthly_transaction.February?.total_count_failed ?? 0,100],
+            ['Mar', responseData.monthly_transaction.March?.total_count ?? 0, responseData.monthly_transaction.March?.total_count_failed ?? 0,100],
+            ['Apr', responseData.monthly_transaction.April?.total_count ?? 0, responseData.monthly_transaction.April?.total_count_failed ?? 0,100],
+            ['May', responseData.monthly_transaction.May?.total_count ?? 0, responseData.monthly_transaction.May?.total_count_failed ?? 0,100],
+            ['Jun', responseData.monthly_transaction.June?.total_count ?? 0, responseData.monthly_transaction.June?.total_count_failed ?? 0,100],
+            ['Jul', responseData.monthly_transaction.July?.total_count ?? 0, responseData.monthly_transaction.July?.total_count_failed ?? 0,100],
+            ['Aug', responseData.monthly_transaction.August?.total_count ?? 0, responseData.monthly_transaction.August?.total_count_failed ?? 0,100],
+            ['Sep', responseData.monthly_transaction.September?.total_count ?? 0, responseData.monthly_transaction.September?.total_count_failed ?? 0,100],
+            ['Oct', responseData.monthly_transaction.October?.total_count ?? 0, responseData.monthly_transaction.October?.total_count_failed ?? 0,100],
+            ['Nov', responseData.monthly_transaction.November?.total_count ?? 0, responseData.monthly_transaction.November?.total_count_failed ?? 0,100],
+            ['Dec', responseData.monthly_transaction.December?.total_count ?? 0, responseData.monthly_transaction.December?.total_count_failed ?? 0,100]
           ]);
 
           // Options for bar charts
           var barOptions = {
             backgroundColor: 'transparent',
-            colors: ['#00507A', '#f08078'], // Use Google brand colors
+            colors: ['#00507A', '#f08078','#B7FFC0'], // Use Google brand colors
             fontName: 'Open Sans',
             chartArea: {
               left: 50,
@@ -358,6 +366,13 @@
           // Draw the monthly page hits line chart
           var monthlyChart = new google.visualization.LineChart(document.getElementById('line-chart-monthly'));
           monthlyChart.draw(monthlyData, lineOptions);
+
+          // var dailyChart = new google.visualization.ColumnChart(document.getElementById('bar-chart-daily1'));
+          // dailyChart.draw(dailyData, barOptions);
+
+          // // Draw the monthly page hits line chart
+          // var monthlyChart = new google.visualization.LineChart(document.getElementById('line-chart-monthly1'));
+          // monthlyChart.draw(monthlyData, lineOptions);
         }
 
       })
