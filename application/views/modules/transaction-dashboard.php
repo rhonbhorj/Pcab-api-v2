@@ -143,17 +143,10 @@
       </div>
     </section>
     <section>
-      <div class="row">
-        <div class="col-md-6">
-          <h5 style="margin-left: 30px;">Daily Amount Hits</h5>
-          <div id="bar-chart-daily"></div>
-        </div>
-        <div class="col-md-6">
-          <h5>Monthly Amount Hits</h5>
-          <div id="line-chart-monthly"></div>
-        </div>
-      </div>
+      <!-- Amount graph -->
+     
     </section>
+
     <section>
       <div class="row">
         <div class="col-md-12 grid-margin">
@@ -197,11 +190,11 @@
       <div class="row">
         <div class="col-md-6">
           <h5>Daily Page Hits</h5>
-          <div id="bar-chart-daily1"></div>
+          <div id="bar-chart-daily"></div>
         </div>
         <div class="col-md-6">
           <h5>Monthly Page Hits</h5>
-          <div id="line-chart-monthly1"></div>
+          <div id="line-chart-monthly"></div>
         </div>
       </div>
     </section>
@@ -211,18 +204,13 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', function () {
-    // URL to your CodeIgniter controller method
     const url = '<?php echo base_url() ?>/TransactionReport/dasboardReportData';
 
-    // Fetch data from the controller
     fetch(url)
-      .then(response => response.json()) // Parse the JSON from the response
+      .then(response => response.json())
       .then(responseData => {
-        // Handle the JSON data here
-        // console.log(data);
 
         console.log(responseData);
-
         var totalTxnAmount = responseData.alltransaction.total_txn_amount != null ? responseData.alltransaction.total_txn_amount : 0;
         var total_txn_amount_today = responseData.today_transaction.total_txn_amount_today != null ? responseData.today_transaction.total_txn_amount_today : 0;
         var total_txn_amount_yesterday = responseData.yesterday_transaction.total_txn_amount_yesterday != null ? responseData.yesterday_transaction.total_txn_amount_yesterday : 0;
@@ -231,7 +219,6 @@
         var totalCount_today = responseData.today_transaction.total_count_today;
         var totalCount_yesterday = responseData.yesterday_transaction.total_count_transaction;
 
-        // Display in HTML
         document.getElementById('total-txn-amount').textContent = '₱' + totalTxnAmount;
         document.getElementById('total_txn_amount_today').textContent = '₱' + total_txn_amount_today;
         document.getElementById('total_txn_amount_yesterday').textContent = '₱' + total_txn_amount_yesterday;
@@ -245,41 +232,37 @@
         });
         google.charts.setOnLoadCallback(drawCharts);
 
-        
         function drawCharts() {
-          // Static data for daily page hits
           var dailyData = google.visualization.arrayToDataTable([
-            ['Day', 'LRF  ','DSF', 'PCAB Fees'],
-            ['Mon', 50,30,20],
-            ['Tue', 100,11,50],
-            ['Wed', 13,15,30],
-            ['Thu', 32,50,30],
-            ['Fri', 45,70,10],
-            ['Sat', 56,10,40],
-            ['Sun', 76,50,56]
+            ['Day', 'Success', { role: 'tooltip', 'p': {'html': true}}],
+            ['Mon', parseFloat((responseData.all_transaction_this_week.Monday?.total_txn_amount ?? '0').replace(/,/g, '')), createCustomTooltip(responseData.all_transaction_this_week.Monday)],
+            ['Tue', parseFloat((responseData.all_transaction_this_week.Tuesday?.total_txn_amount ?? '0').replace(/,/g, '')), createCustomTooltip(responseData.all_transaction_this_week.Tuesday)],
+            ['Wed', responseData.all_transaction_this_week.Wednesday?.total_count ?? 0, createCustomTooltip(responseData.all_transaction_this_week.Wednesday)],
+            ['Thu', responseData.all_transaction_this_week.Thursday?.total_count ?? 0, createCustomTooltip(responseData.all_transaction_this_week.Thursday)],
+            ['Fri', responseData.all_transaction_this_week.Friday?.total_count ?? 0, createCustomTooltip(responseData.all_transaction_this_week.Friday)],
+            ['Sat', responseData.all_transaction_this_week.Saturday?.total_count ?? 0, createCustomTooltip(responseData.all_transaction_this_week.Saturday)],
+            ['Sun', responseData.all_transaction_this_week.Sunday?.total_count ?? 0, createCustomTooltip(responseData.all_transaction_this_week.Sunday)]
           ]);
 
-          // Static data for monthly page hits
           var monthlyData = google.visualization.arrayToDataTable([
-            ['Month', 'LRF', 'DSF', 'PCAB Fees'],
-            ['Jan', responseData.monthly_transaction.January?.total_count ?? 0, responseData.monthly_transaction.January?.total_count_failed ?? 0,100],
-            ['Feb', responseData.monthly_transaction.February?.total_count ?? 0, responseData.monthly_transaction.February?.total_count_failed ?? 0,100],
-            ['Mar', responseData.monthly_transaction.March?.total_count ?? 0, responseData.monthly_transaction.March?.total_count_failed ?? 0,100],
-            ['Apr', responseData.monthly_transaction.April?.total_count ?? 0, responseData.monthly_transaction.April?.total_count_failed ?? 0,100],
-            ['May', responseData.monthly_transaction.May?.total_count ?? 0, responseData.monthly_transaction.May?.total_count_failed ?? 0,100],
-            ['Jun', responseData.monthly_transaction.June?.total_count ?? 0, responseData.monthly_transaction.June?.total_count_failed ?? 0,100],
-            ['Jul', responseData.monthly_transaction.July?.total_count ?? 0, responseData.monthly_transaction.July?.total_count_failed ?? 0,100],
-            ['Aug', responseData.monthly_transaction.August?.total_count ?? 0, responseData.monthly_transaction.August?.total_count_failed ?? 0,100],
-            ['Sep', responseData.monthly_transaction.September?.total_count ?? 0, responseData.monthly_transaction.September?.total_count_failed ?? 0,100],
-            ['Oct', responseData.monthly_transaction.October?.total_count ?? 0, responseData.monthly_transaction.October?.total_count_failed ?? 0,100],
-            ['Nov', responseData.monthly_transaction.November?.total_count ?? 0, responseData.monthly_transaction.November?.total_count_failed ?? 0,100],
-            ['Dec', responseData.monthly_transaction.December?.total_count ?? 0, responseData.monthly_transaction.December?.total_count_failed ?? 0,100]
+            ['Month', 'Success', { role: 'tooltip', 'p': {'html': true}}],
+            ['Jan', responseData.monthly_transaction.January?.total_count ?? 0, createCustomTooltip(responseData.monthly_transaction.January)],
+            ['Feb', responseData.monthly_transaction.February?.total_count ?? 0, createCustomTooltip(responseData.monthly_transaction.February)],
+            ['Mar', responseData.monthly_transaction.March?.total_count ?? 0, createCustomTooltip(responseData.monthly_transaction.March)],
+            ['Apr', responseData.monthly_transaction.April?.total_count ?? 0, createCustomTooltip(responseData.monthly_transaction.April)],
+            ['May', responseData.monthly_transaction.May?.total_count ?? 0,  createCustomTooltip(responseData.monthly_transaction.May)],
+            ['Jun', responseData.monthly_transaction.June?.total_count ?? 0,  createCustomTooltip(responseData.monthly_transaction.June)],
+            ['Jul', responseData.monthly_transaction.July?.total_count ?? 0,  createCustomTooltip(responseData.monthly_transaction.July)],
+            ['Aug', responseData.monthly_transaction.August?.total_count ?? 0,  createCustomTooltip(responseData.monthly_transaction.August)],
+            ['Sep', responseData.monthly_transaction.September?.total_count ?? 0, createCustomTooltip(responseData.monthly_transaction.September)],
+            ['Oct', responseData.monthly_transaction.October?.total_count ?? 0, createCustomTooltip(responseData.monthly_transaction.October)],
+            ['Nov', responseData.monthly_transaction.November?.total_count ?? 0,  createCustomTooltip(responseData.monthly_transaction.November)],
+            ['Dec', responseData.monthly_transaction.December?.total_count ?? 0,  createCustomTooltip(responseData.monthly_transaction.December)]
           ]);
 
-          // Options for bar charts
           var barOptions = {
             backgroundColor: 'transparent',
-            colors: ['#00507A', '#f08078','#B7FFC0'], // Use Google brand colors
+            colors: ['#00507A', '#f08078'],
             fontName: 'Open Sans',
             chartArea: {
               left: 50,
@@ -315,13 +298,13 @@
             animation: {
               duration: 1200,
               easing: 'out'
-            }
+            },
+            tooltip: { isHtml: true }
           };
 
-          // Options for line chart
           var lineOptions = {
             backgroundColor: 'transparent',
-            colors: ['#00507A', '#f08078'], // Use Google brand colors
+            colors: ['#00507A', '#f08078'],
             fontName: 'Open Sans',
             chartArea: {
               left: 50,
@@ -356,28 +339,30 @@
               easing: 'out'
             },
             lineWidth: 2,
-            pointSize: 5
+            pointSize: 5,
+            tooltip: { isHtml: true }
           };
 
-          // Draw the daily page hits bar chart
           var dailyChart = new google.visualization.ColumnChart(document.getElementById('bar-chart-daily'));
           dailyChart.draw(dailyData, barOptions);
 
-          // Draw the monthly page hits line chart
           var monthlyChart = new google.visualization.LineChart(document.getElementById('line-chart-monthly'));
           monthlyChart.draw(monthlyData, lineOptions);
 
-          // var dailyChart = new google.visualization.ColumnChart(document.getElementById('bar-chart-daily1'));
-          // dailyChart.draw(dailyData, barOptions);
-
-          // // Draw the monthly page hits line chart
-          // var monthlyChart = new google.visualization.LineChart(document.getElementById('line-chart-monthly1'));
-          // monthlyChart.draw(monthlyData, lineOptions);
         }
 
+        function createCustomTooltip(data) {
+          if (!data) {
+            return '<div>No data available</div>';
+          }
+          return '<div style="padding:10px;"><strong>' + 'Monday' + '</strong><br>' +
+            'Total Transactions: ' + data.total_count + '<br>' +
+            'Total Amount: ₱' + data.total_txn_amount + '</div>';
+        }
       })
       .catch(error => {
         console.error('Error fetching the report data:', error);
       });
   });
+  
 </script>
