@@ -87,7 +87,7 @@
     background-color: #DC3545;
   }
 
-  #bar-chart-daily, #line-chart-monthly {
+  #bar-chart-daily, #line-chart-monthly,#bar-chart-daily-count, #line-chart-monthly-count {
     width: 100%;
     height: 300px;
   }
@@ -104,7 +104,9 @@
       <div class="row">
         <div class="col-md-12 grid-margin">
           <div class="card">
+            
             <div class="card-body">
+            <H4>Total Transaction Amount</H4>
               <div class="row report-inner-cards-wrapper">
                 <div class="col-md-6 col-xl report-inner-card ">
                   <div class="inner-card-text">
@@ -163,6 +165,7 @@
         <div class="col-md-12 grid-margin">
           <div class="card">
             <div class="card-body">
+            <H4>Total Transaction Count (Success, Failed)</H4>
               <div class="row report-inner-cards-wrapper">
                 <div class="col-md-6 col-xl report-inner-card ">
                   <div class="inner-card-text">
@@ -197,7 +200,22 @@
         </div>
       </div>
     </section>
+
+
 <!-- amount graph -->
+
+<section>
+      <div class="row">
+        <div class="col-md-6">
+          <h5>Daily Page Hits</h5>
+          <div id="bar-chart-daily-count"></div>
+        </div>
+        <div class="col-md-6">
+          <h5>Monthly Page Hits</h5>
+          <div id="line-chart-monthly-count"></div>
+        </div>
+      </div>
+    </section>
   </div>
 </div>
 <script src="https://www.gstatic.com/charts/loader.js"></script>
@@ -233,32 +251,65 @@
         google.charts.setOnLoadCallback(drawCharts);
 
         function drawCharts() {
-          var dailyData = google.visualization.arrayToDataTable([
-            ['Day', 'Success', { role: 'tooltip', 'p': {'html': true}}],
-            ['Mon', parseFloat((responseData.all_transaction_this_week.Monday?.total_txn_amount ?? '0').replace(/,/g, '')), createCustomTooltip(responseData.all_transaction_this_week.Monday)],
-            ['Tue', parseFloat((responseData.all_transaction_this_week.Tuesday?.total_txn_amount ?? '0').replace(/,/g, '')), createCustomTooltip(responseData.all_transaction_this_week.Tuesday)],
-            ['Wed', parseFloat((responseData.all_transaction_this_week.Wednesday?.total_txn_amount ?? '0').replace(/,/g, '')), createCustomTooltip(responseData.all_transaction_this_week.Wednesday)],
-            ['Thu', parseFloat((responseData.all_transaction_this_week.Thursday?.total_txn_amount ?? '0').replace(/,/g, '')), createCustomTooltip(responseData.all_transaction_this_week.Thursday)],
-            ['Fri', parseFloat((responseData.all_transaction_this_week.Friday?.total_txn_amount ?? '0').replace(/,/g, '')), createCustomTooltip(responseData.all_transaction_this_week.Friday)],
-            ['Sat', parseFloat((responseData.all_transaction_this_week.Saturday?.total_txn_amount ?? '0').replace(/,/g, '')), createCustomTooltip(responseData.all_transaction_this_week.Saturday)],
-            ['Sun', parseFloat((responseData.all_transaction_this_week.Sunday?.total_txn_amount ?? '0').replace(/,/g, '')), createCustomTooltip(responseData.all_transaction_this_week.Sunday)]
-          ]);
 
-          var monthlyData = google.visualization.arrayToDataTable([
-            ['Month', 'Success', { role: 'tooltip', 'p': {'html': true}}],
-            ['Jan', parseFloat((responseData.monthly_transaction.January?.total_txn_amount ?? '0').replace(/,/g, '')), createCustomTooltip(responseData.monthly_transaction.January)],
-            ['Feb', parseFloat((responseData.monthly_transaction.February?.total_txn_amount ?? '0').replace(/,/g, '')), createCustomTooltip(responseData.monthly_transaction.February)],
-            ['Mar', parseFloat((responseData.monthly_transaction.March?.total_txn_amount ?? '0').replace(/,/g, '')), createCustomTooltip(responseData.monthly_transaction.March)],
-            ['Apr', parseFloat((responseData.monthly_transaction.April?.total_txn_amount ?? '0').replace(/,/g, '')), createCustomTooltip(responseData.monthly_transaction.April)],
-            ['May', parseFloat((responseData.monthly_transaction.May?.total_txn_amount ?? '0').replace(/,/g, '')),  createCustomTooltip(responseData.monthly_transaction.May)],
-            ['Jun', parseFloat((responseData.monthly_transaction.June?.total_txn_amount ?? '0').replace(/,/g, '')),  createCustomTooltip(responseData.monthly_transaction.June)],
-            ['Jul', parseFloat((responseData.monthly_transaction.July?.total_txn_amount ?? '0').replace(/,/g, '')),  createCustomTooltip(responseData.monthly_transaction.July)],
-            ['Aug', parseFloat((responseData.monthly_transaction.August?.total_txn_amount ?? '0').replace(/,/g, '')),  createCustomTooltip(responseData.monthly_transaction.August)],
-            ['Sep', parseFloat((responseData.monthly_transaction.September?.total_txn_amount ?? '0').replace(/,/g, '')), createCustomTooltip(responseData.monthly_transaction.September)],
-            ['Oct', parseFloat((responseData.monthly_transaction.October?.total_txn_amount ?? '0').replace(/,/g, '')), createCustomTooltip(responseData.monthly_transaction.October)],
-            ['Nov', parseFloat((responseData.monthly_transaction.November?.total_txn_amount ?? '0').replace(/,/g, '')),  createCustomTooltip(responseData.monthly_transaction.November)],
-            ['Dec', parseFloat((responseData.monthly_transaction.December?.total_txn_amount ?? '0').replace(/,/g, '')),  createCustomTooltip(responseData.monthly_transaction.December)]
-          ]);
+          // Bar graph for Daily Total Txn Amount
+          const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+          const dailyDataArray = [['Day', 'Success', { role: 'tooltip', 'p': {'html': true}}]];
+
+          daysOfWeek.forEach(day => {
+            dailyDataArray.push([
+              day.slice(0, 3), 
+              parseFloat((responseData.all_transaction_this_week[day]?.total_txn_amount ?? '0').replace(/,/g, '')), 
+              createCustomTooltip(responseData.all_transaction_this_week[day])
+            ]);
+          });
+
+          var dailyData = google.visualization.arrayToDataTable(dailyDataArray);
+
+          // Line graph for Monthly Total Txn Amount
+          const monthOfYear = ['January', 'February', 'March', 'April', 'May', 'June', 'July','August', 'September', 'October', 'November','December'];
+          const monthlyDataArray = [['Day', 'Success', { role: 'tooltip', 'p': {'html': true}}]];
+
+          monthOfYear.forEach(month => {
+            monthlyDataArray.push([
+              month.slice(0, 3), 
+              parseFloat((responseData.monthly_transaction[month]?.total_txn_amount ?? '0').replace(/,/g, '')), 
+              createCustomTooltip(responseData.monthly_transaction[month])
+            ]);
+          });
+
+          var monthlyData = google.visualization.arrayToDataTable(monthlyDataArray);
+
+          // Bar graph for Daily Total Txn Count Success & Failed
+          const daysOfWeekCount = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+          const dailyDataArrayCount = [['Day', 'Success', 'Failed']];
+
+          daysOfWeekCount.forEach(day => {
+            dailyDataArrayCount.push([
+              day.slice(0, 3), 
+              responseData.all_transaction_this_week[day]?.total_count ?? '0',
+              responseData.all_transaction_this_week[day]?.total_count_failed ?? '0'
+            ]);
+          });
+
+          var dailyData_count = google.visualization.arrayToDataTable(dailyDataArrayCount);
+
+           // Line graph for Daily Total Txn Count Success & Failed
+          const monthOfYearCount = ['January', 'February', 'March', 'April', 'May', 'June', 'July','August', 'September', 'October', 'November','December'];
+          const monthlyDataArrayCount = [['Day', 'Success', 'Failed']];
+
+          monthOfYearCount.forEach(month => {
+            monthlyDataArrayCount.push([
+              month.slice(0, 3), 
+              responseData.monthly_transaction[month]?.total_count ?? '0',
+              responseData.monthly_transaction[month]?.total_count_failed ?? '0'
+            ]);
+          });
+
+          var monthlyData_count = google.visualization.arrayToDataTable(monthlyDataArrayCount);
+
+
+          
 
           var barOptions = {
             backgroundColor: 'transparent',
@@ -348,6 +399,12 @@
 
           var monthlyChart = new google.visualization.LineChart(document.getElementById('line-chart-monthly'));
           monthlyChart.draw(monthlyData, lineOptions);
+
+          var dailyChart_count = new google.visualization.ColumnChart(document.getElementById('bar-chart-daily-count'));
+          dailyChart_count.draw(dailyData_count, barOptions);
+
+          var monthlyChart_count = new google.visualization.LineChart(document.getElementById('line-chart-monthly-count'));
+          monthlyChart_count.draw(monthlyData_count, lineOptions);
 
         }
 
