@@ -66,7 +66,7 @@ class Dashboard_repo extends CI_Model
             $resultArray[ $i ][ 'total_count' ] =  $data->num_rows() > 0 ?( int ) $data->row()->total_count : false;
 
             $resultArray[ $i ][ 'total_txn_amount' ] = $data->num_rows() > 0 ?number_format( ( float )$data->row()->total_txn_amount, 2, '.', ',' ) : false;
-            $resultArray[ $i ][ 'pcab_fee' ] = $data->num_rows() > 0 ? number_format( ( float )$data->row()->total_txn_amount, 2, '.', ',' ) : false;
+            $resultArray[ $i ][ 'pcab_fee' ] = $data->num_rows() > 0 ? number_format( ( float )$data->row()->pcab_fee, 2, '.', ',' ) : false;
             $resultArray[ $i ][ 'lrf' ] = $data->num_rows() > 0 ?number_format( ( float )$data->row()->lrf, 2, '.', ',' ) : false;
             $resultArray[ $i ][ 'ngsi_convenience_fee' ] = $data->num_rows() > 0 ?number_format( ( float )$data->row()->ngsi_convenience_fee, 2, '.', ',' ) : false;
             $qry = 'SELECT count(txn_amount) as total_count_failed FROM transactions where  last_modified like ' . $likePatterns[ $i ] . " and status='FAILED'";
@@ -120,7 +120,7 @@ class Dashboard_repo extends CI_Model
             // $resultArray[ $i ]  $data->num_rows() > 0 ? $data->row_array() : false;
             $resultArray[ $i ][ 'total_count' ] = $data->num_rows() > 0 ?( int ) $data->row()->total_count : false;
             $resultArray[ $i ][ 'total_txn_amount' ] = $data->num_rows() > 0 ?number_format( ( float )$data->row()->total_txn_amount, 2, '.', ',' ) : false;
-            $resultArray[ $i ][ 'pcab_fee' ] = $data->num_rows() > 0 ? number_format( ( float )$data->row()->total_txn_amount, 2, '.', ',' ) : false;
+            $resultArray[ $i ][ 'pcab_fee' ] = $data->num_rows() > 0 ? number_format( ( float )$data->row()->pcab_fee, 2, '.', ',' ) : false;
             $resultArray[ $i ][ 'lrf' ] = $data->num_rows() > 0 ?number_format( ( float )$data->row()->lrf, 2, '.', ',' ) : false;
             $resultArray[ $i ][ 'ngsi_convenience_fee' ] = $data->num_rows() > 0 ?number_format( ( float )$data->row()->ngsi_convenience_fee, 2, '.', ',' ) : false;
 
