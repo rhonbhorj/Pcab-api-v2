@@ -24,7 +24,7 @@ class Dashboard_repo extends CI_Model
         // $data->row_array() ? $data->row_array() : false;
         return $data->num_rows() > 0 ? $data->row_array() : false;
     }
-
+      ////yesterday
     public function all_transaction_yesterday()
  {
         date_default_timezone_set( 'Asia/Manila' );
