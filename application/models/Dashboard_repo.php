@@ -18,7 +18,7 @@ class Dashboard_repo extends CI_Model
         date_default_timezone_set( 'Asia/Manila' );
         $today = date( 'Y-m-d' );
         $result = "SELECT  SUM(txn_amount) AS total_txn_amount_today ,count(txn_amount) as total_count_today 
-                  FROM transactions  where   last_modified like '%" . $today . "%'";
+                  FROM transactions  where   last_modified like '%" . $today . "%' and  status='SUCCESS'";
 
         $data = $this->db->query( $result );
         // $data->row_array() ? $data->row_array() : false;
@@ -32,7 +32,7 @@ class Dashboard_repo extends CI_Model
 
         $yesterday = date( 'Y-m-d', strtotime( '-1 days', strtotime( $today ) ) );
         $result = "SELECT  SUM(txn_amount) AS total_txn_amount_yesterday ,count(txn_amount) as total_count_transaction 
-        FROM transactions  where   last_modified like '%" . $yesterday . "%'";
+        FROM transactions  where   last_modified like '%" . $yesterday . "%'  and  status='SUCCESS'";
         $data = $this->db->query( $result );
         return $data->row_array() ? $data->row_array() : false;
     }
