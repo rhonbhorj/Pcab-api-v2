@@ -219,7 +219,11 @@
   </div>
 </div>
 <script src="https://www.gstatic.com/charts/loader.js"></script>
-
+<script language="javascript">
+setTimeout(function(){
+   window.location.reload(1);
+}, 30000);
+</script>
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     const url = '<?php echo base_url() ?>/TransactionReport/dasboardReportData';
