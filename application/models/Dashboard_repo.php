@@ -126,7 +126,7 @@ class Dashboard_repo extends CI_Model
              $sum = 0.0;
 
              if(  $ngsi_fee==false){
-                $ngsi_fee_data=0;
+                $ngsi_fee_data=number_format( ( float )0, 2, '.', ',' );
                 
             }else{
                 foreach ($ngsi_fee as $item) {
@@ -177,7 +177,7 @@ class Dashboard_repo extends CI_Model
             $resultArray[ $i ][ 'ngsi_convenience_fee' ] =$sum_ngsi_fee;
            
            
-            $resultArray[ $i ][ 'total_txn_amount' ] = $txn_amount;
+            $resultArray[ $i ][ 'total_txn_amount' ] = number_format( ( float )$txn_amount, 2, '.', ',' );
 
 
 
@@ -281,7 +281,7 @@ class Dashboard_repo extends CI_Model
             $resultArray[ $i ][ 'lrf' ] = $data->num_rows() > 0 ?number_format( ( float )$data->row()->lrf, 2, '.', ',' ) : false;
             // $resultArray[ $i ][ 'ngsi_convenience_fee' ] = $data->num_rows() > 0 ?number_format( ( float )$data->row()->ngsi_convenience_fee, 2, '.', ',' ) : false;
             $txn_amount=$ngsi_data_sum['pcab_fee'] +$ngsi_data_sum['ds_tax']+$ngsi_data_sum['lrf']+$sum_ngsi_fee;
-            $resultArray[ $i ][ 'ngsi_convenience_fee' ] =$sum_ngsi_fee;
+            $resultArray[ $i ][ 'ngsi_convenience_fee' ] = number_format( ( float )$sum_ngsi_fee, 2, '.', ',' );
             $qry = 'SELECT count(txn_amount) as total_count_failed,sum(txn_amount) as sum_amount FROM transactions where  last_modified like ' . $likePatterns[ $i ] . " and status='FAILED'";
             $data2 = $this->db->query( $qry );
             $resultArray2[ $i ][ 'total_count_failed' ] = $data2->num_rows() > 0 ?( int )$data2->row()->total_count_failed : false;
