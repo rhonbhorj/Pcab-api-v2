@@ -15,33 +15,127 @@ class TransactionReport extends CI_Controller
 
     }
 
+
+  public  function round_half_up($number, $decimals) {
+        return round($number, $decimals, PHP_ROUND_HALF_UP);
+    }
+
+    public function sumNgsiFee()
+    {
+
+      $data=  $this->repo->totalNgsifee();
+   
+       
+
+
+        $sum = 0.0;
+
+
+        foreach ($data as $item) {
+            $fee = (float) $item['ngsi_fee'];
+            $rounded_fee = $this->round_half_up($fee, 2);
+            $sum += $rounded_fee;
+        }
+
+        return number_format($sum, 2, '.', ''); 
+
+  
+ 
+      
+
+    }
+
+      ////today
+  public function   transactionToday()
+  {
+        $data = $this->repo->all_transaction_today();
+
+        $ngsifee=  $this->repo->ngsi_fee_today();
+
+        $sum = 0.0;
+
+            if(  $ngsifee==false){
+                $ngsi_fee_data=0;
+                
+            }else{
+                foreach ($ngsifee as $item) {
+                    $fee = (float) $item['ngsi_fee'];
+                    $rounded_fee = $this->round_half_up($fee, 2);
+                    
+                    
+                    $sum += $rounded_fee;
+                }
+                $ngsi_fee_data=number_format($sum, 2, '.', '');
+            } 
+                        $return_data = [
+                            'total_txn_amount_today' =>$ngsi_fee_data,
+                            'total_count_today' => number_format( ( float )$data[ 'total_count_today' ], 0, '.', ',' )
+            ];
+            return $return_data;
+  }
+
+
+////////                yesterday
+  public function  transactionYesterday()
+  {
+    
+    $all_transaction_yesterday = $this->repo->all_transaction_yesterday();
+    $ngsifee=  $this->repo->ngsi_fee_yesterday();
+
+    
+     $sum = 0.0;
+
+        if(  $ngsifee==false){
+           $ngsi_fee_data=0;
+                
+            }else{
+                foreach ($ngsifee as $item) {
+                    $fee = (float) $item['ngsi_fee'];
+                    $rounded_fee = $this->round_half_up($fee, 2);
+                    
+                    
+                    $sum += $rounded_fee;
+                }
+                $ngsi_fee_data=number_format($sum, 2, '.', '');
+            } 
+    $to_number_format=$all_transaction_yesterday[ 'lrf' ]+$all_transaction_yesterday[ 'ds_tax' ]+$all_transaction_yesterday[ 'pcab_fee' ]+$ngsi_fee_data;
+                     
+    $return_data = [
+                    'total_txn_amount_yesterday' =>number_format( ( float )$to_number_format, 0, '.', ',' ) ,
+                    'total_count_transaction' => number_format( ( float )$all_transaction_yesterday[ 'total_count_transaction' ], 0, '.', ',' )
+                 ];
+            
+            return $return_data;
+    
+  }
+    
+  
     public function dasboardReportData()
  {
 
-        if ( !$this->is_user_logged_in() ) {
-            // Redirect to the login page
-            redirect( 'login' );
-            return;
-        }
+        // if ( !$this->is_user_logged_in() ) {
+        //     // Redirect to the login page
+        //     redirect( 'login' );
+        //     return;
+        // }
 
+
+        ///over all transaction 
         $alltransaction = $this->repo->all_transaction_data();
         $data[ 'alltransaction' ] = [
-            'total_txn_amount' => number_format( ( float )$alltransaction[ 'total_txn_amount' ], 2, '.', ',' ),
+            'total_txn_amount' => $alltransaction[ 'lrf' ]+$alltransaction[ 'ds_tax' ]+$alltransaction[ 'pcab_fee' ]+$this->sumNgsiFee(),
             'total_count' => number_format( ( float )$alltransaction[ 'total_count' ], 0, '.', ',' )
         ];
 
-        $allTransactionToday = $this->repo->all_transaction_today();
-        $data[ 'today_transaction' ] = [
-            'total_txn_amount_today' => number_format( ( float )$allTransactionToday[ 'total_txn_amount_today' ], 2, '.', ',' ),
-            'total_count_today' => number_format( ( float )$allTransactionToday[ 'total_count_today' ], 0, '.', ',' )
-        ];
+        //       array of todays trtansaction 
+        $data[ 'today_transaction' ] = $this->transactionToday();
 
-        $all_transaction_yesterday = $this->repo->all_transaction_yesterday();
 
-        $data[ 'yesterday_transaction' ] =  [
-            'total_txn_amount_yesterday' => number_format( ( float )$all_transaction_yesterday[ 'total_txn_amount_yesterday' ], 2, '.', ',' ),
-            'total_count_transaction' => number_format( ( float )$all_transaction_yesterday[ 'total_count_transaction' ], 0, '.', ',' )
-        ];
+
+        ///transaction yesterday
+    
+
+        $data[ 'yesterday_transaction' ] =  $this-> transactionYesterday();
 
         $data[ 'all_transaction_this_week' ] = $this->day_count();
         $data[ 'monthly_transaction' ] = $this->month_count();
@@ -118,7 +212,7 @@ class TransactionReport extends CI_Controller
             // Default case to handle any unexpected input
             $yesterday['data'] = $today;
             break;
-    }
+      }
 
         return $this->repo->all_transaction_this_week( $yesterday, $i );
 

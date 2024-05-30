@@ -4,39 +4,103 @@ defined( 'BASEPATH' ) or exit( 'No direct script access allowed' );
 class Dashboard_repo extends CI_Model
  {
 
+    public function totalNgsifee()
+    {
+        $result = "SELECT ngsi_convenience_fee AS ngsi_fee 
+                   FROM transactions  where  status='SUCCESS'";
+
+        $data = $this->db->query( $result );
+        return $data->result_array() ? $data->result_array() : false;
+    }
+
     public function all_transaction_data()
  {
-        $result = "SELECT  SUM(txn_amount) AS total_txn_amount ,count(txn_amount) as total_count 
-                    FROM transactions  where  status='SUCCESS'";
+        $result = "SELECT 
+            sum(fees_pcab) as pcab_fee,
+            sum(legal_research_fund) as lrf,
+            sum(document_stamp_tax) as ds_tax
+            ,count(txn_amount) as total_count 
+            FROM transactions  where  status='SUCCESS'";
 
         $data = $this->db->query( $result );
         return $data->row_array() ? $data->row_array() : false;
     }
 
+
+
+    ///today
     public function all_transaction_today()
  {
         date_default_timezone_set( 'Asia/Manila' );
         $today = date( 'Y-m-d' );
-        $result = "SELECT  SUM(txn_amount) AS total_txn_amount_today ,count(txn_amount) as total_count_today 
+        $result = "SELECT  sum(fees_pcab) as pcab_fee,
+         sum(legal_research_fund) as lrf,  sum(document_stamp_tax) as ds_tax,
+        count(txn_amount) as total_count_today 
                   FROM transactions  where   last_modified like '%" . $today . "%' and  status='SUCCESS'";
 
         $data = $this->db->query( $result );
         // $data->row_array() ? $data->row_array() : false;
         return $data->num_rows() > 0 ? $data->row_array() : false;
     }
-      ////yesterday
+    public function ngsi_fee_today()
+    {
+           date_default_timezone_set( 'Asia/Manila' );
+           $today = date( 'Y-m-d' );
+           $result = "SELECT ngsi_convenience_fee AS ngsi_fee 
+                     FROM transactions  where   last_modified like '%" . $today . "%' and  status='SUCCESS'";
+   
+           $data = $this->db->query( $result );
+           // $data->row_array() ? $data->row_array() : false;
+           return $data->num_rows() > 0 ? $data->result_array() : false;
+           
+           
+       }
+
+    
+    ////yesterday
+
+
+    public function ngsi_fee_yesterday()
+    {
+           date_default_timezone_set( 'Asia/Manila' );
+           $today = date( 'Y-m-d' );
+  
+           $yesterday = date( 'Y-m-d', strtotime( '-1 days', strtotime( $today ) ) );
+           $result = "SELECT ngsi_convenience_fee AS ngsi_fee 
+                     FROM transactions  where   last_modified like '%" . $yesterday . "%' and  status='SUCCESS'";
+   
+           $data = $this->db->query( $result );
+           
+           return $data->num_rows() > 0 ? $data->result_array() : false;
+           
+           
+       }
+
     public function all_transaction_yesterday()
  {
         date_default_timezone_set( 'Asia/Manila' );
         $today = date( 'Y-m-d' );
 
         $yesterday = date( 'Y-m-d', strtotime( '-1 days', strtotime( $today ) ) );
-        $result = "SELECT  SUM(txn_amount) AS total_txn_amount_yesterday ,count(txn_amount) as total_count_transaction 
+        $result = "SELECT  
+           sum(fees_pcab) as pcab_fee,
+            sum(legal_research_fund) as lrf,
+            sum(document_stamp_tax) as ds_tax,
+        
+            count(txn_amount) as total_count_transaction 
         FROM transactions  where   last_modified like '%" . $yesterday . "%'  and  status='SUCCESS'";
         $data = $this->db->query( $result );
         return $data->row_array() ? $data->row_array() : false;
     }
 
+
+
+    public  function round_half_up($number, $decimals) {
+        return round($number, $decimals, PHP_ROUND_HALF_UP);
+    }
+
+
+    
     public function all_transaction_this_week( $datesArray, $count )
  {
         $today = date( 'Y-m-d' );
@@ -50,6 +114,44 @@ class Dashboard_repo extends CI_Model
 
         for ( $i = 0; $i < $count; $i ++ ) {
 
+
+
+            $qry_select = "SELECT ngsi_convenience_fee AS ngsi_fee 
+            FROM transactions  where   last_modified like " .  $likePatterns[ $i ] . " and  status='SUCCESS'";
+
+                $qry_result = $this->db->query( $qry_select );
+        
+             $ngsi_fee =$qry_result->num_rows() > 0 ? $qry_result->result_array() : false;
+          
+             $sum = 0.0;
+
+             if(  $ngsi_fee==false){
+                $ngsi_fee_data=0;
+                
+            }else{
+                foreach ($ngsi_fee as $item) {
+                    $fee = (float) $item['ngsi_fee'];
+                    $rounded_fee = $this->round_half_up($fee, 2);
+                          
+                    $sum += $rounded_fee;
+                }
+                $ngsi_fee_data=number_format($sum, 2, '.', '');
+            } 
+     
+              $sum_ngsi_fee=      $ngsi_fee_data; 
+
+
+
+
+
+
+
+
+
+
+
+
+            
             $sql = 'SELECT count(txn_amount) as total_count,
             sum(txn_amount)  as total_txn_amount,
             sum(fees_pcab) as pcab_fee,
@@ -61,14 +163,26 @@ class Dashboard_repo extends CI_Model
              FROM transactions where  last_modified like ' . $likePatterns[ $i ] . " and status='SUCCESS'";
 
             $data = $this->db->query( $sql );
+         
+            $ngsi_data_sum =$data->num_rows() > 0 ? $data->row_array() : false;
+            $resultArray[ $i ][ 'total_count' ] =  $data->num_rows() > 0 ?( int ) $data->row()->total_count : false;
             $resultArray[ $i ][ 'ds_tax' ] = $data->num_rows() > 0 ?number_format( ( float )$data->row()->ds_tax, 2, '.', ',' ) : false;
             // $resultArray[ $i ] = $data->num_rows() > 0 ? $data->row_array() : false;
-            $resultArray[ $i ][ 'total_count' ] =  $data->num_rows() > 0 ?( int ) $data->row()->total_count : false;
-
-            $resultArray[ $i ][ 'total_txn_amount' ] = $data->num_rows() > 0 ?number_format( ( float )$data->row()->total_txn_amount, 2, '.', ',' ) : false;
+        
+         
+              
             $resultArray[ $i ][ 'pcab_fee' ] = $data->num_rows() > 0 ? number_format( ( float )$data->row()->pcab_fee, 2, '.', ',' ) : false;
             $resultArray[ $i ][ 'lrf' ] = $data->num_rows() > 0 ?number_format( ( float )$data->row()->lrf, 2, '.', ',' ) : false;
-            $resultArray[ $i ][ 'ngsi_convenience_fee' ] = $data->num_rows() > 0 ?number_format( ( float )$data->row()->ngsi_convenience_fee, 2, '.', ',' ) : false;
+            $txn_amount=$ngsi_data_sum['pcab_fee'] +$ngsi_data_sum['ds_tax']+$ngsi_data_sum['lrf']+$sum_ngsi_fee;
+            $resultArray[ $i ][ 'ngsi_convenience_fee' ] =$sum_ngsi_fee;
+           
+           
+            $resultArray[ $i ][ 'total_txn_amount' ] = $txn_amount;
+
+
+
+            
+           
             $qry = 'SELECT count(txn_amount) as total_count_failed FROM transactions where  last_modified like ' . $likePatterns[ $i ] . " and status='FAILED'";
             $data2 = $this->db->query( $qry );
             // $resultArray2[ $i ] = $data2->num_rows() > 0 ? $data2->row_array() : false;
@@ -106,6 +220,48 @@ class Dashboard_repo extends CI_Model
 
         for ( $i = 0; $i < $count; $i ++ ) {
 
+
+
+
+            $qry_select = "SELECT ngsi_convenience_fee AS ngsi_fee 
+            FROM transactions  where   last_modified like " .  $likePatterns[ $i ] . " and  status='SUCCESS'";
+
+                $qry_result = $this->db->query( $qry_select );
+        
+             $ngsi_fee =$qry_result->num_rows() > 0 ? $qry_result->result_array() : false;
+          
+             $sum = 0.0;
+
+             if(  $ngsi_fee==false){
+                $ngsi_fee_data=0;
+                
+            }else{
+                foreach ($ngsi_fee as $item) {
+                    $fee = (float) $item['ngsi_fee'];
+                    $rounded_fee = $this->round_half_up($fee, 2);
+                          
+                    $sum += $rounded_fee;
+                }
+                $ngsi_fee_data=number_format($sum, 2, '.', '');
+            } 
+     
+              $sum_ngsi_fee=      $ngsi_fee_data; 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+
             $sql = 'SELECT count(txn_amount) as total_count,
             sum(txn_amount)  as total_txn_amount,
             sum(fees_pcab) as pcab_fee,
@@ -116,14 +272,16 @@ class Dashboard_repo extends CI_Model
              FROM transactions where  last_modified like ' . $likePatterns[ $i ] . " and status='SUCCESS'";
 
             $data = $this->db->query( $sql );
+            $ngsi_data_sum =$data->num_rows() > 0 ? $data->row_array() : false;
             $resultArray[ $i ][ 'ds_tax' ] = $data->num_rows() > 0 ?number_format( ( float )$data->row()->ds_tax, 2, '.', ',' ) : false;
             // $resultArray[ $i ]  $data->num_rows() > 0 ? $data->row_array() : false;
             $resultArray[ $i ][ 'total_count' ] = $data->num_rows() > 0 ?( int ) $data->row()->total_count : false;
             $resultArray[ $i ][ 'total_txn_amount' ] = $data->num_rows() > 0 ?number_format( ( float )$data->row()->total_txn_amount, 2, '.', ',' ) : false;
             $resultArray[ $i ][ 'pcab_fee' ] = $data->num_rows() > 0 ? number_format( ( float )$data->row()->pcab_fee, 2, '.', ',' ) : false;
             $resultArray[ $i ][ 'lrf' ] = $data->num_rows() > 0 ?number_format( ( float )$data->row()->lrf, 2, '.', ',' ) : false;
-            $resultArray[ $i ][ 'ngsi_convenience_fee' ] = $data->num_rows() > 0 ?number_format( ( float )$data->row()->ngsi_convenience_fee, 2, '.', ',' ) : false;
-
+            // $resultArray[ $i ][ 'ngsi_convenience_fee' ] = $data->num_rows() > 0 ?number_format( ( float )$data->row()->ngsi_convenience_fee, 2, '.', ',' ) : false;
+            $txn_amount=$ngsi_data_sum['pcab_fee'] +$ngsi_data_sum['ds_tax']+$ngsi_data_sum['lrf']+$sum_ngsi_fee;
+            $resultArray[ $i ][ 'ngsi_convenience_fee' ] =$sum_ngsi_fee;
             $qry = 'SELECT count(txn_amount) as total_count_failed,sum(txn_amount) as sum_amount FROM transactions where  last_modified like ' . $likePatterns[ $i ] . " and status='FAILED'";
             $data2 = $this->db->query( $qry );
             $resultArray2[ $i ][ 'total_count_failed' ] = $data2->num_rows() > 0 ?( int )$data2->row()->total_count_failed : false;
