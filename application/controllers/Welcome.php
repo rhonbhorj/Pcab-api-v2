@@ -187,4 +187,8 @@ class Welcome extends CI_Controller
         $result[ 'data' ] = $this->crud->get_all_transaction_data();
         echo json_encode( $result );
     }
+
+	public function faq_page(){
+		$this->load->view('webpage/faq-page');
+	}
 }
