@@ -66,8 +66,14 @@ class TransactionReport extends CI_Controller
                 }
                 $ngsi_fee_data=number_format($sum, 2, '.', '');
             } 
+
+            // $result = "SELECT  sum(fees_pcab) as pcab_fee,
+            // sum(legal_research_fund) as lrf, 
+            $to_number_format=$data[ 'lrf' ]+$data[ 'ds_tax' ]+$data[ 'pcab_fee' ]+$ngsi_fee_data;
+
+            
                         $return_data = [
-                            'total_txn_amount_today' =>$ngsi_fee_data,
+                            'total_txn_amount_today' => number_format( ( float )$to_number_format, 0, '.', ',' ),
                             'total_count_today' => number_format( ( float )$data[ 'total_count_today' ], 0, '.', ',' )
             ];
             return $return_data;
