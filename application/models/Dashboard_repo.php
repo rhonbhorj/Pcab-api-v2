@@ -165,7 +165,7 @@ class Dashboard_repo extends CI_Model
             $data = $this->db->query( $sql );
          
             $ngsi_data_sum =$data->num_rows() > 0 ? $data->row_array() : false;
-            $resultArray[ $i ][ 'total_count' ] =  $data->num_rows() > 0 ?( int ) $data->row()->total_count : false;
+            $resultArray[ $i ][ 'total_count_success' ] =  $data->num_rows() > 0 ?( int ) $data->row()->total_count : false;
             $resultArray[ $i ][ 'ds_tax' ] = $data->num_rows() > 0 ?number_format( ( float )$data->row()->ds_tax, 2, '.', ',' ) : false;
             // $resultArray[ $i ] = $data->num_rows() > 0 ? $data->row_array() : false;
         
