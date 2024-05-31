@@ -142,18 +142,6 @@ class Dashboard_repo extends CI_Model
             } 
      
               $sum_ngsi_fee=      $ngsi_fee_data; 
-
-
-
-
-
-
-
-
-
-
-
-
             
             $sql = 'SELECT count(txn_amount) as total_count,
             sum(txn_amount)  as total_txn_amount,
@@ -198,6 +186,9 @@ class Dashboard_repo extends CI_Model
             
 
         
+            $qry4 = 'SELECT count(txn_amount) as total_count FROM transactions where  last_modified like  '. $likePatterns[ $i ] . " ";
+            $data4 = $this->db->query( $qry4 );
+            $resultArray4[ $i ][ 'total_count' ] = $data4->num_rows() > 0 ?( int ) $data4->row()->total_count : false;
           
             $get_date[ $i ][ 'date' ]=$likePatterns1[$i];
         }
@@ -213,7 +204,7 @@ class Dashboard_repo extends CI_Model
         // $result = [];
       
         foreach ( $dayresult as $index => $day ) {
-            $result[ $day ]  = $resultArray[ $index ]+ $resultArray2[ $index ]+$resultArray3[ $index ]+$get_date[ $index];
+            $result[ $day ]  = $resultArray[ $index ]+ $resultArray2[ $index ]+$resultArray3[ $index ]+ $resultArray4[ $index ]+$get_date[ $index];
             //   $resultArray2[ $index ];
             //     array_push( $result[ $day ], $resultArray2[ $index ] );
         }
