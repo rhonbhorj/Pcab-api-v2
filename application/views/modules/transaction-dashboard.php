@@ -481,8 +481,8 @@
             return '<div>No data available</div>';
           }
           var date_now = data.date ?? '';
-          return '<div style="padding:10px;">' +
-            'Total Count: ' + data.total_txn_amount + '<br><br>' +
+          return '<div style="padding:15px;">' +
+            'Total Count: ' + data.total_count + '<br><br>' +
             'Success: ' + data.total_count_success + '<br>' +
             'Failed: ' + data.total_count_failed + '<br>' +
             'Created: ' + data.total_count_created + '<br><br>' +
