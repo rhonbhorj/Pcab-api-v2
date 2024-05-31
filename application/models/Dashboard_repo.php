@@ -111,7 +111,10 @@ class Dashboard_repo extends CI_Model
             return " '%" . $date . "%'";
         }
         , $dates );
-
+        $likePatterns1 = array_map( function ( $date ) {
+            return  $date;
+        }
+        , $dates );
         for ( $i = 0; $i < $count; $i ++ ) {
 
 
@@ -185,8 +188,15 @@ class Dashboard_repo extends CI_Model
            
             $qry = 'SELECT count(txn_amount) as total_count_failed FROM transactions where  last_modified like ' . $likePatterns[ $i ] . " and status='FAILED'";
             $data2 = $this->db->query( $qry );
-            // $resultArray2[ $i ] = $data2->num_rows() > 0 ? $data2->row_array() : false;
+            
             $resultArray2[ $i ][ 'total_count_failed' ] = $data2->num_rows() > 0 ?( int ) $data2->row()->total_count_failed : false;
+
+
+            $qry1 = 'SELECT count(txn_amount) as total_count_created FROM transactions where  last_modified like ' . $likePatterns[ $i ] . " and status='STARTED'";
+            $data3 = $this->db->query( $qry1 );
+            $resultArray3[ $i ][ 'total_count_created' ] = $data3->num_rows() > 0 ?( int ) $data3->row()->total_count_created : false;
+            
+            $get_date[ $i ][ 'date' ]=$likePatterns1[$i];
         }
 
         $dayresult = [];
@@ -198,9 +208,9 @@ class Dashboard_repo extends CI_Model
         }
 
         // $result = [];
-
+      
         foreach ( $dayresult as $index => $day ) {
-            $result[ $day ]  = $resultArray[ $index ]+ $resultArray2[ $index ];
+            $result[ $day ]  = $resultArray[ $index ]+ $resultArray2[ $index ]+$resultArray3[ $index ]+$get_date[ $index];
             //   $resultArray2[ $index ];
             //     array_push( $result[ $day ], $resultArray2[ $index ] );
         }
@@ -275,7 +285,7 @@ class Dashboard_repo extends CI_Model
             $ngsi_data_sum =$data->num_rows() > 0 ? $data->row_array() : false;
             $resultArray[ $i ][ 'ds_tax' ] = $data->num_rows() > 0 ?number_format( ( float )$data->row()->ds_tax, 2, '.', ',' ) : false;
             // $resultArray[ $i ]  $data->num_rows() > 0 ? $data->row_array() : false;
-            $resultArray[ $i ][ 'total_count' ] = $data->num_rows() > 0 ?( int ) $data->row()->total_count : false;
+            $resultArray[ $i ][ 'total_count_success' ] = $data->num_rows() > 0 ?( int ) $data->row()->total_count : false;
             $resultArray[ $i ][ 'total_txn_amount' ] = $data->num_rows() > 0 ?number_format( ( float )$data->row()->total_txn_amount, 2, '.', ',' ) : false;
             $resultArray[ $i ][ 'pcab_fee' ] = $data->num_rows() > 0 ? number_format( ( float )$data->row()->pcab_fee, 2, '.', ',' ) : false;
             $resultArray[ $i ][ 'lrf' ] = $data->num_rows() > 0 ?number_format( ( float )$data->row()->lrf, 2, '.', ',' ) : false;
@@ -287,7 +297,11 @@ class Dashboard_repo extends CI_Model
             $resultArray2[ $i ][ 'total_count_failed' ] = $data2->num_rows() > 0 ?( int )$data2->row()->total_count_failed : false;
             // $resultArray2[ $i ][ 'sum_amount' ] = $data2->num_rows() > 0 ?( int )$data2->row()->sum_amount : false;
 
+        //     $qry1 = 'SELECT count(txn_amount) as total_count_created FROM transactions where  last_modified like ' . $likePatterns[ $i ] . " and status='STARTED'";
+        //     $data3 = $this->db->query( $qry1 );
+        //     $resultArray3[ $i ][ 'total_count_created' ] = $data3->num_rows() > 0 ?( int ) $data3->row()->total_count_created : false;
         }
+        
 
         foreach ( $months as $date ) {
             $timestamp = strtotime( $date );
