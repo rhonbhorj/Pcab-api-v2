@@ -324,13 +324,13 @@ class TransactionReport extends CI_Controller
 if($currentMonthName  >=10){
     for ($i = 0; $i <  $currentMonthName; $i++) {
           
-        $months[] = date('Y')."-0".($i + 1);
+        $months[] = date('Y')."-".($i + 1);
     }
     
 }else{
     for ($i = 0; $i <  $currentMonthName; $i++) {
           
-        $months[] = date('Y')."-".($i + 1);
+        $months[] = date('Y')."-0".($i + 1);
     }
 }
   
