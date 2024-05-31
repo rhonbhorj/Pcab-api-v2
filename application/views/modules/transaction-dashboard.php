@@ -330,7 +330,7 @@
             dailyDataArrayCount.push([
               day.slice(0, 3),
               responseData.all_transaction_this_week[day]?.total_count_success ?? '0',
-              createCustomTooltip(responseData.all_transaction_this_week[day])
+              createCustomTooltipCount(responseData.all_transaction_this_week[day])
             ]);
           });
 
@@ -474,11 +474,10 @@
             return '<div>No data available</div>';
           }
           return '<div style="padding:10px;"><strong>' + '' + '</strong><br>' +
-            'Total Txn Amount: ₱' + data.total_txn_amount + '<br><br>' +
-            'Pcab Fee: ₱' + data.pcab_fee + '<br>' +
-            'LRF: ₱' + data.lrf + '<br>' +
-            'Doc Stamp: ₱' + data.ds_tax + '<br>' +
-            'NGSI Fee: ₱' + data.ngsi_convenience_fee + '<br>' +
+            'Total Count: ' + data.total_txn_amount + '<br><br>' +
+            'Success: ' + data.pcab_fee + '<br>' +
+            'Failed: ' + data.lrf + '<br>' +
+            'Created: ' + data.ds_tax + '<br>' +
             '</div>';
         }
 
