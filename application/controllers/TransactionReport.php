@@ -125,7 +125,7 @@ class TransactionReport extends CI_Controller
         $sunm_transaction =$alltransaction[ 'lrf' ]+$alltransaction[ 'ds_tax' ]+$alltransaction[ 'pcab_fee' ]+$this->sumNgsiFee();
         $data[ 'alltransaction' ] = [
             'total_txn_amount' => number_format( ( float )$sunm_transaction, 2, '.', ',' ),
-            'total_count' => number_format( ( float )$alltransaction[ 'total_count' ], 0, '.', ',' )
+            'total_count_success' => number_format( ( float )$alltransaction[ 'total_count' ], 0, '.', ',' )
         ];
 
         //       array of todays trtansaction 
