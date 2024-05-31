@@ -252,9 +252,10 @@
         var total_txn_amount_today = responseData.today_transaction.total_txn_amount_today != null ? responseData.today_transaction.total_txn_amount_today : 0;
         var total_txn_amount_yesterday = responseData.yesterday_transaction.total_txn_amount_yesterday != null ? responseData.yesterday_transaction.total_txn_amount_yesterday : 0;
 
-        var totalCount = responseData.alltransaction.total_count;
+        var totalCount = responseData.alltransaction.total_count_success;
         var totalCount_today = responseData.today_transaction.total_count_today;
         var totalCount_yesterday = responseData.yesterday_transaction.total_count_transaction;
+       
 
         document.getElementById('total-txn-amount').textContent = '₱' + totalTxnAmount;
         document.getElementById('total_txn_amount_today').textContent = '₱' + total_txn_amount_today;
@@ -479,11 +480,14 @@
           if (!data) {
             return '<div>No data available</div>';
           }
-          return '<div style="padding:10px;"><strong>' + data.date + '</strong><br><br>' +
+          var date_now = data.date ?? '';
+          return '<div style="padding:10px;">' +
             'Total Count: ' + data.total_txn_amount + '<br><br>' +
             'Success: ' + data.total_count_success + '<br>' +
             'Failed: ' + data.total_count_failed + '<br>' +
-            'Created: ' + data.total_count_created + '<br>' +
+            'Created: ' + data.total_count_created + '<br><br>' +
+            '<strong>' + date_now + '</strong><br>'
+            
             '</div>';
         }
 
