@@ -223,7 +223,7 @@ class TransactionReport extends CI_Controller
     
     public function month_count()
     {
-        $currentMonthName = date( 'n' );
+        $currentMonthName = date( 'm' );
         $today = date( 'Y-m-d' );
 
 
@@ -321,13 +321,24 @@ class TransactionReport extends CI_Controller
         
         // echo $today;
 
-
-        for ($i = 0; $i <  $currentMonthName; $i++) {
-            
-            $months[] = date('Y')."-".($i + 1);
-        }
+if($currentMonthName  >=10){
+    for ($i = 0; $i <  $currentMonthName; $i++) {
+          
+        $months[] = date('Y')."-0".($i + 1);
+    }
+    
+}else{
+    for ($i = 0; $i <  $currentMonthName; $i++) {
+          
+        $months[] = date('Y')."-".($i + 1);
+    }
+}
+  
+    
   $result =   $this->repo->monthly_transaction( $months, $currentMonthName );
-        return $result;
+  
+
+        return   $result;
     
     
     }
