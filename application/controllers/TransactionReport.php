@@ -8,7 +8,6 @@ class TransactionReport extends CI_Controller
  {
         parent::__construct();
         $this->load->model( 'Dashboard_repo', 'repo' );
-
         // if ( $this->session->userdata( 'logged_in' ) === !TRUE ) {
         //     redirect( 'login' );
         // }
@@ -113,11 +112,11 @@ class TransactionReport extends CI_Controller
     public function dasboardReportData()
  {
 
-        if ( !$this->is_user_logged_in() ) {
-            // Redirect to the login page
-            redirect( 'login' );
-            return;
-        }
+        // if ( !$this->is_user_logged_in() ) {
+        //     // Redirect to the login page
+        //     redirect( 'login' );
+        //     return;
+        // }
 
             
         ///over all transaction 
@@ -224,103 +223,113 @@ class TransactionReport extends CI_Controller
     
     public function month_count()
     {
-        $currentMonthName = date( 'F' );
+        $currentMonthName = date( 'n' );
         $today = date( 'Y-m-d' );
 
 
-        switch ($currentMonthName) {
-            case 'January':
-                // Only today's date
-            // $i = 0;
-            // $yesterday[] = date( 'Y-m-d', strtotime( 'days', strtotime( $today ) ) );
+        // switch ($currentMonthName) {
+        //     case 'January':
+         
 
-            for ( $i = 0; $i < 1; $i ++ ) {
-                $months[] = date( 'Y-m', strtotime( "-$i month", strtotime( $today ) ) );
-            }
-            break;
+        //         for ( $i = 0; $i < 1; $i ++ ) {
+        //             $months[] = date( 'Y-m', strtotime( "-$i month", strtotime( $today ) ) );
+        //         }
+        //     break;
 
-            case 'February':
+        //     case 'February':
 
-            for ( $i = 0; $i < 2; $i ++ ) {
-                $months[] = date( 'Y-m', strtotime( "-$i month", strtotime( $today ) ) );
-            }
-            break;
+        //         for ( $i = 0; $i < 2; $i ++ ) {
+        //             $months[] = date( 'Y-m', strtotime( "-$i month", strtotime( $today ) ) );
+        //         }
+        //     break;
 
-            case 'March':
-            for ( $i = 0; $i < 3; $i ++ ) {
-                $months[] = date( 'Y-m', strtotime( "-$i month", strtotime( $today ) ) );
-            }
-            break;
+        //     case 'March':
+        //         for ( $i = 0; $i < 3; $i ++ ) {
+        //             $months[] = date( 'Y-m', strtotime( "-$i month", strtotime( $today ) ) );
+        //         }
+        //     break;
 
-            case 'April':
+        //     case 'April':
 
-            for ( $i = 0; $i < 4; $i ++ ) {
-                $months[] = date( 'Y-m', strtotime( "-$i month", strtotime( $today ) ) );
-            }
-            break;
+        //         for ( $i = 0; $i < 4; $i ++ ) {
+        //             $months[] = date( 'Y-m', strtotime( "-$i month", strtotime( $today ) ) );
+        //         }
+        //     break;
 
-            case 'May':
+        //     case 'May':
 
-            for ( $i = 0; $i < 5; $i ++ ) {
-                $months[] = date( 'Y-m', strtotime( "-$i month", strtotime( $today ) ) );
-            }
-            break;
+        //         for ( $i = 0; $i < 12; $i ++ ) {
+                    
+        //             $months[] = date( 'Y-m', strtotime( "-$i month", strtotime( $today ) ) );
+        //         }
+        //     break;
 
-            case 'June':
+        //     case 'June':
 
-            for ( $i = 0; $i < 6; $i ++ ) {
-                $months[] = date( 'Y-m', strtotime( "-$i month", strtotime( $today ) ) );
-            }
-            break;
+        //     for ( $i = 0; $i < 6; $i ++ ) {
+        //         $months[] = date( 'Y-m', strtotime( "-$i month", strtotime( $today ) ) );
+        //     }
+        //     break;
 
-            case 'July':
+        //     case 'July':
 
-            for ( $i = 0; $i < 7; $i ++ ) {
-                $months[] = date( 'Y-m', strtotime( "-$i month", strtotime( $today ) ) );
-            }
-            break;
-            case 'August':
+        //     for ( $i = 0; $i < 7; $i ++ ) {
+        //         $months[] = date( 'Y-m', strtotime( "-$i month", strtotime( $today ) ) );
+        //     }
+        //     break;
+        //     case 'August':
 
-            for ( $i = 0; $i < 8; $i ++ ) {
-                $months[] = date( 'Y-m', strtotime( "-$i month", strtotime( $today ) ) );
-            }
-            break;
-            case 'September':
+        //     for ( $i = 0; $i < 8; $i ++ ) {
+        //         $months[] = date( 'Y-m', strtotime( "-$i month", strtotime( $today ) ) );
+        //     }
+        //     break;
+        //     case 'September':
 
-            for ( $i = 0; $i < 9; $i ++ ) {
-                $months[] = date( 'Y-m', strtotime( "-$i month", strtotime( $today ) ) );
-            }
-            break;
-            case 'October':
+        //     for ( $i = 0; $i < 9; $i ++ ) {
+        //         $months[] = date( 'Y-m', strtotime( "-$i month", strtotime( $today ) ) );
+        //     }
+        //     break;
+        //     case 'October':
 
-            for ( $i = 0; $i < 10; $i ++ ) {
-                $months[] = date( 'Y-m', strtotime( "-$i month", strtotime( $today ) ) );
-            }
-            break;
+        //     for ( $i = 0; $i < 10; $i ++ ) {
+        //         $months[] = date( 'Y-m', strtotime( "-$i month", strtotime( $today ) ) );
+        //     }
+        //     break;
 
-            case 'November':
+        //     case 'November':
 
-            for ( $i = 0; $i < 11; $i ++ ) {
-                $months[] = date( 'Y-m', strtotime( "-$i month", strtotime( $today ) ) );
-            }
-            break;
+        //     for ( $i = 0; $i < 11; $i ++ ) {
+        //         $months[] = date( 'Y-m', strtotime( "-$i month", strtotime( $today ) ) );
+        //     }
+        //     break;
 
-            case 'December':
+        //     case 'December':
 
-            for ( $i = 0; $i < 12; $i ++ ) {
-                $months[] = date( 'Y-m', strtotime( "-$i month", strtotime( $today ) ) );
-            }
-            break;
+        //     for ( $i = 0; $i < 12; $i ++ ) {
+        //         $months[] = date( 'Y-m', strtotime( "-$i month", strtotime( $today ) ) );
+        //     }
+        //     break;
 
-            default:
-            $months[] = date( 'Y-m', strtotime( "-$i month", strtotime( $today ) ) );
-            break;
-        }
+        //     default:
+        //     $months[] = date( 'Y-m', strtotime( "-$i month", strtotime( $today ) ) );
+        //     break;
+        // }
 
-        $result =   $this->repo->monthly_transaction( $months, $i );
+      
 
-        return  $result ;
+        // return   $months;
+        
         // echo $today;
+
+
+        for ($i = 0; $i <  $currentMonthName; $i++) {
+            
+            $months[] = date('Y')."-".($i + 1);
+        }
+  $result =   $this->repo->monthly_transaction( $months, $currentMonthName );
+        return $result;
+    
+    
     }
 
     private function is_user_logged_in()
