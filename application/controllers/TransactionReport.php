@@ -113,17 +113,18 @@ class TransactionReport extends CI_Controller
     public function dasboardReportData()
  {
 
-        // if ( !$this->is_user_logged_in() ) {
-        //     // Redirect to the login page
-        //     redirect( 'login' );
-        //     return;
-        // }
+        if ( !$this->is_user_logged_in() ) {
+            // Redirect to the login page
+            redirect( 'login' );
+            return;
+        }
 
-
+            
         ///over all transaction 
         $alltransaction = $this->repo->all_transaction_data();
+        $sunm_transaction =$alltransaction[ 'lrf' ]+$alltransaction[ 'ds_tax' ]+$alltransaction[ 'pcab_fee' ]+$this->sumNgsiFee();
         $data[ 'alltransaction' ] = [
-            'total_txn_amount' => $alltransaction[ 'lrf' ]+$alltransaction[ 'ds_tax' ]+$alltransaction[ 'pcab_fee' ]+$this->sumNgsiFee(),
+            'total_txn_amount' => number_format( ( float )$sunm_transaction, 2, '.', ',' ),
             'total_count' => number_format( ( float )$alltransaction[ 'total_count' ], 0, '.', ',' )
         ];
 
