@@ -339,14 +339,20 @@
           // Line graph for Daily Total Txn Count Success & Failed
           const monthOfYearCount = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
           const monthlyDataArrayCount = [
-            ['Day', 'Success', 'Failed']
+            ['Day', 'Success',{
+              role: 'tooltip',
+              'p': {
+                'html': true
+              }
+            }]
           ];
 
           monthOfYearCount.forEach(month => {
             monthlyDataArrayCount.push([
               month.slice(0, 3),
-              responseData.monthly_transaction[month]?.total_count ?? '0',
-              responseData.monthly_transaction[month]?.total_count_failed ?? '0'
+              responseData.monthly_transaction[month]?.total_count_success ?? '0',
+              createCustomTooltipCount(responseData.monthly_transaction[month])
+              
             ]);
           });
 
@@ -473,11 +479,11 @@
           if (!data) {
             return '<div>No data available</div>';
           }
-          return '<div style="padding:10px;"><strong>' + '' + '</strong><br>' +
+          return '<div style="padding:10px;"><strong>' + data.date + '</strong><br><br>' +
             'Total Count: ' + data.total_txn_amount + '<br><br>' +
-            'Success: ' + data.pcab_fee + '<br>' +
-            'Failed: ' + data.lrf + '<br>' +
-            'Created: ' + data.ds_tax + '<br>' +
+            'Success: ' + data.total_count_success + '<br>' +
+            'Failed: ' + data.total_count_failed + '<br>' +
+            'Created: ' + data.total_count_created + '<br>' +
             '</div>';
         }
 
