@@ -313,17 +313,24 @@
 
           var monthlyData = google.visualization.arrayToDataTable(monthlyDataArray);
 
+          
+
           // Bar graph for Daily Total Txn Count Success & Failed
           const daysOfWeekCount = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
           const dailyDataArrayCount = [
-            ['Day', 'Success', 'Failed']
+            ['Day', 'Success', {
+              role: 'tooltip',
+              'p': {
+                'html': true
+              }
+            }]
           ];
 
           daysOfWeekCount.forEach(day => {
             dailyDataArrayCount.push([
               day.slice(0, 3),
-              responseData.all_transaction_this_week[day]?.total_count ?? '0',
-              responseData.all_transaction_this_week[day]?.total_count_failed ?? '0'
+              responseData.all_transaction_this_week[day]?.total_count_success ?? '0',
+              createCustomTooltip(responseData.all_transaction_this_week[day])
             ]);
           });
 
@@ -461,6 +468,20 @@
             'NGSI Fee: ₱' + data.ngsi_convenience_fee + '<br>' +
             '</div>';
         }
+
+        function createCustomTooltipCount(data) {
+          if (!data) {
+            return '<div>No data available</div>';
+          }
+          return '<div style="padding:10px;"><strong>' + '' + '</strong><br>' +
+            'Total Txn Amount: ₱' + data.total_txn_amount + '<br><br>' +
+            'Pcab Fee: ₱' + data.pcab_fee + '<br>' +
+            'LRF: ₱' + data.lrf + '<br>' +
+            'Doc Stamp: ₱' + data.ds_tax + '<br>' +
+            'NGSI Fee: ₱' + data.ngsi_convenience_fee + '<br>' +
+            '</div>';
+        }
+
       })
       .catch(error => {
         console.error('Error fetching the report data:', error);
