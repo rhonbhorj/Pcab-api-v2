@@ -196,6 +196,9 @@ class Dashboard_repo extends CI_Model
             $data3 = $this->db->query( $qry1 );
             $resultArray3[ $i ][ 'total_count_created' ] = $data3->num_rows() > 0 ?( int ) $data3->row()->total_count_created : false;
             
+
+        
+          
             $get_date[ $i ][ 'date' ]=$likePatterns1[$i];
         }
 
@@ -297,10 +300,18 @@ class Dashboard_repo extends CI_Model
             $resultArray2[ $i ][ 'total_count_failed' ] = $data2->num_rows() > 0 ?( int )$data2->row()->total_count_failed : false;
             // $resultArray2[ $i ][ 'sum_amount' ] = $data2->num_rows() > 0 ?( int )$data2->row()->sum_amount : false;
 
-        //     $qry1 = 'SELECT count(txn_amount) as total_count_created FROM transactions where  last_modified like ' . $likePatterns[ $i ] . " and status='STARTED'";
-        //     $data3 = $this->db->query( $qry1 );
-        //     $resultArray3[ $i ][ 'total_count_created' ] = $data3->num_rows() > 0 ?( int ) $data3->row()->total_count_created : false;
-        }
+            $qry3 = 'SELECT count(txn_amount) as total_count_created FROM transactions where  last_modified like ' . $likePatterns[ $i ] . " and status='STARTED'";
+            $data3 = $this->db->query( $qry3 );
+            $resultArray3[ $i ][ 'total_count_created' ] = $data3->num_rows() > 0 ?( int ) $data3->row()->total_count_created : false;
+      
+    
+            $qry4 = 'SELECT count(txn_amount) as total_count FROM transactions where  last_modified like  '. $likePatterns[ $i ] . " ";
+            $data4 = $this->db->query( $qry4 );
+            $resultArray4[ $i ][ 'total_count' ] = $data4->num_rows() > 0 ?( int ) $data4->row()->total_count : false;
+      
+    
+    
+    }
         
 
         foreach ( $months as $date ) {
@@ -310,7 +321,7 @@ class Dashboard_repo extends CI_Model
         }
 
         foreach ( $dayresult as $index => $day ) {
-            $result[ $day ]  = $resultArray[ $index ]+$resultArray2[ $index ];
+            $result[ $day ]  = $resultArray[ $index ]+$resultArray2[ $index ]+ $resultArray3[ $index ]+ $resultArray4[$index ];
 
         }
         return $result;
