@@ -467,12 +467,14 @@
           if (!data) {
             return '<div>No data available</div>';
           }
-          return '<div style="padding:10px;"><strong>' + '' + '</strong><br>' +
+          var date_now = data.date ?? '';
+          return '<div style="padding:10px;">' +
             'Total Txn Amount: ₱' + data.total_txn_amount + '<br><br>' +
             'Pcab Fee: ₱' + data.pcab_fee + '<br>' +
             'LRF: ₱' + data.lrf + '<br>' +
             'Doc Stamp: ₱' + data.ds_tax + '<br>' +
-            'NGSI Fee: ₱' + data.ngsi_convenience_fee + '<br>' +
+            'NGSI Fee: ₱' + data.ngsi_convenience_fee + '<br><br>' +
+            '<strong>' + date_now + '</strong><br>'
             '</div>';
         }
 
