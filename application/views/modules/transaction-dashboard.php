@@ -255,7 +255,7 @@
         var totalCount = responseData.alltransaction.total_count_success;
         var totalCount_today = responseData.today_transaction.total_count_today;
         var totalCount_yesterday = responseData.yesterday_transaction.total_count_transaction;
-       
+
 
         document.getElementById('total-txn-amount').textContent = '₱' + totalTxnAmount;
         document.getElementById('total_txn_amount_today').textContent = '₱' + total_txn_amount_today;
@@ -314,7 +314,7 @@
 
           var monthlyData = google.visualization.arrayToDataTable(monthlyDataArray);
 
-          
+
 
           // Bar graph for Daily Total Txn Count Success & Failed
           const daysOfWeekCount = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
@@ -340,7 +340,7 @@
           // Line graph for Daily Total Txn Count Success & Failed
           const monthOfYearCount = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
           const monthlyDataArrayCount = [
-            ['Day', 'Success',{
+            ['Day', 'Success', {
               role: 'tooltip',
               'p': {
                 'html': true
@@ -353,7 +353,7 @@
               month.slice(0, 3),
               responseData.monthly_transaction[month]?.total_count_success ?? '0',
               createCustomTooltipCount(responseData.monthly_transaction[month])
-              
+
             ]);
           });
 
@@ -467,15 +467,24 @@
           if (!data) {
             return '<div>No data available</div>';
           }
+
           var date_now = data.date ?? '';
+          var formatted_date = '';
+
+          if (date_now) {
+            var date_parts = date_now.split("-");
+            formatted_date = date_parts[1] + "-" + date_parts[2] + "-" + date_parts[0];
+          }
+
           return '<div style="padding:10px;">' +
+            '<strong>' + formatted_date + '</strong><br><br>' +
             'Total Txn Amount: ₱' + data.total_txn_amount + '<br><br>' +
             'Pcab Fee: ₱' + data.pcab_fee + '<br>' +
             'LRF: ₱' + data.lrf + '<br>' +
             'Doc Stamp: ₱' + data.ds_tax + '<br>' +
             'NGSI Fee: ₱' + data.ngsi_convenience_fee + '<br><br>' +
-            '<strong>' + date_now + '</strong><br>'
-            '</div>';
+            
+          '</div>';
         }
 
         function createCustomTooltipCount(data) {
@@ -483,14 +492,22 @@
             return '<div>No data available</div>';
           }
           var date_now = data.date ?? '';
+          var formatted_date = '';
+
+          if (date_now) {
+            var date_parts = date_now.split("-");
+            formatted_date = date_parts[1] + "-" + date_parts[2] + "-" + date_parts[0];
+          }
+
           return '<div style="padding:15px;">' +
+            '<strong>' + formatted_date + '</strong><br><br>'+
             'Total Count: ' + data.total_count + '<br><br>' +
             'Success: ' + data.total_count_success + '<br>' +
             'Failed: ' + data.total_count_failed + '<br>' +
             'Created: ' + data.total_count_created + '<br><br>' +
-            '<strong>' + date_now + '</strong><br>'
             
-            '</div>';
+
+          '</div>';
         }
 
       })
