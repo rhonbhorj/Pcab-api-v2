@@ -73,8 +73,8 @@ class TransactionReport extends CI_Controller
 
             
                         $return_data = [
-                            'total_txn_amount_today' => number_format( ( float )$to_number_format, 0, '.', ',' ),
-                            'total_count_today' => number_format( ( float )$data[ 'total_count_today' ], 0, '.', ',' )
+                            'total_txn_amount_today' => number_format( ( float )$to_number_format, 2, '.', ',' ),
+                            'total_count_today' => number_format( ( float )$data[ 'total_count_today' ], 2, '.', ',' )
             ];
             return $return_data;
   }
@@ -106,8 +106,8 @@ class TransactionReport extends CI_Controller
     $to_number_format=$all_transaction_yesterday[ 'lrf' ]+$all_transaction_yesterday[ 'ds_tax' ]+$all_transaction_yesterday[ 'pcab_fee' ]+$ngsi_fee_data;
                      
     $return_data = [
-                    'total_txn_amount_yesterday' =>number_format( ( float )$to_number_format, 0, '.', ',' ) ,
-                    'total_count_transaction' => number_format( ( float )$all_transaction_yesterday[ 'total_count_transaction' ], 0, '.', ',' )
+                    'total_txn_amount_yesterday' =>number_format( ( float )$to_number_format, 2, '.', ',' ) ,
+                    'total_count_transaction' => number_format( ( float )$all_transaction_yesterday[ 'total_count_transaction' ], 2, '.', ',' )
                  ];
             
             return $return_data;
