@@ -247,7 +247,7 @@
       .then(response => response.json())
       .then(responseData => {
 
-        console.log(responseData);
+        // console.log(responseData);
         var totalTxnAmount = responseData.alltransaction.total_txn_amount != null ? responseData.alltransaction.total_txn_amount : 0;
         var total_txn_amount_today = responseData.today_transaction.total_txn_amount_today != null ? responseData.today_transaction.total_txn_amount_today : 0;
         var total_txn_amount_yesterday = responseData.yesterday_transaction.total_txn_amount_yesterday != null ? responseData.yesterday_transaction.total_txn_amount_yesterday : 0;
