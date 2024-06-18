@@ -4,6 +4,10 @@
     box-sizing: border-box;
     font-family: 'Montserrat';
 }
+:root {
+    --primary: #00507a;
+    --theme: #00507a;
+  }
 
 html, body {
     width: 100%;
@@ -525,6 +529,9 @@ body {
 /* Media Query for 768px or less */
 
 @media (max-width: 768px) {
+    #home .logo img{
+        max-width: 50%!important;
+    }
     .footer {
         padding: 20px 15px;
     }
@@ -547,8 +554,57 @@ body {
 
     .fa {
         font-size: 18px !important;
-        width: 25px;
+        width: 30px;
     }
+    .accordion{
+        width: 95%!important;
+    }
+    .newfaq .title{
+        font-size: 20px!important;
+    }
+    .container p {
+        font-size: 16px!important;
+            }
+            .cinema-mode h1{
+                font-size: 30px!important;
+            }
+            .surveyheading h1 {
+                font-size: 20px!important;
+            }
+            .download{
+       
+                font-size: 20px!important;
+        
+            }
+            .download::after{
+  
+                font-size: 20px!important;
+        
+            }
+            .download:hover{
+           
+                font-size: 20px!important;
+            }
+        
+            .survey{
+             font-size: 20px!important;
+        
+            }
+            .survey::after{
+            font-size: 20px!important;
+        
+            }
+            .survey:hover{
+                 font-size: 20px!important;
+            }
+            .tab__label {
+                font-size: 14px!important;
+            }
+            .tab__content p{
+                font-size: 14px!important;
+            }
+
+
 }
 
 @media only screen and (min-width: 375px) and (max-width: 640px) {
@@ -819,7 +875,31 @@ body {
     .footer-details p{
         font-size: 11px;
      }
+     .container1.newfaq {
+        width: 50rem;
+        display: inline!important;
+        gap: 1rem;
+        margin: 0 auto; 
+    }
+    .newfaq .title {
+    font-size: 16px!important;
+    margin-top: 20px!important;
+    }
+    .container1.newfaq section:first-child p{
+        font-size: 12px!important;
+    }
+    .tab__label{
+        font-size: 12px!important;
+    }
+    .tab__content p{
+        font-size: 12px!important;
+    }
+    .accordion{
+        width: 100%!important;
+        margin-bottom: 20px!important;
+    }
 }
+
 @media only screen and (min-width: 1900px) {
     .logo{
         width: 100%;
@@ -892,7 +972,68 @@ body {
     .footer img{
         width: 250px!important;
     }
+    .cinema-mode h1{
+        font-size: 50px!important;
+    }
+    .container p{
+        font-size: 40px;
+    }
+    .surveyheading h1{
+    font-size: 50px;
+    }
+    .survey::after{
+        font-size: 50px;
+    }
+    .newfaq .title{
+        font-size: 50px!important;
+        padding: 2.3rem 5rem!important;
+    }
+    .container1.newfaq section:first-child p{
+        font-size: 40px!important;
+        max-width: 100%!important;
+        margin-top: 30px!important;
+        margin-bottom: 30px!important;
+    }
+    .tab__label{
+        font-size: 40px!important;
+        padding: 3.8rem 5.3rem!important
+    }
+    .tab__content p {
+font-size: 40px!important;
+padding: 1.8rem 5.3rem!important
+    }
+    .container1.newfaq{
+        width: 80%!important;
+    }
+    .download{
+        padding: 15px!important;
+        font-size: 40px!important;
 
+    }
+    .download::after{
+        padding: 15px!important;
+        font-size: 40px!important;
+
+    }
+    .download:hover{
+        padding: 15px!important;
+        font-size: 40px!important;
+    }
+
+    .survey{
+        padding: 15px!important;
+
+    }
+    .survey::after{
+        padding: 15px!important;
+
+    }
+    .survey:hover{
+        padding: 15px!important;
+    }
+    .accordion{
+        gap: 1.3rem!important;
+    }
   
 
 }
@@ -1001,3 +1142,158 @@ body {
             width: 100% !important;
             height: 80% !important;
         }
+
+
+
+   
+        #faqbody {
+            background: #ECF0F4 50% 0 no-repeat;
+            background-size: cover;
+            height: auto;
+            width: 100%;
+            position: relative;
+        }
+        
+        .container1.newfaq {
+            width: 50rem;
+            display: grid;
+            gap: 1rem;
+            margin: 0 auto; 
+        }
+        
+        .container1.newfaq section:first-child {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        
+        .container1.newfaq section:first-child p {
+            text-align: center;
+            padding: 0 2rem;
+            color: var(--primary);
+            max-width: 40rem;
+            margin-top: 15px;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+        
+        .newfaq .title {
+            line-height: 50px;
+            color: white;
+            text-align: center;
+            text-transform: uppercase;
+            white-space: nowrap;
+            font-weight: 900;
+            border-radius: 30px;
+            background-color: var(--primary);
+            border: 5px solid #fff;
+            box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+            padding: 0.3rem 2rem;
+            font-size: 30px;
+            margin-top:50px;
+            -webkit-text-stroke: 1px;
+        }
+        
+        .accordion {
+            width: 100%;
+            color: var(--theme);
+            border-radius: 0.5rem;
+            overflow: hidden;
+            display: grid;
+            gap: 0.6rem;
+            justify-items: center; 
+            margin-bottom: 50px;
+        }
+        
+        .tab {
+            border: 1px solid rgba(0, 80, 122, 1);
+            border-top: 0;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            width: 100%;
+        }
+        
+        .tab input {
+            position: absolute;
+            opacity: 0;
+            z-index: -1;
+        }
+        
+        .tab__content {
+            background-color: #fff;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.35s;
+        }
+        
+        .tab input:checked ~ .tab__content {
+            max-height: 10rem;
+        }
+        
+        .tab__label,
+        .tab__close {
+            border-radius: 0.5rem;
+            display: flex;
+            color: white;
+            background: var(--theme);
+            cursor: pointer;
+        }
+        
+        .tab__label {
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem 1.3rem;
+            box-shadow: 1px 1px 1px var(--theme);
+            font-size: 18px;
+        }
+        
+        .tab__label::after {
+            content: "\276F";
+            max-width: 1rem;
+            height: 1em;
+            text-align: right;
+            transform: rotate(90deg);
+            transition: all 0.35s;
+            align-items: center;
+            justify-content: center;
+            display: inline-flex;
+        }
+        
+        .tab input:checked + .tab__label::after {
+            transition: all 0.35s;
+            transform: rotate(270deg);
+        }
+        
+        .tab__content p {
+            color: #000;
+            margin: 0;
+            padding: 1.3rem;
+            font-size: 18px;
+        }
+        
+        .tab__close {
+            justify-content: flex-end;
+            padding: 0.5rem 1rem;
+            font-size: 0.75rem;
+        }
+        
+        sup,
+        sub {
+            font-size: 18px;
+        }
+        
+        sub {
+            transform: rotate(180deg);
+            display: inline-block;
+        }
+        
+        @keyframes bounce {
+            25% {
+                transform: rotate(90deg) translate(0.25rem);
+            }
+            75% {
+                transform: rotate(90deg) translate(-0.25rem);
+            }
+        }
+        
