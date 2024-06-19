@@ -132,11 +132,9 @@
                             Can I pay QRPH using credit card ?
                         </label>
                         <div class="tab__content">
-                            <p>
-                                Currently, we don’t facilitate QRPH payments via credit cards but will
+                            <p>Currently, we don’t facilitate QRPH payments via credit cards but will
                                 be soon available. You may pay thru QRPH with real-time cash payments
-                                using your E-Wallet and Mobile Banking.
-                            </p>
+                                using your E-Wallet and Mobile Banking.</p>
                         </div>
                     </div>
                     <div class="tab">
@@ -145,85 +143,96 @@
                             What are the E-wallets and mobile banks that I can use to pay QRPH ?
                         </label>
                         <div class="tab__content">
-                            <p>
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum id
-                                impedit expedita quaerat quisquam repellat sint quos nemo error autem,
-                                harum iusto eum. Nemo asperiores, odio sequi quidem molestiae
-                                voluptates!
+                            <p>These are the following E-Wallet and Mobile Banks you can use for QRPH, as of 30 April 2024:<br>
+                                1. Asia United Bank Corporation
+                                2. Bank of the Philippine Islands
+                                3. BDO Unibank, Inc.
+                                4. Metropolitan Bank and Trust Company
+                                5. Philippine National Bank
+                                6. Rizal Commercial Banking Corporation
+                                7. Robinsons Bank Corporation (merged with BPI)
+                                8. Security Bank Corporation
+                                9. Union Bank of the Philippines
+                                10. Bank of Commerce
+                                11. China Banking Corporation
+                                12. Land Bank of the Philippines
+                                13. CebuanaLhuillier Rural Bank, Inc.
+                                14. Netbank (A Rural Bank), Inc.
+                                15. Rural Bank of Guinobatan, Inc.
+                                16. GoTyme Bank Corporation
+                                17. UNOBank, Inc.
+                                18. G-Xchange, Inc. (GCash)
+                                19. Maya Philippines, Inc.
+
+                                Complete list here: <a href="https://www.bsp.gov.ph/PaymentAndSettlement/QR%20Ph%20P2M%20Participants.pdf" target="_blank">Marchant List</a><br>
                             </p>
                         </div>
                     </div>
                     <div class="tab">
                         <input type="radio" name="q-accordion" id="rd3" />
-                        <label for="rd3" class="tab__label">
-                            Why does my e-wallet say "insufficient credit limit" when I have enough
-                            balance? What should I do ?
+                        <label for="rd3" class="tab__label">Why does my e-wallet say "insufficient credit limit" when I have enough
+                            balance?<br>What should I do ?
                         </label>
                         <div class="tab__content">
-                            <p>
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum id
-                                impedit expedita quaerat quisquam repellat sint quos nemo error autem,
-                                harum iusto eum. Nemo asperiores, odio sequi quidem molestiae
-                                voluptates!
+                            <p>QR Ph may transact above Php 50,000 but some e-wallet or mobile bank accounts have lower wallet limit, depending on the type of the account. A Business account has higher wallet limit than Personal account.
+                                Some e-wallet and mobile bank has capability of customizing or adjusting your wallet limit. Eg. BPI, BDO, Metrobank, etc.
+                                You may inquire this to your e-wallet or mobile bank customer service.
                             </p>
                         </div>
                     </div>
                     <div class="tab">
                         <input type="radio" name="q-accordion" id="rd4" />
-                        <label for="rd4" class="tab__label">
-                            What are the e-wallets or mobile banks that can customize the wallet
+                        <label for="rd4" class="tab__label">What are the e-wallets or mobile banks that can customize the wallet
                             limit ?
                         </label>
                         <div class="tab__content">
-                            <p>
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum id
-                                impedit expedita quaerat quisquam repellat sint quos nemo error autem,
-                                harum iusto eum. Nemo asperiores, odio sequi quidem molestiae
-                                voluptates!
+                            <p>BPI, BDO, Metrobank, etc.
+                                You may inquire this to your e-wallet or mobile bank customer service.
                             </p>
                         </div>
                     </div>
                     <div class="tab">
                         <input type="radio" name="q-accordion" id="rd5" />
-                        <label for="rd5" class="tab__label">
-                            Can I pay the fees partially using QRPH ?
+                        <label for="rd5" class="tab__label">Can I pay the fees partially using QRPH ?
                         </label>
                         <div class="tab__content">
-                            <p>
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum id
-                                impedit expedita quaerat quisquam repellat sint quos nemo error autem,
-                                harum iusto eum. Nemo asperiores, odio sequi quidem molestiae
-                                voluptates!
-                            </p>
+                            <p>No. Unfortunately, we don't accept partial payments via QRPH as our current system requires full payment for fees.</p>
                         </div>
                     </div>
                     <div class="tab">
                         <input type="radio" name="q-accordion" id="rd6" />
-                        <label for="rd6" class="tab__label">
-                            Will I be receiving receipt after the payment? Where and when will i
+                        <label for="rd6" class="tab__label">Will I be receiving receipt after the payment? Where and when will i
                             receive it ?
                         </label>
                         <div class="tab__content">
-                            <p>
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum id
-                                impedit expedita quaerat quisquam repellat sint quos nemo error autem,
-                                harum iusto eum. Nemo asperiores, odio sequi quidem molestiae
-                                voluptates!
-                            </p>
+                            <p>Yes. After payment, an Electronic Official Receipt will be shown to the PCAB Portal and will also be sent to the email address registered to your PCAB Portal. Moreover, you can also see the payment status from your PCAB Account in the portal tagged as "success".</p>
                         </div>
                     </div>
                     <div class="tab">
                         <input type="radio" name="q-accordion" id="rd7" />
-                        <label for="rd7" class="tab__label">
-                            I am having trouble after scanning the QR code. What do I do ?
+                        <label for="rd7" class="tab__label">I am having trouble after scanning the QR code. What do I do ?
                         </label>
                         <div class="tab__content">
-                            <p>
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum id
-                                impedit expedita quaerat quisquam repellat sint quos nemo error autem,
-                                harum iusto eum. Nemo asperiores, odio sequi quidem molestiae
-                                voluptates!
-                            </p>
+                            <p>You may call our customer service representatives to concern this situation.
+                                You may be asked for a screenshot of the error to properly address the concern.</p>
+                        </div>
+                    </div>
+                    <div class="tab">
+                        <input type="radio" name="q-accordion" id="rd8" />
+                        <label for="rd8" class="tab__label">When scanning QR code - nothing happens or page just keeps loading.<br>What do i do ?
+                        </label>
+                        <div class="tab__content">
+                            <p>You may call our customer service representatives to concern this situation.
+                                You may be asked for a screenshot of the error to properly address the concern.</p>
+                        </div>
+                    </div>
+                    <div class="tab">
+                        <input type="radio" name="q-accordion" id="rd9" />
+                        <label for="rd9" class="tab__label">When scanning QR code I receive error message - transaction failed.<br>What do I do ?
+                        </label>
+                        <div class="tab__content">
+                            <p>You may call our customer service representatives to concern this situation.
+                                You may be asked for a screenshot of the error to properly address the concern.</p>
                         </div>
                     </div>
                 </section>
