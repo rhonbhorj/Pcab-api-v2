@@ -119,7 +119,7 @@
         <section class="pages" id="faqbody" data-type="background">
             <div class="container1 newfaq">
                 <section>
-                    <div class="title">Frequently Ask Question</div>
+                    <div class="title">Frequently Asked Question</div>
                     <p>
                         To help you make your experience easier, we've compiled our most
                         <b>frequently asked questions</b> and answers below.
@@ -132,9 +132,7 @@
                             Can I pay QRPH using credit card ?
                         </label>
                         <div class="tab__content">
-                            <p>Currently, we don’t facilitate QRPH payments via credit cards but will
-                                be soon available. You may pay thru QRPH with real-time cash payments
-                                using your E-Wallet and Mobile Banking.</p>
+                            <p>Currently, we don't facilitate QRPH payments via credit cards but it will be soon available. You may pay thru QRPH with real-time cash payments using your E-Wallet and Mobile Banking.</p>
                         </div>
                     </div>
                     <div class="tab">
@@ -143,7 +141,8 @@
                             What are the E-wallets and mobile banks that I can use to pay QRPH ?
                         </label>
                         <div class="tab__content">
-                            <p>These are the following E-Wallet and Mobile Banks you can use for QRPH, as of 30 April 2024:<br>
+                            <p>These are the following E-Wallet and Mobile Banks you can use for QRPH, as of 30 April 2024:
+
                                 1. Asia United Bank Corporation
                                 2. Bank of the Philippine Islands
                                 3. BDO Unibank, Inc.
@@ -174,10 +173,9 @@
                             balance?<br>What should I do ?
                         </label>
                         <div class="tab__content">
-                            <p>QR Ph may transact above Php 50,000 but some e-wallet or mobile bank accounts have lower wallet limit, depending on the type of the account. A Business account has higher wallet limit than Personal account.
+                            <p>QR Ph may transact above Php 50,000 but some e-wallet or mobile bank accounts have lower wallet limit, depending on the type of the account. A Business account has higher wallet limit than a Personal account.
                                 Some e-wallet and mobile bank has capability of customizing or adjusting your wallet limit. Eg. BPI, BDO, Metrobank, etc.
-                                You may inquire this to your e-wallet or mobile bank customer service.
-                            </p>
+                                You may inquire this to your e-wallet or mobile bank customer service.</p>
                         </div>
                     </div>
                     <div class="tab">
@@ -205,30 +203,12 @@
                             receive it ?
                         </label>
                         <div class="tab__content">
-                            <p>Yes. After payment, an Electronic Official Receipt will be shown to the PCAB Portal and will also be sent to the email address registered to your PCAB Portal. Moreover, you can also see the payment status from your PCAB Account in the portal tagged as "success".</p>
+                            <p>Yes. After payment, an Electronic Official Receipt will be shown on the PCAB Portal and will also be sent to the email address registered to your PCAB Portal. Moreover, you can also see the payment status from your PCAB Account in the portal tagged as "success".</p>
                         </div>
                     </div>
                     <div class="tab">
                         <input type="radio" name="q-accordion" id="rd7" />
                         <label for="rd7" class="tab__label">I am having trouble after scanning the QR code. What do I do ?
-                        </label>
-                        <div class="tab__content">
-                            <p>You may call our customer service representatives to concern this situation.
-                                You may be asked for a screenshot of the error to properly address the concern.</p>
-                        </div>
-                    </div>
-                    <div class="tab">
-                        <input type="radio" name="q-accordion" id="rd8" />
-                        <label for="rd8" class="tab__label">When scanning QR code - nothing happens or page just keeps loading.<br>What do i do ?
-                        </label>
-                        <div class="tab__content">
-                            <p>You may call our customer service representatives to concern this situation.
-                                You may be asked for a screenshot of the error to properly address the concern.</p>
-                        </div>
-                    </div>
-                    <div class="tab">
-                        <input type="radio" name="q-accordion" id="rd9" />
-                        <label for="rd9" class="tab__label">When scanning QR code I receive error message - transaction failed.<br>What do I do ?
                         </label>
                         <div class="tab__content">
                             <p>You may call our customer service representatives to concern this situation.
