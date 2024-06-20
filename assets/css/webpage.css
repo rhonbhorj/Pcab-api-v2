@@ -1244,6 +1244,17 @@ body {
 	font-size: 18px;
 }
 
+.tab__content p a{
+	color: rgba(0, 80, 122, .8);
+	font-weight: 600;
+	text-decoration: none;
+}
+
+.tab__content p a:hover{
+	color: rgba(0, 80, 122, 1);
+	text-decoration: underline;
+}
+
 .tab__close {
 	justify-content: flex-end;
 	padding: 0.5rem 1rem;

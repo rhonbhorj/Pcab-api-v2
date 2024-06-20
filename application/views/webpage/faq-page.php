@@ -164,7 +164,7 @@
                                 18. G-Xchange, Inc. (GCash)
                                 19. Maya Philippines, Inc.
 
-                                Complete list here: <a href="https://www.bsp.gov.ph/PaymentAndSettlement/QR%20Ph%20P2M%20Participants.pdf" target="_blank">Merchant List</a><br>
+                                <a href="https://www.bsp.gov.ph/PaymentAndSettlement/QR%20Ph%20P2M%20Participants.pdf" target="_blank">Complete list here.</a><br>
                             </p>
                         </div>
                     </div>
