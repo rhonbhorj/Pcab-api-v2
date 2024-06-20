@@ -167,6 +167,50 @@
     .custom-date-input input[type="date"]::-webkit-calendar-picker-indicator {
         display: none;
     }
+    
+/* Media query for tablets and smaller screens */
+@media only screen and (max-width: 1024px) {
+    .custom-button {
+        font-size: 12px; /* Reduce font size */
+        padding: 8px 16px; /* Adjust padding */
+    }
+}
+
+/* Media query for phones and smaller screens */
+@media only screen and (max-width: 768px) {
+    .custom-button {
+        font-size: 11px; 
+        padding: 6px 12px; 
+    }
+
+    .btn-generate-container button {
+        min-width: auto; 
+        width: 100%;
+    }
+
+    .date-input-group {
+        max-width: 100%; 
+        margin-right: 0; 
+    }
+
+    .form-group {
+        margin-top: -5rem;
+        display: ruby;
+        flex-direction: column; 
+        align-items: stretch; 
+    }
+
+    .date-label {
+        margin-bottom: 5px; 
+        margin-right: 0; 
+    }
+
+    .custom-date-input input[type="date"] {
+        width: 100%; 
+        margin-right: 0; 
+        display: ruby !important;
+    }
+}
 </style>
 <div class="row">
     <div class="col-md-12 grid-margin stretch-card m-0" id="toPrint">

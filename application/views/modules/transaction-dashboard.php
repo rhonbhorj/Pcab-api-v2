@@ -104,6 +104,37 @@
     justify-content: center;
     align-items: center;
   }
+    /* Adjustments for responsiveness */
+  @media (max-width: 992px) {
+    .report-inner-card {
+      height: auto;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .inner-card-text {
+      font-size: 14px; /* Example adjustment */
+    }
+  }
+
+  @media (max-width: 576px) {
+    .dashboard-container {
+      flex-direction: column; /* Stack cards vertically on small screens */
+    }
+    .report-inner-card {
+      height: auto;
+    }
+    .inner-card-text {
+      font-size: 12px; /* Further adjust text size for smaller screens */
+    }
+    #bar-chart::before,
+    #line-chart::before {
+      width: 180px; /* Adjust the pseudo element width for smaller screens */
+      height: 20px;
+      left: 200px;
+      top: 234px;
+    }
+  }
 </style>
 <div class="dashboard-container d-flex flex-direction-row">
   <div class="card w-100 p-3 pb-5">
