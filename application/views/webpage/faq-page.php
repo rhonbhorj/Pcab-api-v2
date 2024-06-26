@@ -163,14 +163,14 @@
                                 18. G-Xchange, Inc. (GCash)
                                 19. Maya Philippines, Inc.
 
-                                <a href="https://www.bsp.gov.ph/PaymentAndSettlement/QR%20Ph%20P2M%20Participants.pdf" target="_blank">Complete list here.</a><br>
+                                <a href="https://www.bsp.gov.ph/PaymentAndSettlement/QR%20Ph%20P2M%20Participants.pdf" target="_blank">Complete list here.</a>
                             </p>
                         </div>
                     </div>
                     <div class="tab">
                         <input type="radio" name="q-accordion" id="rd3" />
                         <label for="rd3" class="tab__label">Why does my e-wallet say "insufficient credit limit" when I have enough
-                            balance?<br>What should I do ?
+                            balance? What should I do ?
                         </label>
                         <div class="tab__content">
                             <p>QR Ph may transact above Php 50,000 but some e-wallet or mobile bank accounts have lower wallet limit, depending on the type of the account. A Business account has higher wallet limit than a Personal account.
@@ -261,5 +261,21 @@
 
         <!-- <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script> -->
 </body>
+
+
+<script>
+    let expanded = null
+    document.querySelectorAll("input[type='radio'][name='q-accordion']").forEach(elem => {
+        elem.addEventListener('click', evt => {
+            if (expanded != evt.target.id) {
+                expanded = evt.target.id
+                return
+            }
+
+            expanded = null
+            evt.target.checked = false
+        })
+    })
+</script>
 
 </html>
