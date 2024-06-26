@@ -1268,7 +1268,7 @@
                     </div>
                     <div class="col-sm">
                         <img style="margin-left:13rem; margin-bottom:-15px;" width="35%" height="35%" src="assets/images/sir_peter1.png" alt="logo" class="logo-dark" />
-                        <p style="position:relative;left:5.7rem;margin:0;margin-top:-80px;">Approved By: </p>
+                        <p style="position:relative;left:5.7rem;margin:0;margin-top:-80px;">Checked/Verified By: </p>
                         <p style="margin-top:55px;margin-left: 13.5rem;font-size: 15px; font-family: Arial, Helvetica, sans-serif;">Mischell A. Fernandez</p>
                         <p style=" margin-top:-20px; margin-left: 217px; font-family: Arial, Helvetica, sans-serif; font-size: 12px;">Admin Officer III /Cashier II</p>
                         <p style=" margin-top:-20px; margin-left: 255px; font-family: Arial, Helvetica, sans-serif; font-size: 12px;">CIAP - PCAB</p>
