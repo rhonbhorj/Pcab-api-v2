@@ -102,7 +102,7 @@
             <div class="left">
                 <p class="paragraph">Download the instructional guide on how to pay</p>
                 <p class="paragraph">your PCAB Fees via QRPh</p>
-                <a href="https://drive.google.com/file/d/1HPB6DCLcf52egN5qeVoW4ONqMSe03CjG/view?usp=drive_link" style="text-decoration: none" target="_blank"><button class="download"></button></a>
+                <a href="https://drive.google.com/file/d/1NqYs9SsDaq4Vh8Aobs2gQQ7dj3lPRZDc/view?usp=drive_link" style="text-decoration: none" target="_blank"><button class="download"></button></a>
             </div>
         </section>
 
