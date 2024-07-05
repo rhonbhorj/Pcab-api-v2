@@ -1,27 +1,10 @@
 <style>
-  #bar-chart {
-    width: 800px;
-    height: 300px;
-    position: relative;
-  }
-
-  #line-chart {
-    width: 800px;
-    height: 300px;
-    position: relative;
-  }
-
-  #bar-chart::before,
-  #line-chart::before {
-    content: "";
-    position: absolute;
-    display: block;
-    width: 240px;
-    height: 30px;
-    left: 305px;
-    top: 254px;
-    background: #FAFAFA;
-    box-shadow: 2px 2px 5px 0 #DDD;
+    #bar-chart-daily,
+  #line-chart-monthly,
+  #bar-chart-daily-count,
+  #line-chart-monthly-count {
+    width: 100%;
+    height: 400px;
   }
 
   .dashboard-container {
@@ -29,8 +12,6 @@
     flex-direction: row;
     flex-wrap: wrap;
   }
-
-  /*  */
 
   .report-inner-cards-wrapper {
     display: flex;
@@ -44,9 +25,6 @@
     font-size: 16px !important;
   }
 
-  /* .h4{
-    margin-top: -22px !important;
-  } */
   .report-inner-card {
     background: #00507A;
     height: 130px;
@@ -91,20 +69,12 @@
     background-color: #DC3545;
   }
 
-  #bar-chart-daily,
-  #line-chart-monthly,
-  #bar-chart-daily-count,
-  #line-chart-monthly-count {
-    width: 100%;
-    height: 300px;
-  }
-
   .chart-container {
     display: flex;
     justify-content: center;
     align-items: center;
   }
-    /* Adjustments for responsiveness */
+
   @media (max-width: 992px) {
     .report-inner-card {
       height: auto;
@@ -113,26 +83,43 @@
 
   @media (max-width: 768px) {
     .inner-card-text {
-      font-size: 14px; /* Example adjustment */
+      font-size: 14px;
+    }
+    #bar-chart-daily,
+    #line-chart-monthly,
+    #bar-chart-daily-count,
+    #line-chart-monthly-count {
+      height: 300px;
     }
   }
 
   @media (max-width: 576px) {
     .dashboard-container {
-      flex-direction: column; /* Stack cards vertically on small screens */
+      flex-direction: column;
     }
     .report-inner-card {
       height: auto;
     }
     .inner-card-text {
-      font-size: 12px; /* Further adjust text size for smaller screens */
+      font-size: 12px;
     }
-    #bar-chart::before,
-    #line-chart::before {
-      width: 180px; /* Adjust the pseudo element width for smaller screens */
-      height: 20px;
-      left: 200px;
-      top: 234px;
+    #bar-chart-daily,
+    #line-chart-monthly,
+    #bar-chart-daily-count,
+    #line-chart-monthly-count {
+      height: 250px;
+    }
+  }
+
+  @media (max-width: 320px) {
+    .inner-card-text {
+      font-size: 10px;
+    }
+    #bar-chart-daily,
+    #line-chart-monthly,
+    #bar-chart-daily-count,
+    #line-chart-monthly-count {
+      height: 200px;
     }
   }
 </style>
@@ -222,7 +209,7 @@
                   <div class="inner-card-text">
                     <span class="report-title">Daily Total No. of Transactions</span>
                     <h4 id='totalCount_today'></h4>
-                  </div>
+                  </div>  
                   <div class="inner-card-icon ">
                     <i class="icon-briefcase"></i>
                   </div>
