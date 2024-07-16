@@ -1,5 +1,5 @@
 <style>
-    #bar-chart-daily,
+  #bar-chart-daily,
   #line-chart-monthly,
   #bar-chart-daily-count,
   #line-chart-monthly-count {
@@ -85,6 +85,7 @@
     .inner-card-text {
       font-size: 14px;
     }
+
     #bar-chart-daily,
     #line-chart-monthly,
     #bar-chart-daily-count,
@@ -97,12 +98,15 @@
     .dashboard-container {
       flex-direction: column;
     }
+
     .report-inner-card {
       height: auto;
     }
+
     .inner-card-text {
       font-size: 12px;
     }
+
     #bar-chart-daily,
     #line-chart-monthly,
     #bar-chart-daily-count,
@@ -115,6 +119,7 @@
     .inner-card-text {
       font-size: 10px;
     }
+
     #bar-chart-daily,
     #line-chart-monthly,
     #bar-chart-daily-count,
@@ -176,12 +181,14 @@
           <div class="card">
             <div class="card-body">
               <h5>Daily Page Hits</h5>
+              <h6>Total Amount Transaction per Week: <span id="weeklyTotalTxnAmount"></span></h6>
               <div id="bar-chart-daily"></div>
             </div>
           </div>
           <div class="card">
             <div class="card-body">
               <h5>Monthly Page Hits</h5>
+              <h5> -</h5>
               <div id="line-chart-monthly"></div>
             </div>
           </div>
@@ -209,7 +216,7 @@
                   <div class="inner-card-text">
                     <span class="report-title">Daily Total No. of Transactions</span>
                     <h4 id='totalCount_today'></h4>
-                  </div>  
+                  </div>
                   <div class="inner-card-icon ">
                     <i class="icon-briefcase"></i>
                   </div>
@@ -237,13 +244,13 @@
       <div class="card-deck">
         <div class="card">
           <div class="card-body">
-            <h5>Daily Page Hits</h5>
+            <h5>Daily Page Hits</h5><h5>Total Success Transaction per Week: <span id="weeklyTotalCount"></span></h5>
             <div id="bar-chart-daily-count" style="margin-left: -20px;"></div>
           </div>
         </div>
         <div class="card">
           <div class="card-body">
-            <h5>Monthly Page Hits</h5>
+            <h5>Monthly Page Hits</h5><h5>-</h5>
             <div id="line-chart-monthly-count"></div>
           </div>
         </div>
@@ -292,6 +299,22 @@
 
           // Bar graph for Daily Total Txn Amount
           const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+
+
+          let weeklyTotalTxnAmount = 0;
+
+          daysOfWeek.forEach(day => {
+            if (responseData.all_transaction_this_week[day]) {
+              weeklyTotalTxnAmount += parseFloat((responseData.all_transaction_this_week[day].total_txn_amount ?? '0').replace(/,/g, ''));
+            }
+          });
+
+          console.log('Weekly Total Transaction Amount: ₱' + weeklyTotalTxnAmount);
+          // document.getElementById('weeklyTotalTxnAmount').textContent = weeklyTotalTxnAmount;
+          document.getElementById('weeklyTotalTxnAmount').textContent = '₱' + weeklyTotalTxnAmount.toLocaleString();
+
+
+
           const dailyDataArray = [
             ['Day', 'Success', {
               role: 'tooltip',
@@ -336,6 +359,22 @@
 
           // Bar graph for Daily Total Txn Count Success & Failed
           const daysOfWeekCount = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+
+
+          let weeklyTotalCount = 0;
+
+          daysOfWeek.forEach(day => {
+            if (responseData.all_transaction_this_week[day]) {
+              weeklyTotalCount += parseFloat((responseData.all_transaction_this_week[day].total_count_success ?? '0'));
+            }
+          });
+
+          console.log('Weekly Total Transaction Amount:' + weeklyTotalCount);
+          // document.getElementById('weeklyTotalTxnAmount').textContent = weeklyTotalTxnAmount;
+          document.getElementById('weeklyTotalCount').textContent = weeklyTotalCount.toLocaleString();
+
+
+
           const dailyDataArrayCount = [
             ['Day', 'Success', {
               role: 'tooltip',
@@ -501,8 +540,8 @@
             'LRF: ₱' + data.lrf + '<br>' +
             'Doc Stamp: ₱' + data.ds_tax + '<br>' +
             'NGSI Fee: ₱' + data.ngsi_convenience_fee + '<br><br>' +
-            
-          '</div>';
+
+            '</div>';
         }
 
         function createCustomTooltipCount(data) {
@@ -518,14 +557,14 @@
           }
 
           return '<div style="padding:15px;">' +
-            '<strong>' + formatted_date + '</strong><br><br>'+
+            '<strong>' + formatted_date + '</strong><br><br>' +
             'Total Count: ' + data.total_count + '<br><br>' +
             'Success: ' + data.total_count_success + '<br>' +
             'Failed: ' + data.total_count_failed + '<br>' +
             'Created: ' + data.total_count_created + '<br><br>' +
-            
 
-          '</div>';
+
+            '</div>';
         }
 
       })
