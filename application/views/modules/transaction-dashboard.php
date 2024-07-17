@@ -179,7 +179,7 @@
         <div class="card"
           style="border: 1px solid #e0e0e0; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border-radius: 10px;">
           <div class="card-body" style="padding: 20px;">
-            <div style="font-weight: normal;color: #000;background-color: #bfbfbf;padding: 8px;border-radius: 5px;">
+            <div style="font-weight: normal;color: #fff;background-color: #00507A;padding: 8px;border-radius: 5px;">
               <h5>Daily Page Hits</h5>
               <h6>Total Amount Transactions This Week: <span id="weeklyTotalTxnAmount"></span></h6>
             </div>
@@ -189,7 +189,7 @@
         <div class="card"
           style="border: 1px solid #e0e0e0; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border-radius: 10px;">
           <div class="card-body" style="padding: 20px;">
-            <div style="font-weight: normal;color: #000;background-color: #bfbfbf;padding: 8px;border-radius: 5px;">
+            <div style="font-weight: normal;color: #fff;background-color: #00507A;padding: 8px;border-radius: 5px;">
               <h5>Monthly Page Hits</h5>
               <h5>-</h5>
             </div>
@@ -249,7 +249,7 @@
         <div class="card"
           style="border: 1px solid #e0e0e0; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border-radius: 10px;">
           <div class="card-body" style="padding: 20px;">
-            <div style="font-weight: normal;color: #000;background-color: #bfbfbf;padding: 8px;border-radius: 5px;">
+            <div style="font-weight: normal;color: #fff;background-color: #00507A;padding: 8px;border-radius: 5px;">
               <h5 >Daily Page Hits</h5>
               <h5 >Total Success Transactions This Week: <span
                   id="weeklyTotalCount"></span></h5>
@@ -260,7 +260,7 @@
         <div class="card"
           style="border: 1px solid #e0e0e0; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border-radius: 10px;">
           <div class="card-body" style="padding: 20px;">
-            <div style="font-weight: normal;color: #000;background-color: #bfbfbf;padding: 8px;border-radius: 5px;">
+            <div style="font-weight: normal;color: #fff;background-color: #00507A;padding: 8px;border-radius: 5px;">
               <h5 >Monthly Page Hits</h5>
               <h5 >-</h5>
             </div>
