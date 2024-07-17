@@ -175,26 +175,30 @@
       </div>
     </section>
     <section>
-      <section>
-
-        <div class="card-deck">
-          <div class="card">
-            <div class="card-body">
+      <div class="card-deck">
+        <div class="card"
+          style="border: 1px solid #e0e0e0; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border-radius: 10px;">
+          <div class="card-body" style="padding: 20px;">
+            <div style="font-weight: normal;color: #000;background-color: #bfbfbf;padding: 8px;border-radius: 5px;">
               <h5>Daily Page Hits</h5>
-              <h6>Total Amount Transaction per Week: <span id="weeklyTotalTxnAmount"></span></h6>
-              <div id="bar-chart-daily"></div>
+              <h6>Total Amount Transactions This Week: <span id="weeklyTotalTxnAmount"></span></h6>
             </div>
-          </div>
-          <div class="card">
-            <div class="card-body">
-              <h5>Monthly Page Hits</h5>
-              <h5> -</h5>
-              <div id="line-chart-monthly"></div>
-            </div>
+            <div id="bar-chart-daily" style="margin-top: 20px;"></div>
           </div>
         </div>
-      </section>
+        <div class="card"
+          style="border: 1px solid #e0e0e0; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border-radius: 10px;">
+          <div class="card-body" style="padding: 20px;">
+            <div style="font-weight: normal;color: #000;background-color: #bfbfbf;padding: 8px;border-radius: 5px;">
+              <h5>Monthly Page Hits</h5>
+              <h5>-</h5>
+            </div>
+            <div id="line-chart-monthly" style="margin-top: 20px;"></div>
+          </div>
+        </div>
+      </div>
     </section>
+
 
     <section>
       <div class="row">
@@ -242,16 +246,25 @@
 
     <section>
       <div class="card-deck">
-        <div class="card">
-          <div class="card-body">
-            <h5>Daily Page Hits</h5><h5>Total Success Transaction per Week: <span id="weeklyTotalCount"></span></h5>
-            <div id="bar-chart-daily-count" style="margin-left: -20px;"></div>
+        <div class="card"
+          style="border: 1px solid #e0e0e0; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border-radius: 10px;">
+          <div class="card-body" style="padding: 20px;">
+            <div style="font-weight: normal;color: #000;background-color: #bfbfbf;padding: 8px;border-radius: 5px;">
+              <h5 >Daily Page Hits</h5>
+              <h5 >Total Success Transactions This Week: <span
+                  id="weeklyTotalCount"></span></h5>
+            </div>
+            <div id="bar-chart-daily-count" style="margin-left: -20px; margin-top: 20px;"></div>
           </div>
         </div>
-        <div class="card">
-          <div class="card-body">
-            <h5>Monthly Page Hits</h5><h5>-</h5>
-            <div id="line-chart-monthly-count"></div>
+        <div class="card"
+          style="border: 1px solid #e0e0e0; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border-radius: 10px;">
+          <div class="card-body" style="padding: 20px;">
+            <div style="font-weight: normal;color: #000;background-color: #bfbfbf;padding: 8px;border-radius: 5px;">
+              <h5 >Monthly Page Hits</h5>
+              <h5 >-</h5>
+            </div>
+            <div id="line-chart-monthly-count" style="margin-top: 20px;"></div>
           </div>
         </div>
       </div>
@@ -265,7 +278,7 @@
   }, 30000);
 </script> -->
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
+  document.addEventListener('DOMContentLoaded', function () {
     const url = '<?php echo base_url() ?>/TransactionReport/dasboardReportData';
 
     fetch(url)
