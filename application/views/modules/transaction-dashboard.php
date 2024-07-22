@@ -181,7 +181,7 @@
           <div class="card-body" style="padding: 20px;">
             <div style="font-weight: normal;color: #fff;background-color: #00507A;padding: 8px;border-radius: 5px;">
               <h5>Daily Page Hits</h5>
-              <h6>Total Amount Transactions This Week: <span id="weeklyTotalTxnAmount"></span></h6>
+              <h6>Total Amount of Transactions This Week: <span id="weeklyTotalTxnAmount"></span></h6>
             </div>
             <div id="bar-chart-daily" style="margin-top: 20px;"></div>
           </div>
@@ -251,7 +251,7 @@
           <div class="card-body" style="padding: 20px;">
             <div style="font-weight: normal;color: #fff;background-color: #00507A;padding: 8px;border-radius: 5px;">
               <h5 >Daily Page Hits</h5>
-              <h5 >Total Success Transactions This Week: <span
+              <h5 >Total Success of Transactions This Week: <span
                   id="weeklyTotalCount"></span></h5>
             </div>
             <div id="bar-chart-daily-count" style="margin-left: -20px; margin-top: 20px;"></div>
