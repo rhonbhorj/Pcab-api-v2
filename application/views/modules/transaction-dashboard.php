@@ -181,7 +181,7 @@
           <div class="card-body" style="padding: 20px;">
             <div style="font-weight: normal;color: #fff;background-color: #00507A;padding: 8px;border-radius: 5px;">
               <h5>Daily Page Hits</h5>
-              <h6>Total Amount Transactions This Week: <span id="weeklyTotalTxnAmount"></span></h6>
+              <h6>Total Amount (Weekly): <span id="weeklyTotalTxnAmount"></span></h6>
             </div>
             <div id="bar-chart-daily" style="margin-top: 20px;"></div>
           </div>
@@ -325,8 +325,6 @@
           console.log('Weekly Total Transaction Amount: ₱' + weeklyTotalTxnAmount);
           // document.getElementById('weeklyTotalTxnAmount').textContent = weeklyTotalTxnAmount;
           document.getElementById('weeklyTotalTxnAmount').textContent = '₱' + weeklyTotalTxnAmount.toLocaleString();
-
-
 
           const dailyDataArray = [
             ['Day', 'Success', {
