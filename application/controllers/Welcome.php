@@ -12,38 +12,8 @@ class Welcome extends CI_Controller
 
     }
 
-    public function genqr()
-    {
 
-        $this->load->view( 'test.php' );
-    }
 
-    public function getTransactions()
-    {
-        $curl = curl_init();
-
-        curl_setopt_array(
-            $curl,
-            array(
-                CURLOPT_URL => 'http://localhost/pcab_dev/all-transaction-data',
-                CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_ENCODING => '',
-                CURLOPT_MAXREDIRS => 10,
-                CURLOPT_TIMEOUT => 0,
-                CURLOPT_FOLLOWLOCATION => true,
-                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-                CURLOPT_CUSTOMREQUEST => 'GET',
-                CURLOPT_HTTPHEADER => array(
-                    'Cookie: ci_session=mi6ri7c8uiaq39q0tr4fji010bo1hgti'
-                ),
-            )
-        );
-
-        $response = curl_exec( $curl );
-
-        curl_close( $curl );
-        echo $response;
-    }
 
     public function index()
     {
@@ -119,10 +89,7 @@ class Welcome extends CI_Controller
         }
     }
 
-    // public function test()
-    // {
-    // 	$this->load->view( 'hello' );
-    // }
+
 
     public function redirect()
     {
@@ -146,35 +113,6 @@ class Welcome extends CI_Controller
         echo json_encode( $query->result_array() );
     }
 
-    public function get_data()
-    {
-
-        $curl = curl_init();
-
-        curl_setopt_array( $curl, array(
-            CURLOPT_URL => 'https://pcab-dev.netglobalsolutions.net/all-transaction-data',
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => '',
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 0,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => 'GET',
-            CURLOPT_HTTPHEADER => array(
-                'Cookie: ci_session=ra3d7b0eq8qaikr98i31ueqptbpi1vku'
-            ),
-        ) );
-
-        $response = curl_exec( $curl );
-
-        // $decodedArray = json_decode( $response, true );
-
-        $response = json_encode( $response, true );
-        curl_close( $curl );
-        // print_r( $decodedArray );
-        // echo $decodedArray[ 'status' ];
-        echo $response;
-    }
 
     private function is_user_logged_in()
     {

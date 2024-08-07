@@ -25,6 +25,11 @@ class Middleware extends REST_Controller
         header( 'Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With' );
     }
 
+
+
+
+
+    
     public function index_post()
  {
 
@@ -130,7 +135,7 @@ class Middleware extends REST_Controller
             }
 
             foreach ( $data[ 'data' ][ 'other_details' ] as $detail ) {
-                if ( $detail[ 'item' ] != 'ngsi_convenience_fee' && isset( $detail[ 'amount' ] ) ) {
+                if ( $detail[ 'item' ] != 'ngsi_convenience_fee' && isset( $detail[ 'amount' ] ) && $detail[ 'item' ] != 'name_of_payor' && $detail[ 'item' ] != 'particulars' ) {
                     $totalAmount += is_numeric( $detail[ 'amount' ] ) ? $detail[ 'amount' ] : 0;
                 }
             }

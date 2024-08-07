@@ -42,6 +42,7 @@ class Dashboard_repo extends CI_Model
         // $data->row_array() ? $data->row_array() : false;
         return $data->num_rows() > 0 ? $data->row_array() : false;
     }
+    
     public function ngsi_fee_today()
     {
         date_default_timezone_set('Asia/Manila');
@@ -309,73 +310,6 @@ class Dashboard_repo extends CI_Model
             $get_date[$i]['date'] = $likePatterns1[$i];
         }
 
-        //     for ( $i = 0; $i < $count; $i ++ ) {
-
-
-
-
-        //         $qry_select = "SELECT ngsi_convenience_fee AS ngsi_fee 
-        //         FROM transactions  where   last_modified like " .  $likePatterns[ $i ] . " and  status='SUCCESS'";
-
-        //             $qry_result = $this->db->query( $qry_select );
-
-        //          $ngsi_fee =$qry_result->num_rows() > 0 ? $qry_result->result_array() : false;
-
-        //          $sum = 0.0;
-
-        //          if(  $ngsi_fee==false){
-        //             $ngsi_fee_data=0;
-
-        //         }else{
-        //             foreach ($ngsi_fee as $item) {
-        //                 $fee = (float) $item['ngsi_fee'];
-        //                 $rounded_fee = $this->round_half_up($fee, 2);
-
-        //                 $sum += $rounded_fee;
-        //             }
-        //             $ngsi_fee_data=number_format($sum, 2, '.', '');
-        //         } 
-
-        //           $sum_ngsi_fee=      $ngsi_fee_data; 
-
-
-        //         $sql = 'SELECT count(txn_amount) as total_count,
-        //         sum(txn_amount)  as total_txn_amount,
-        //         sum(fees_pcab) as pcab_fee,
-        //         sum(legal_research_fund) as lrf,
-        //         sum(ngsi_convenience_fee) as ngsi_convenience_fee,
-        //         sum(document_stamp_tax) as ds_tax
-
-        //          FROM transactions where  last_modified like ' . $likePatterns[ $i ] . " and status='SUCCESS'";
-
-        //         $data = $this->db->query( $sql );
-        //         $ngsi_data_sum =$data->num_rows() > 0 ? $data->row_array() : false;
-        //         $resultArray[ $i ][ 'ds_tax' ] = $data->num_rows() > 0 ?number_format( ( float )$data->row()->ds_tax, 2, '.', ',' ) : false;
-        //         // $resultArray[ $i ]  $data->num_rows() > 0 ? $data->row_array() : false;
-        //         $resultArray[ $i ][ 'total_count_success' ] = $data->num_rows() > 0 ?( int ) $data->row()->total_count : false;
-        //         $resultArray[ $i ][ 'total_txn_amount' ] = $data->num_rows() > 0 ?number_format( ( float )$data->row()->total_txn_amount, 2, '.', ',' ) : false;
-        //         $resultArray[ $i ][ 'pcab_fee' ] = $data->num_rows() > 0 ? number_format( ( float )$data->row()->pcab_fee, 2, '.', ',' ) : false;
-        //         $resultArray[ $i ][ 'lrf' ] = $data->num_rows() > 0 ?number_format( ( float )$data->row()->lrf, 2, '.', ',' ) : false;
-        //         // $resultArray[ $i ][ 'ngsi_convenience_fee' ] = $data->num_rows() > 0 ?number_format( ( float )$data->row()->ngsi_convenience_fee, 2, '.', ',' ) : false;
-        //         $txn_amount=$ngsi_data_sum['pcab_fee'] +$ngsi_data_sum['ds_tax']+$ngsi_data_sum['lrf']+$sum_ngsi_fee;
-        //         $resultArray[ $i ][ 'ngsi_convenience_fee' ] = number_format( ( float )$sum_ngsi_fee, 2, '.', ',' );
-        //         $qry = 'SELECT count(txn_amount) as total_count_failed,sum(txn_amount) as sum_amount FROM transactions where  last_modified like ' . $likePatterns[ $i ] . " and status='FAILED'";
-        //         $data2 = $this->db->query( $qry );
-        //         $resultArray2[ $i ][ 'total_count_failed' ] = $data2->num_rows() > 0 ?( int )$data2->row()->total_count_failed : false;
-        //         // $resultArray2[ $i ][ 'sum_amount' ] = $data2->num_rows() > 0 ?( int )$data2->row()->sum_amount : false;
-
-        //         $qry3 = 'SELECT count(txn_amount) as total_count_created FROM transactions where  last_modified like ' . $likePatterns[ $i ] . " and status='STARTED'";
-        //         $data3 = $this->db->query( $qry3 );
-        //         $resultArray3[ $i ][ 'total_count_created' ] = $data3->num_rows() > 0 ?( int ) $data3->row()->total_count_created : false;
-
-
-        //         $qry4 = 'SELECT count(txn_amount) as total_count FROM transactions where  last_modified like  '. $likePatterns[ $i ] . " ";
-        //         $data4 = $this->db->query( $qry4 );
-        //         $resultArray4[ $i ][ 'total_count' ] = $data4->num_rows() > 0 ?( int ) $data4->row()->total_count : false;
-
-
-
-        // }
 
 
         foreach ($months as $date) {

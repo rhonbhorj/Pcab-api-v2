@@ -44,7 +44,7 @@ class ApiService
     {
         $endpoint = $this->endpoint_base_url . '/pgw/api/v1/transactions/qr-codes/generate/';
 
-        $dataToSend = $data;
+       
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $endpoint);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -54,7 +54,7 @@ class ApiService
             'Content-Type: application/json'
         ]);
         curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($dataToSend, JSON_PRESERVE_ZERO_FRACTION));
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data, JSON_PRESERVE_ZERO_FRACTION));
 
         $response = curl_exec($ch);
         $http_status_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
@@ -79,26 +79,6 @@ class ApiService
 
     public function call_back($data, $endpoint)
     {
-     
-
-  
-
-        // curl_setopt_array($curl, array(
-        //     CURLOPT_URL => $endpoint,
-        //     CURLOPT_RETURNTRANSFER => true,
-        //     CURLOPT_ENCODING => '',
-        //     CURLOPT_MAXREDIRS => 10,
-        //     CURLOPT_TIMEOUT => 0,
-        //     CURLOPT_FOLLOWLOCATION => true,
-        //     CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-        //     CURLOPT_CUSTOMREQUEST => 'POST',
-        //     CURLOPT_POSTFIELDS =>json_encode($data),
-        //     CURLOPT_HTTPHEADER => array(
-        //       'Content-Type: application/json'
-        //     ),
-        //   ));
-          
-        //   $response = curl_exec($curl);
 
         $curl = curl_init();
 
