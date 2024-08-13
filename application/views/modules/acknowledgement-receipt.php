@@ -938,7 +938,7 @@
 
         var modalTableHead = document.createElement('thead');
         modalTableHead.classList.add('thead'); // Added light background for the table head
-        modalTableHead.innerHTML = ` <tr><th colspan="9" class="text-center">Collection</th></tr><tr><th style="width:${100 / 9}%;" rowspan="2">Date & Time</th><th style="width:${100 / 9}%;" rowspan="2">Date Created & Time</th><th style="width:${100 / 9}%;" rowspan="2">AR Number</th><th style="width:${100 / 9}%;" rowspan="2">Name of Payor</th><th style="width:${100 / 9}%;" rowspan="2">Reference Number</th><th style="width:${100 / 9}%;">CIAP-PCAB</th><th style="width:${100 / 9}%;">LRF</th><th style="width:${100 / 9}%;">DST</th><th style="width:${100 / 9}%;" rowspan="2">Total Collection</th></tr><tr><th>Account No.<br/>(0052-1684-30)</th><th>Account No.<br/>(3402-2866-00)</th><th>Account No.<br/>(3402-2866-19)</th></tr>`;
+        modalTableHead.innerHTML = ` <tr><th colspan="9" class="text-center">Collection</th></tr><tr><th style="width:${100 / 9}%;" rowspan="2">Date & Time</th><th style="width:${100 / 9}%;" rowspan="2">Date Created & Time</th><th style="width:${100 / 9}%;" rowspan="2">AR Number</th><th style="width:${100 / 9}%;" rowspan="2">Name of Payor</th><th style="width:${100 / 9}%;" rowspan="2">Reference Number</th><th style="width:${100 / 9}%;">CIAP-PCAB</th><th style="width:${100 / 9}%;">LRF</th><th style="width:${100 / 9}%;">DST</th><th style="width:${100 / 9}%;" rowspan="2">Total Collection</th></tr><tr><th>Account No.<br/>(0052-1684-30)</th><th>Account No.<br/>(3402-2866-19)</th><th>Account No.<br/>(3402-2866-00)</th></tr>`;
 
         var modalTableBody = document.createElement('tbody');
 
@@ -1143,8 +1143,8 @@
             <th style="text-wrap:nowrap; border-top: none;"></th>
             <th style="text-wrap:nowrap; border-top: none;"></th>
             <th>Account No.<br/>(0052-1684-30)</th>
-            <th>Account No.<br/>(3402-2866-00)</th>
             <th>Account No.<br/>(3402-2866-19)</th>
+            <th>Account No.<br/>(3402-2866-00)</th>
             <th style="text-wrap:nowrap; border-top: none;"></th>
         </tr>
         </thead>
