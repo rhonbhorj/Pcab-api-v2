@@ -319,7 +319,7 @@ class Dashboard_repo extends CI_Model
         }
 
         foreach ($dayresult as $index => $day) {
-            $result[$day]  = $resultArray[$index] + $resultArray2[$index] + $resultArray3[$index] + $resultArray4[$index];
+            $result[$day]  = $resultArray[$index] + $resultArray2[$index] + $resultArray3[$index] + $resultArray4[$index] + array ('month' => $day);
         }
         return $result;
 
