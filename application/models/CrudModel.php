@@ -33,7 +33,7 @@ class CrudModel extends CI_Model
     public function get_all_data()
  {
 
-        $sql = 'SELECT * FROM transactions where status = "SUCCESS" ORDER BY trans_id DESC';
+        $sql = 'SELECT * FROM transactions where status = "SUCCESS" ORDER BY last_modified DESC';
         $Q = $this->db->query( $sql );
         return $Q->row_array() ? $Q->result_array() : false;
     }
