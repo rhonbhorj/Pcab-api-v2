@@ -81,3 +81,4 @@ $route['all-transaction-data'] = 'middleware/all_transaction_data';
 $route['logout'] = 'login/logout';
 
 $route['FAQ'] = 'welcome/faq_page';
+$route['Maintenance'] = 'welcome/maintenance';

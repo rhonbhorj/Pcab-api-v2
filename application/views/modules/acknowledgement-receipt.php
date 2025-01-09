@@ -238,84 +238,86 @@
                                             class="btn-sm btn-outline-dark mr-3 mb-2 rounded preview-btn-modal">Preview</button>
                                         <button type="button"
                                             class="download-btn-modal btn-sm btn-outline-dark mr-3 mb-2 rounded">Download</button>
-                                        <?php 
+                                        <?php
                                         // if ($_SESSION['usertype'] == "SUPERADMIN")
-                                        //     echo '<button type="button" class="btn-sm btn-outline-dark mr-3 mb-2 rounded " data-toggle="modal" data-target="#Submit_deposit" id="submit-deposit" data-backdrop="static" data-keyboard="false">Submit Deposit</button>' ?>
+                                        //     echo '<button type="button" class="btn-sm btn-outline-dark mr-3 mb-2 rounded " data-toggle="modal" data-target="#Submit_deposit" id="submit-deposit" data-backdrop="static" data-keyboard="false">Submit Deposit</button>' 
+                                        ?>
 
 
-                                        </div>
                                     </div>
                                 </div>
                             </div>
-
                         </div>
-                        <div class=" col-mb-3 mr-3 mt-3">
-                            <button class="btn-lg btn-outline-dark rounded border-0 w-50" data-toggle="modal"
-                                data-target="#exportModal">E-Collection</button>
-                            <div class="modal fade" id="exportModal" tabindex="-1" role="dialog"
-                                aria-labelledby="exportModalLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-lg" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="exportModalLabel">E-Collection </h5>
-                                            <button type="button" class="close text-right pr-3" data-dismiss="modal"
-                                                aria-hidden="true">&times;</button>
-                                        </div>
-                                        <div class="modal-body  bg-white pb-3">
-                                            <div class="form-group">
-                                                <label for="e-collection_start_date" class="date-label">Start Date:</label>
-                                                <div class="input-group date date-input-group" id="startDatePicker">
-                                                    <input type="text" class="form-control" name="e-collection_start_date"
-                                                        id="e-collection_start_date"
-                                                        style="z-index: 2; background:#fff;border:1px solid black; cursor:pointer;"
-                                                        readonly placeholder="mm /dd /yyyy">
-                                                    <span class="input-group-addon" id="startDateIcon">
-                                                        <i class="glyphicon glyphicon-calendar"></i>
-                                                    </span>
-                                                </div>
 
-                                                <label for="e-collection_end_date" class="date-label">End Date:</label>
-                                                <div class="input-group date date-input-group" id="endDatePicker">
-                                                    <input type="text" class="form-control" name="e-collection_end_date"
-                                                        id="e-collection_end_date"
-                                                        style="background:#fff;border:1px solid black;cursor:pointer;"
-                                                        readonly placeholder="mm /dd / yyyy">
-                                                    <span class="input-group-addon" id="endDateIcon">
-                                                        <i class="glyphicon glyphicon-calendar"></i>
-                                                    </span>
-                                                </div>
+                    </div>
+                    <div class=" col-mb-3 mr-3 mt-3">
+                        <button class="btn-lg btn-outline-dark rounded border-0 w-50" data-toggle="modal"
+                            data-target="#exportModal">E-Collection</button>
+                        <div class="modal fade" id="exportModal" tabindex="-1" role="dialog"
+                            aria-labelledby="exportModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-lg" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exportModalLabel">E-Collection </h5>
+                                        <button type="button" class="close text-right pr-3" data-dismiss="modal"
+                                            aria-hidden="true">&times;</button>
+                                    </div>
+                                    <div class="modal-body  bg-white pb-3">
+                                        <div class="form-group">
+                                            <label for="e-collection_start_date" class="date-label">Start Date:</label>
+                                            <div class="input-group date date-input-group" id="startDatePicker">
+                                                <input type="text" class="form-control" name="e-collection_start_date"
+                                                    id="e-collection_start_date"
+                                                    style="z-index: 2; background:#fff;border:1px solid black; cursor:pointer;"
+                                                    readonly placeholder="mm /dd /yyyy">
+                                                <span class="input-group-addon" id="startDateIcon">
+                                                    <i class="glyphicon glyphicon-calendar"></i>
+                                                </span>
                                             </div>
 
-                                            <table id="EcollectTable" class="table table-striped text-center" width="100%">
-                                                <thead>
-                                                    <tr>
+                                            <label for="e-collection_end_date" class="date-label">End Date:</label>
+                                            <div class="input-group date date-input-group" id="endDatePicker">
+                                                <input type="text" class="form-control" name="e-collection_end_date"
+                                                    id="e-collection_end_date"
+                                                    style="background:#fff;border:1px solid black;cursor:pointer;"
+                                                    readonly placeholder="mm /dd / yyyy">
+                                                <span class="input-group-addon" id="endDateIcon">
+                                                    <i class="glyphicon glyphicon-calendar"></i>
+                                                </span>
+                                            </div>
+                                        </div>
 
-                                                        <th colspan="3" class="text-center">Electronic Acknowledgement
-                                                            Receipt</th>
+                                        <table id="EcollectTable" class="table table-striped text-center" width="100%">
+                                            <thead>
+                                                <tr>
 
-                                                        <th rowspan="3" class="text-center">Payor</th>
-                                                        <th rowspan="3" class="text-center">Particulars</th>
+                                                    <th colspan="3" class="text-center">Electronic Acknowledgement
+                                                        Receipt</th>
 
-                                                        <th colspan="5" class="text-center">Amount</th>
-                                                    </tr>
-                                                    <tr>
+                                                    <th rowspan="3" class="text-center">Payor</th>
+                                                    <th rowspan="3" class="text-center">Particulars</th>
+
+                                                    <th colspan="5" class="text-center">Amount</th>
+                                                </tr>
+                                                <tr>
                                                     <th rowspan="2" class="text-center">Date Created<i
-                                                                class="m-0">(mm/dd/yyyy)</i></th>
-                                                        <th rowspan="2" class="text-center">Date<i
-                                                                class="m-0">(mm/dd/yyyy)</i></th>
-                                                        <th rowspan="2" class="text-center">Time</th>
-                                                        <th rowspan="2" class="text-center">AR Number</th>
-                                                        <th rowspan="2" class="text-center">Total per AR</th>
-                                                        <th colspan="3" class="text-center">Breakdown Collection</th>
-                                                    </tr>
-                                                    <tr>
-                                                        <th class="text-center">CIAP-PCAB</th>
-                                                        <th colspan="1" class="text-center">DST</th>
-                                                        <th colspan="1" class="text-center">LRF</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody class="border-bottom-1">
+                                                            class="m-0">(mm/dd/yyyy)</i></th>
+                                                    <th rowspan="2" class="text-center">Date<i
+                                                            class="m-0">(mm/dd/yyyy)</i></th>
+                                                    <th rowspan="2" class="text-center">Time</th>
+                                                    <th rowspan="2" class="text-center">AR Number</th>
+                                                    <th rowspan="2" class="text-center">Total per AR</th>
+                                                    <th colspan="3" class="text-center">Breakdown Collection</th>
+                                                </tr>
+                                                <tr>
+                                                    <th class="text-center">CIAP-PCAB</th>
+                                                    <th colspan="1" class="text-center">DST</th>
+                                                    <th colspan="1" class="text-center">LRF</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="border-bottom-1">
 
+<<<<<<< HEAD
                                                     <?php
                                         // $fmt = new NumberFormatter('en-US', NumberFormatter::CURRENCY);
                                         // $fmt->setPattern(str_replace('¤#', "", $fmt->getPattern()));
@@ -344,6 +346,36 @@
                                             }
                                         }
                                         ?>
+=======
+                                                <?php
+                                                $fmt = new NumberFormatter('en-US', NumberFormatter::CURRENCY);
+                                                $fmt->setPattern(str_replace('¤#', "", $fmt->getPattern()));
+                                                if (empty($data)) {
+                                                    // echo "<tr><td colspan='11'>No data available</td></tr>";
+                                                } else {
+                                                    $total = ["totalAR" => 0, "totalFee" => 0, "totalDST" => 0, "totalLRF" => 0];
+                                                    foreach ($data as $row) {
+                                                        echo "<tr>";
+                                                        echo "<td>" .  date_format(date_create($row["date_created"]), "m/d/Y H:i:s") . "</td>";
+                                                        echo "<td>" . date_format(date_create($row['last_modified']), "m/d/Y") . "</td>";
+                                                        echo "<td>" . date("H:i:s", strtotime($row["last_modified"])) . "</td>";
+                                                        echo "<td>" . $row["ar_no"] . "</td>";
+                                                        echo '<td style="text-wrap: wrap;">' . $row["name_of_payor"] . '</td>';
+                                                        echo "<td>" . $row["particulars"] . "</td>";
+                                                        $total_per_AR = $row["fees_pcab"] + $row["document_stamp_tax"] + $row["legal_research_fund"];
+                                                        $total["totalAR"] += $total_per_AR;
+                                                        $total["totalFee"] += $row["fees_pcab"];
+                                                        $total["totalDST"] += $row["document_stamp_tax"];
+                                                        $total["totalLRF"] += $row["legal_research_fund"];
+                                                        echo "<td class='text-right'>" . $fmt->formatCurrency(floatval($total_per_AR), "PHP") . "</td>";
+                                                        echo "<td class='text-right'>" . $fmt->formatCurrency(floatval($row["fees_pcab"]), "PHP") . "</td>";
+                                                        echo "<td class='text-right'>" . $fmt->formatCurrency(floatval($row["document_stamp_tax"]), "PHP") . "</td>";
+                                                        echo "<td class='text-right'>" . $fmt->formatCurrency(floatval($row["legal_research_fund"]), "PHP") . "</td>";
+                                                        echo "</tr>";
+                                                    }
+                                                }
+                                                ?>
+>>>>>>> c6ad2852b17f2a0b7b9a320d73062f9f691860af
 
 
                                             </tbody>
@@ -577,8 +609,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.6/jspdf.plugin.autotable.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
 <script>
-    $(document).ready(function () {
-        $(function () {
+    $(document).ready(function() {
+        $(function() {
             $('[data-toggle="tooltip"]').tooltip()
         })
 
@@ -619,7 +651,7 @@
                 exportOptions: {
                     columns: ':not(:last-child)', // Exclude the last column (Action)
                     format: {
-                        body: function (data, row, column, node) {
+                        body: function(data, row, column, node) {
                             // Exclude peso sign from currency cells (assuming columns 8 to 11 are currency columns)
                             if (column >= 7 && column <= 11) {
                                 return data.replace(/₱/g, ''); // Replace peso sign
@@ -631,12 +663,12 @@
             }]
         });
 
-        $('.search-btn').on('click', function () {
+        $('.search-btn').on('click', function() {
             table.draw();
         });
 
         // Modify the start and end date filtering to only apply to the specific DataTable
-        $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
+        $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
             if (settings.nTable.id !== 'myTable') {
                 return true;
             }
@@ -662,12 +694,12 @@
         table.draw();
 
         // Update table on date change
-        $('#startDate, #endDate').on('change', function () {
+        $('#startDate, #endDate').on('change', function() {
             table.draw();
         });
     });
 
-    $(document).ready(function () {
+    $(document).ready(function() {
         // Tooltip initialization
         $('[data-toggle="tooltip"]').tooltip();
 
@@ -702,16 +734,11 @@
 
                     }
                 },
-                customize: function (xlsx) {
+                customize: function(xlsx) {
                     let sheet = xlsx.xl.worksheets['sheet1.xml'];
                     let downrows = 2;
                     let clRow = $('row', sheet);
-                    let total = {
-                        ar_total: 0,
-                        pcab: 0,
-                        dst: 0,
-                        lrf: 0
-                    }
+
                     const cToMerge = [{
                         start: "A2",
                         to: "B2"
@@ -723,7 +750,13 @@
                         to: "H3"
                     }];
 
-                    clRow.each(function () {
+                    const alignText = {
+                        right: 52,
+                        center: 51,
+                        left: 50
+                    }
+
+                    clRow.each(function() {
                         let attr = $(this).attr('r');
                         if (attr == 1) return;
                         let ind = parseInt(attr);
@@ -732,7 +765,7 @@
                     });
 
 
-                    $('row c ', sheet).each(function () {
+                    $('row c ', sheet).each(function() {
                         let attr = $(this).attr('r');
                         if (attr == "A1") return;
                         let pre = attr.substring(0, 1);
@@ -742,31 +775,48 @@
                     });
 
                     function collectTotal(total_prop) {
-                        const props = Object.keys(total);
                         const rows = $("row", sheet.childNodes[0].childNodes[1])
-                        for (let i = 0; i < rows.length; i++) {
-                            const data = $("c v", rows[i])
-                            if (!data.length) continue;
-                            total[total_prop] += parseFloat(data[props.indexOf(total_prop)].textContent)
+
+                        const col_index = {
+                            ar_total: 6,
+                            pcab: 7,
+                            dst: 8,
+                            lrf: 9,
                         }
-                        return total[total_prop]
+                        let amounts = {}
+
+                        dataTable
+                            .data()
+                            .filter(function(value, index) {
+                                return !!filterEcollection(value[1]);
+                            }).each((d, index) => {
+                                if (!amounts.hasOwnProperty(d[col_index[total_prop]]))
+                                    amounts[d[col_index[total_prop]]] = {
+                                        total: 0,
+                                        count: 0
+                                    }
+
+                                amounts[d[col_index[total_prop]]].total += parseFloat(d[col_index[total_prop]].replaceAll(",", ""))
+                                amounts[d[col_index[total_prop]]].count++
+                            })
+
+                        return Object.keys(amounts).reduce((acc, key) => acc += amounts[key].total, 0)
                     }
 
-                    function Addrow(index, data) {
-                        msg = '<row r="' + index + '">'
-                        for (i = 0; i < data.length; i++) {
+                    function Addrow(row, data) {
+                        msg = '<row r="' + row + '">'
+                        for (let i = 0; i < data.length; i++) {
                             let {
                                 k,
                                 v
                             } = data[i]
 
                             if (data[i].currency) {
-                                msg += `<c r="${k + index}" s="62"><v>${v}</v></c>`
+                                msg += `<c r="${k + row}" s="64"><v>${v}</v></c>`
                                 continue;
                             }
 
-
-                            msg += `<c t="inlineStr" r="` + (k + index) + `" s='${data[i]['text-right'] ? "52" : "2"}'>`;
+                            msg += `<c t="inlineStr" r="` + (k + row) + `" s='${data[i]['right'] ? alignText.right : "2"}'>`;
                             msg += '<is>';
                             msg += '<t>' + v + '</t>';
                             msg += '</is>';
@@ -799,24 +849,25 @@
                         k: 'F',
                         v: 'Collection Breakdown'
                     }]);
+
                     const footer = Addrow(sheet.childNodes[0].childNodes[1].childElementCount + 3, [{
-                        k: 'E',
-                        v: 'Total:',
-                        'text-right': true
-                    }, {
                         k: 'F',
+                        v: 'Total:',
+                        right: true
+                    }, {
+                        k: 'G',
                         v: collectTotal("ar_total"),
                         currency: true
                     }, {
-                        k: 'G',
+                        k: 'H',
                         v: collectTotal("pcab"),
                         currency: true
                     }, {
-                        k: 'H',
+                        k: 'I',
                         v: collectTotal("dst"),
                         currency: true
                     }, {
-                        k: 'I',
+                        k: 'J',
                         v: collectTotal("lrf"),
                         currency: true
                     }]);
@@ -830,15 +881,10 @@
             }]
         });
 
-        // Add search functionality
-        $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
-            if (settings.nTable.id !== 'EcollectTable') {
-                return true;
-            }
+        function filterEcollection(date) {
             var e_start_Date = $('#e-collection_start_date').datepicker('getDate');
             var e_ende_date = $('#e-collection_end_date').datepicker('getDate');
-            var E_CurrentDate = new Date(data[1]);
-
+            var E_CurrentDate = new Date(date);
             if (
                 (e_start_Date === null || e_ende_date === null) ||
                 (isNaN(e_start_Date) || isNaN(e_ende_date)) ||
@@ -846,11 +892,20 @@
             ) {
                 return true;
             }
+        }
+
+        // Add search functionality
+        $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
+            if (settings.nTable.id !== 'EcollectTable') {
+                return true;
+            }
+
+            return !!filterEcollection(data[1])
 
         });
 
         // Update table on date change
-        $('#e-collection_start_date, #e-collection_end_date').on('change', function () {
+        $('#e-collection_start_date, #e-collection_end_date').on('change', function() {
             dataTable.draw();
         });
     });
@@ -881,7 +936,7 @@
         orientation: 'bottom',
     });
     // Modal date filter
-    $('.preview-btn-modal').on('click', function () {
+    $('.preview-btn-modal').on('click', function() {
         var modalStartDate = $('#modal_start_date').val();
         var modalEndDate = $('#modal_end_date').val();
 
@@ -891,6 +946,7 @@
             $('#validationMessage').html('<span style="font-size:.8rem; color: red; text-align:center;" role="alert">Please select both start and end dates.</span>');
             return;
         }
+
         function toDateString(date) {
             // Convert the date to the ISO date string format and then take only the date portion (YYYY-MM-DD)
             return date.toISOString().split('T')[0];
@@ -907,8 +963,8 @@
             const parts = item.last_modified.split(' ');
             // Take the first part, which is the date
             const datePart = parts[0];
-           
-        
+
+
             // Return true if the item's date is within the date range
             return datePart >= modalStartDate && datePart <= modalEndDate;
         });
@@ -938,7 +994,7 @@
 
         var modalTableHead = document.createElement('thead');
         modalTableHead.classList.add('thead'); // Added light background for the table head
-        modalTableHead.innerHTML = ` <tr><th colspan="9" class="text-center">Collection</th></tr><tr><th style="width:${100 / 9}%;" rowspan="2">Date & Time</th><th style="width:${100 / 9}%;" rowspan="2">Date Created & Time</th><th style="width:${100 / 9}%;" rowspan="2">AR Number</th><th style="width:${100 / 9}%;" rowspan="2">Name of Payor</th><th style="width:${100 / 9}%;" rowspan="2">Reference Number</th><th style="width:${100 / 9}%;">CIAP-PCAB</th><th style="width:${100 / 9}%;">LRF</th><th style="width:${100 / 9}%;">DST</th><th style="width:${100 / 9}%;" rowspan="2">Total Collection</th></tr><tr><th>Account No.<br/>(0052-1684-30)</th><th>Account No.<br/>(3402-2866-00)</th><th>Account No.<br/>(3402-2866-19)</th></tr>`;
+        modalTableHead.innerHTML = ` <tr><th colspan="9" class="text-center">Collection</th></tr><tr><th style="width:${100 / 9}%;" rowspan="2">Date & Time</th><th style="width:${100 / 9}%;" rowspan="2">Date Created & Time</th><th style="width:${100 / 9}%;" rowspan="2">AR Number</th><th style="width:${100 / 9}%;" rowspan="2">Name of Payor</th><th style="width:${100 / 9}%;" rowspan="2">Reference Number</th><th style="width:${100 / 9}%;">CIAP-PCAB</th><th style="width:${100 / 9}%;">LRF</th><th style="width:${100 / 9}%;">DST</th><th style="width:${100 / 9}%;" rowspan="2">Total Collection</th></tr><tr><th>Account No.<br/>(0052-1684-30)</th><th>Account No.<br/>(3402-2866-19)</th><th>Account No.<br/>(3402-2866-00)</th></tr>`;
 
         var modalTableBody = document.createElement('tbody');
 
@@ -1009,7 +1065,7 @@
         var modalDialog = $('#Daily_CollectionModal .modal-dialog');
 
         // Remove table content when modal is closed
-        $('#Daily_CollectionModal').on('hidden.bs.modal', function (e) {
+        $('#Daily_CollectionModal').on('hidden.bs.modal', function(e) {
             // Reset form fields
             $('#modal_start_date').val('');
             $('#modal_end_date').val('');
@@ -1022,7 +1078,7 @@
             $(".modal-dialog", this).removeClass("modal-lg").addClass("modal-sm");
         });
 
-        $('#modal_start_date, #modal_end_date').on("change", function () {
+        $('#modal_start_date, #modal_end_date').on("change", function() {
             $('#validationMessage').empty();
         });
 
@@ -1035,7 +1091,7 @@
 
         // Initialize DataTable for the modal table with sorting enabled
         var table = $('#modalDataTable').DataTable({
-            dom: 'frtip',   
+            dom: 'frtip',
             scrollX: '100%',
             scrollCollapse: true,
             ordering: false,
@@ -1043,7 +1099,7 @@
     });
 
     // Remove table content when modal is closed
-    $('#Daily_CollectionModal').on('hidden.bs.modal', function (e) {
+    $('#Daily_CollectionModal').on('hidden.bs.modal', function(e) {
         // Reset form fields
         $('#modal_start_date').val('');
         $('#modal_end_date').val('');
@@ -1055,11 +1111,11 @@
         $(".modal-dialog", this).removeClass("modal-lg").addClass("modal-sm")
     });
 
-    $('#modal_start_date, #modal_end_date').on("change", function () {
+    $('#modal_start_date, #modal_end_date').on("change", function() {
         $('#validationMessage').empty();
     });
 
-    $('.download-btn-modal').on('click', function () {
+    $('.download-btn-modal').on('click', function() {
         var modalStartDate = $('#modal_start_date').val();
         var modalEndDate = $('#modal_end_date').val();
 
@@ -1075,7 +1131,7 @@
     });
 
     // Remove table content when modal is closed
-    $('#Daily_CollectionModal').on('hidden.bs.modal', function (e) {
+    $('#Daily_CollectionModal').on('hidden.bs.modal', function(e) {
         $('#modalDataTableContainer').empty();
 
     });
@@ -1086,13 +1142,13 @@
             // const modalEndDate =new Date( $("#Daily_CollectionModal #modal_end_date").val());
 
 
-            
+
             const partss = object.last_modified.split(' ');
             // Take the first part, which is the date
             const dateParts = partss[0];
-           
 
-     
+
+
 
             return dateParts >= modalStartDate && dateParts <= modalEndDate;
         });
@@ -1101,10 +1157,10 @@
             orientation: 'p',
             unit: 'px'
         });
-       
+
         let report_number = filteredData[0].report_no;
         let date = filteredData[0].last_modified;
-        let pdf_date=date.split(' ')[0];
+        let pdf_date = date.split(' ')[0];
 
         let i = 0;
         let totalCIAPPCAB = 0;
@@ -1143,8 +1199,8 @@
             <th style="text-wrap:nowrap; border-top: none;"></th>
             <th style="text-wrap:nowrap; border-top: none;"></th>
             <th>Account No.<br/>(0052-1684-30)</th>
-            <th>Account No.<br/>(3402-2866-00)</th>
             <th>Account No.<br/>(3402-2866-19)</th>
+            <th>Account No.<br/>(3402-2866-00)</th>
             <th style="text-wrap:nowrap; border-top: none;"></th>
         </tr>
         </thead>
@@ -1417,7 +1473,7 @@
             html2canvas: {
                 scale: .5
             },
-            callback: async function (doc) {
+            callback: async function(doc) {
                 const date = new Date();
                 await doc.save(`acknowledge-reciept-${date.toLocaleDateString()}.pdf`);
 

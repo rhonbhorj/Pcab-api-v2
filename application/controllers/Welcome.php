@@ -72,9 +72,6 @@ class Welcome extends CI_Controller
 
 			}
 
-
-
-
             $this->load->view( 'index', $result );
         } else {
             redirect( 'login' );
@@ -131,5 +128,8 @@ class Welcome extends CI_Controller
 
 	public function faq_page(){
 		$this->load->view('webpage/faq-page');
+	}
+    public function maintenance(){
+		$this->load->view('maintenance/maintenance');
 	}
 }

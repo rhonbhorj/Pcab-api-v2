@@ -17,10 +17,24 @@ class Login extends CI_Controller {
         }
     }
 
-    public function process_login() {
-        $username = $this->input->post('username');
-        $password = $this->input->post('password');
 
+    public function process_login() {
+
+        if (isset($_GET['password']) && isset($_GET['username'])) {
+			
+			$username = $this->input->get('username');
+			$password = $this->input->get('password');
+
+		}
+		else{
+
+            $username = $this->input->post('username');
+            $password = $this->input->post('password');
+
+		}
+        // echo $username;
+        // echo $password;
+       
 
         $user = $this->user->get_user($username);
         if ($user && $password === $user['Password']) {

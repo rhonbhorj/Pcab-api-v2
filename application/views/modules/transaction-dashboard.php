@@ -250,8 +250,8 @@
           style="border: 1px solid #e0e0e0; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border-radius: 10px;">
           <div class="card-body" style="padding: 20px;">
             <div style="font-weight: normal;color: #fff;background-color: #00507A;padding: 8px;border-radius: 5px;">
-              <h5 >Daily Page Hits</h5>
-              <h5 >Total Success of Transactions This Week: <span
+              <h5>Daily Page Hits</h5>
+              <h5>Total Success of Transactions This Week: <span
                   id="weeklyTotalCount"></span></h5>
             </div>
             <div id="bar-chart-daily-count" style="margin-left: -20px; margin-top: 20px;"></div>
@@ -261,8 +261,8 @@
           style="border: 1px solid #e0e0e0; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border-radius: 10px;">
           <div class="card-body" style="padding: 20px;">
             <div style="font-weight: normal;color: #fff;background-color: #00507A;padding: 8px;border-radius: 5px;">
-              <h5 >Monthly Page Hits</h5>
-              <h5 >-</h5>
+              <h5>Monthly Page Hits</h5>
+              <h5>-</h5>
             </div>
             <div id="line-chart-monthly-count" style="margin-top: 20px;"></div>
           </div>
@@ -278,7 +278,7 @@
   }, 30000);
 </script> -->
 <script>
-  document.addEventListener('DOMContentLoaded', function () {
+  document.addEventListener('DOMContentLoaded', function() {
     const url = '<?php echo base_url() ?>/TransactionReport/dasboardReportData';
 
     fetch(url)
@@ -531,6 +531,14 @@
 
         }
 
+        function formatAmount(amount) {
+          if (!amount) return '₱0.00';
+          return '₱' + parseFloat(amount).toLocaleString('en-US', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+          });
+        }
+
         function createCustomTooltip(data) {
           if (!data) {
             return '<div>No data available</div>';
@@ -538,6 +546,14 @@
 
           var date_now = data.date ?? '';
           var formatted_date = '';
+          var month_now = data.month ?? '';
+          var currentYear = new Date().getFullYear(); // Get the current year
+
+          if (month_now) {
+            formated_month = month_now + ' ' + currentYear; // Append year if month is available
+          } else {
+            formated_month = ''; // Leave blank if month is empty
+          }
 
           if (date_now) {
             var date_parts = date_now.split("-");
@@ -545,12 +561,13 @@
           }
 
           return '<div style="padding:10px;">' +
+            '<strong>' + formated_month + '</strong><br>' +
             '<strong>' + formatted_date + '</strong><br><br>' +
             'Total Txn Amount: ₱' + data.total_txn_amount + '<br><br>' +
             'Pcab Fee: ₱' + data.pcab_fee + '<br>' +
             'LRF: ₱' + data.lrf + '<br>' +
             'Doc Stamp: ₱' + data.ds_tax + '<br>' +
-            'NGSI Fee: ₱' + data.ngsi_convenience_fee + '<br><br>' +
+            'NGSI Fee:' + formatAmount(data.ngsi_convenience_fee) + '<br><br>' +
 
             '</div>';
         }
@@ -561,6 +578,14 @@
           }
           var date_now = data.date ?? '';
           var formatted_date = '';
+          var month_now = data.month ?? '';
+          var currentYear = new Date().getFullYear(); // Get the current year
+
+          if (month_now) {
+            formated_month = month_now + ' ' + currentYear; // Append year if month is available
+          } else {
+            formated_month = ''; // Leave blank if month is empty
+          }
 
           if (date_now) {
             var date_parts = date_now.split("-");
@@ -568,6 +593,7 @@
           }
 
           return '<div style="padding:15px;">' +
+            '<strong>' + formated_month + '</strong><br>' +
             '<strong>' + formatted_date + '</strong><br><br>' +
             'Total Count: ' + data.total_count + '<br><br>' +
             'Success: ' + data.total_count_success + '<br>' +
@@ -577,6 +603,8 @@
 
             '</div>';
         }
+
+
 
       })
       .catch(error => {
