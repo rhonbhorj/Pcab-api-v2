@@ -216,35 +216,26 @@ class TransactionReport extends CI_Controller
         return $this->repo->all_transaction_this_week($yesterday, $i);
     }
 
-    
+
+   
+
     public function month_count()
     {
-        $currentMonthName = date( 'm' );
-        $today = date( 'Y-m-d' );
-
-
-    
-
-if($currentMonthName  >=10){
-    for ($i = 0; $i <  $currentMonthName; $i++) {
-          
-        $months[] = date('Y')."-".($i + 1);
-    }
-    
-}else{
-    for ($i = 0; $i <  $currentMonthName; $i++) {
-          
-        $months[] = date('Y')."-0".($i + 1);
-    }
-}
-  
-    
-       $result =   $this->repo->monthly_transaction( $months, $currentMonthName );
-  
-
-        return   $result;
-    
-    
+        $currentMonthNumber = date('m');  // Get the current month as a number (e.g., 09 for September)
+        $currentYear = date('Y');         // Get the current year
+        $months = [];                     // Initialize an array to store the month-year combinations
+        
+        // Loop through all months from 1 to the current month
+        for ($i = 1; $i <= $currentMonthNumber; $i++) {
+            // Ensure single-digit months have a leading zero using str_pad
+            $month = str_pad($i, 2, '0', STR_PAD_LEFT);
+            $months[] = "$currentYear-$month";  // Add each month to the array in the format YYYY-MM
+        }
+        
+        // Call the repository method with the months array and current month number
+        $result = $this->repo->monthly_transaction($months, $currentMonthNumber);
+        
+        return $result;
     }
 
     private function is_user_logged_in()
