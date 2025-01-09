@@ -269,8 +269,8 @@
                 <tbody>
                     <?php
 
-                    $fmt = new NumberFormatter('en-US', NumberFormatter::CURRENCY);
-                    $fmt->setPattern(str_replace('¤#', "", $fmt->getPattern()));
+                    // $fmt = new NumberFormatter('en-US', NumberFormatter::CURRENCY);
+                    // $fmt->setPattern(str_replace('¤#', "", $fmt->getPattern()));
                     if (empty($data)) {
                         // echo "<tr><td colspan='11'>No data available</td></tr>";
                     } else {
@@ -283,12 +283,12 @@
                             echo "<td>" . date("H:i:s", strtotime($row["last_modified"])) . "</td>";
                             echo "<td>" . $row["status"] . "</td>";
                             echo "<td>" . $row["reference_number"] . "</td>";
-                            echo "<td class='text-right'>&#8369; " . $fmt->formatCurrency(floatval($row["fees_pcab"]), "") . "</td>";
-                            echo "<td class='text-right'>&#8369; " . $fmt->formatCurrency(floatval($row["legal_research_fund"]), "") . "</td>";
-                            echo "<td class='text-right'>&#8369; " . $fmt->formatCurrency(floatval($row["document_stamp_tax"]), "") . "</td>";
-                            echo "<td class='text-right'>&#8369; " . $fmt->formatCurrency(floatval($row["ngsi_convenience_fee"]), "") . "</td>";
+                            echo "<td class='text-right'>&#8369; " . number_format($row["fees_pcab"], 2, '.', ',')  . "</td>";
+                            echo "<td class='text-right'>&#8369; " .number_format($row["legal_research_fund"], 2, '.', ',')   . "</td>";
+                            echo "<td class='text-right'>&#8369; " .number_format($row["document_stamp_tax"], 2, '.', ',')  . "</td>";
+                            echo "<td class='text-right'>&#8369; " .$row["ngsi_convenience_fee"]. "</td>";
                             $total_AR = $row["fees_pcab"] + $row["document_stamp_tax"] + $row["legal_research_fund"] + $row["ngsi_convenience_fee"];
-                            echo "<td class='text-right'>&#8369; " . $fmt->formatCurrency(floatval($total_AR), "") . "</td>";
+                            echo "<td class='text-right'>&#8369; " .number_format($total_AR , 2, '.', ',') . "</td>";
                             echo "<td>" . $row["name_of_payor"] . "</td>";
                             echo "<td>" . $row["particulars"] . "</td>";
                             echo "<td>" . $row["referenceNumber"] . "</td>";

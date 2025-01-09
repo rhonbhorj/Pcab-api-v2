@@ -59,8 +59,8 @@
                     <tbody class="w-100">
 
                         <?php
-                        $fmt = new NumberFormatter('en-US', NumberFormatter::CURRENCY);
-                        $fmt->setPattern(str_replace('¤#', "\xC2\xA0#", $fmt->getPattern()));
+                        // $fmt = new NumberFormatter('en-US', NumberFormatter::CURRENCY);
+                        // $fmt->setPattern(str_replace('¤#', "\xC2\xA0#", $fmt->getPattern()));
 
                         if ($data != false)
                             foreach ($data as $key => $row) {
@@ -69,20 +69,20 @@
                                     (float) $row["fees_pcab"];
                                 echo "<tr>";
                                 echo "<td>" .  date_format(date_create($row["date"]), "m/d/Y H:i:s") . "</td>";
-                                echo "<td class='text-right'>&#8369; " . ($row["last_txn_amont"] != "" ? $fmt->formatCurrency(floatval($row["last_txn_amont"]), false) : "0.00") . "</td>";
+                                echo "<td class='text-right'>&#8369; " . ($row["last_txn_amont"] != "" ? number_format($row["last_txn_amont"], 2, '.', ',')  : "0.00") . "</td>";
                                 echo "<td>" .  date_format(date_create($row["date_from"]), "m/d/Y") . "</td>";
                                 echo "<td>" .  date_format(date_create($row["date_to"]), "m/d/Y") . "</td>";
                                 echo "<td>" . $row["ttl_trnsact"] . "</td>";
-                                echo "<td class='text-right'>&#8369; " . $fmt->formatCurrency(floatval($row["legal_research_fund"]), false) . "</td>";
-                                echo "<td class='text-right'>&#8369; " . $fmt->formatCurrency(floatval($row["document_stamp_tax"]), false) . "</td>";
-                                echo "<td class='text-right'>&#8369; " . $fmt->formatCurrency(floatval($row["fees_pcab"]), false) . "</td>";
-                                echo "<td class='text-right'>&#8369; " . $fmt->formatCurrency(floatval($row["no_ngsi_fee"]), false) . "</td>";
+                                echo "<td class='text-right'>&#8369; " .    number_format($row["legal_research_fund"], 2, '.', ',') . "</td>";
+                                echo "<td class='text-right'>&#8369; " . number_format($row["document_stamp_tax"], 2, '.', ',')  . "</td>";
+                                echo "<td class='text-right'>&#8369; " . number_format($row["fees_pcab"], 2, '.', ',') . "</td>";
+                                echo "<td class='text-right'>&#8369; " .  number_format($row["no_ngsi_fee"], 2, '.', ',') . "</td>";
                                 echo "<td>" .  date_format(date_create($row["deposited_date"]), "m/d/Y") . "</td>";
                                 echo "<td>
                                     <a tabindex='0' class='btn-sm' role='button' data-toggle='popover' data-placement='bottom' data-trigger='focus' title='Deposit of " . date_format(date_create($row["deposited_date"]), "m/d/Y") . "' data-content='" . json_encode($row) . "'>View</a>
                                 </td>";
-                                echo "<td class='text-right'>&#8369; " . $fmt->formatCurrency(floatval($row["deposited_amount"]), false) . "</td>";
-                                echo "<td class='text-right'>&#8369; " . $fmt->formatCurrency(floatval($row["undeposit_collection"]), false) . "</td>";
+                                echo "<td class='text-right'>&#8369; " . number_format($row["deposited_amount"], 2, '.', ',')  . "</td>";
+                                echo "<td class='text-right'>&#8369; " .  number_format($row["undeposit_collection"], 2, '.', ',')  . "</td>";
                                 echo "<td><button class='btn-sm btn-outline-dark border-0 px-3 py-1 rounded download-btn-modal' onclick='downloadDeposit($key)'>Download</button></td>";
                                 echo "</tr>";
                             }
@@ -129,7 +129,7 @@
                             <input type="date" name="deposited_date" class="p-2 pl-3 mb-2 rounded w-100 border">
                         </div>
                         <label class="">CIAP-PCAB <span class="d-inline p-0 m-0 pl-2" style="pointer-events:auto;margin-top:3px!important;" tabindex="0" data-toggle="tooltip" title="Undeposited Fee of <?= $last_deposit_date ? date_format(date_create($last_deposit_date), "m/d/Y") : "N/A" ?>">(&#8369;
-                                <?= $fmt->formatCurrency(floatval($last_deposit ? $last_deposit["balance_fees_pcab"] : 0), "PHP") ?>
+                                <?= number_format($last_deposit ? $last_deposit["balance_fees_pcab"] : 0, 2, '.', ',')  ?>
                                 <i class="icon-info bg-dark text-white rounded-circle"></i>)
                             </span>
                             <span class="m-0 p-0 pl-3 d-block pcab-fee" style="margin-top:3px!important;">Total Amount:
@@ -146,7 +146,7 @@
                             </div>
                         </div>
                         <label class="">Documentary Stamp Tax <span class="d-inline p-0 m-0 pl-2" style="pointer-events:auto;margin-top:3px!important;" tabindex="0" data-toggle="tooltip" title="Undeposited DST of <?= $last_deposit_date ? date_format(date_create($last_deposit_date), "m/d/Y") : "N/A" ?>">(&#8369;
-                                <?= $fmt->formatCurrency(floatval($last_deposit ? $last_deposit["balance_document_stamp_tax"] : 0), "PHP") ?>
+                                <?= number_format($last_deposit ? $last_deposit["balance_document_stamp_tax"] : 0, 2, '.', ',')   ?>
                                 <i class="icon-info bg-dark text-white rounded-circle"></i>)
                             </span>
                             <span class="m-0 p-0 pl-3 d-block dst" style="margin-top:3px!important;">Total Amount:
@@ -163,7 +163,7 @@
                             </div>
                         </div>
                         <label class="">Legal Research Fund <span class="d-inline p-0 m-0 pl-2" style="pointer-events:auto;margin-top:3px!important;" tabindex="0" data-toggle="tooltip" title="Undeposited LRF of <?= $last_deposit_date ? date_format(date_create($last_deposit_date), "m/d/Y") : "N/A" ?>">(&#8369;
-                                <?= $fmt->formatCurrency(floatval($last_deposit ? $last_deposit["balance_legal_research_fund"] : 0), "PHP") ?>
+                                <?=number_format($last_deposit ? $last_deposit["balance_legal_research_fund"] : 0, 2, '.', ',')  ?>
                                 <i class="icon-info bg-dark text-white rounded-circle"></i>)
                             </span>
                             <span class="m-0 p-0 pl-3 d-block lrf" style="margin-top:3px!important;">Total Amount:

@@ -69,14 +69,14 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
             <!-- partial -->
             <div class="main-panel">
-                <div class="box">
+                <!-- <div class="box">
                     <div class="container">
                         <span class="dot"></span>
                         <span class="dot"></span>
                         <span class="dot"></span>
                         <span class="dot"></span>
                     </div>
-                </div>
+                </div> -->
                 <div class="content-wrapper p-0 pl-3 m-0 bg-white">
                     <!-- main view container -->
                     <?php
@@ -118,10 +118,10 @@ defined('BASEPATH') or exit('No direct script access allowed');
     <script src="//cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
     <script src="//cdn.datatables.net/buttons/1.7.1/js/buttons.print.min.js"></script>
 </body>
-<script>
+<!-- <script>
     setTimeout(() => {
         $(".main-panel .box").css("display", "none")
     }, 1000)
-</script>
+</script> -->
 
 </html>

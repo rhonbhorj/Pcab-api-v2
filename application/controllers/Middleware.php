@@ -106,7 +106,8 @@ class Middleware extends REST_Controller
             $transaction[ 'txn_type' ] = $data[ 'data' ][ 'merchant_details' ][ 'txn_type' ];
 
             $transaction[ 'mobile_number' ] = $data[ 'data' ][ 'merchant_details' ][ 'scanner_mobile_number' ];
-
+ $data[ 'data' ]['autopostback']="on";
+ $data[ 'data' ]['scenario']="success";
             // $transaction[ 'city' ] = $data[ 'data' ][ 'merchant_details' ][ 'city' ];
 
             $transaction[ 'txn_amount' ] = $txnAmount;
@@ -210,6 +211,8 @@ class Middleware extends REST_Controller
                 }
 
                 $data[ 'data' ][ 'callback_uri' ] = base_url() . 'middleware/postback/?ref=' . $data[ 'data' ][ 'reference_number' ];
+//  $data[ 'data' ]['autopostback']="on";
+//  $data[ 'data' ]['scenario']="success";
 
                 $response = $this->call_external_api( $data[ 'data' ], $get_header );
 

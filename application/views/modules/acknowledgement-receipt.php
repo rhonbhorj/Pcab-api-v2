@@ -317,8 +317,8 @@
                                                 <tbody class="border-bottom-1">
 
                                                     <?php
-                                        $fmt = new NumberFormatter('en-US', NumberFormatter::CURRENCY);
-                                        $fmt->setPattern(str_replace('¤#', "", $fmt->getPattern()));
+                                        // $fmt = new NumberFormatter('en-US', NumberFormatter::CURRENCY);
+                                        // $fmt->setPattern(str_replace('¤#', "", $fmt->getPattern()));
                                         if (empty($data)) {
                                             // echo "<tr><td colspan='11'>No data available</td></tr>";
                                         } else {
@@ -336,10 +336,10 @@
                                                 $total["totalFee"] += $row["fees_pcab"];
                                                 $total["totalDST"] += $row["document_stamp_tax"];
                                                 $total["totalLRF"] += $row["legal_research_fund"];
-                                                echo "<td class='text-right'>" . $fmt->formatCurrency(floatval($total_per_AR), "PHP") . "</td>";
-                                                echo "<td class='text-right'>" . $fmt->formatCurrency(floatval($row["fees_pcab"]), "PHP") . "</td>";
-                                                echo "<td class='text-right'>" . $fmt->formatCurrency(floatval($row["document_stamp_tax"]), "PHP") . "</td>";
-                                                echo "<td class='text-right'>" . $fmt->formatCurrency(floatval($row["legal_research_fund"]), "PHP") . "</td>";
+                                                echo "<td class='text-right'>" .number_format($total_per_AR, 2, '.', ',')  . "</td>";
+                                                echo "<td class='text-right'>" .number_format($row["fees_pcab"], 2, '.', ',')  . "</td>";
+                                                echo "<td class='text-right'>" . number_format($row["document_stamp_tax"], 2, '.', ',')  . "</td>";
+                                                echo "<td class='text-right'>" . number_format($row["legal_research_fund"], 2, '.', ',')  . "</td>";
                                                 echo "</tr>";
                                             }
                                         }
@@ -405,12 +405,12 @@
                                 echo "<td>" . $row["name_of_payor"] . "</td>";
                                 echo "<td>" . $row["particulars"] . "</td>";
                                 echo "<td>" . $row["status"] . "</td>";
-                                echo "<td class='text-right'>&#8369; " . $fmt->formatCurrency(floatval($row["fees_pcab"]), "") . "</td>";
-                                echo "<td class='text-right'>&#8369; " . $fmt->formatCurrency(floatval($row["legal_research_fund"]), "") . "</td>";
-                                echo "<td class='text-right'>&#8369; " . $fmt->formatCurrency(floatval($row["document_stamp_tax"]), "") . "</td>";
-                                echo "<td class='text-right'>&#8369; " . $fmt->formatCurrency(floatval($row["ngsi_convenience_fee"]), "") . "</td>";
+                                echo "<td class='text-right'>&#8369; " .number_format($row["fees_pcab"], 2, '.', ',') . "</td>";
+                                echo "<td class='text-right'>&#8369; " .number_format($row["legal_research_fund"], 2, '.', ',') . "</td>";
+                                echo "<td class='text-right'>&#8369; " .number_format($row["document_stamp_tax"], 2, '.', ',')  . "</td>";
+                                echo "<td class='text-right'>&#8369; " .number_format($row["ngsi_convenience_fee"], 2, '.', ',')  . "</td>";
                                 $total_AR = $row["fees_pcab"] + $row["document_stamp_tax"] + $row["legal_research_fund"] + $row["ngsi_convenience_fee"];
-                                echo "<td class='text-right'>&#8369; " . $fmt->formatCurrency(floatval($total_AR), "") . "</td>";
+                                echo "<td class='text-right'>&#8369; " . number_format($total_AR, 2, '.', ',') . "</td>";
                                 $total_per_AR_formatted = number_format($total_per_AR, 2);
                                 echo "<td><button type='button'style='width: 80px; height: 25px; background: #555;' class=' btn-outline-dark border-0 btn-print-receipt' data-receipt-id='" . $row['trans_id'] . "'  onclick='printRow(" . $row['trans_id'] . ")'>Download</button></td>";
                                 echo "</tr>";
@@ -468,7 +468,7 @@
                         <label class="">CIAP-PCAB <span class="d-inline p-0 m-0 pl-2"
                                 style="pointer-events:auto;margin-top:3px!important;" tabindex="0" data-toggle="tooltip"
                                 title="Undeposited Fee of <?= $last_deposit_date ? date_format(date_create($last_deposit_date), "m/d/Y") : "N/A" ?>">(&#8369;
-                                <?= $fmt->formatCurrency(floatval($last_deposit ? $last_deposit["balance_fees_pcab"] : 0), "PHP") ?>
+                                <?=number_format($last_deposit ? $last_deposit["balance_fees_pcab"] : 0, 2, '.', ',')  ?>
                                 <i class="icon-info bg-dark text-white rounded-circle"></i>)
                             </span>
                             <span class="m-0 p-0 pl-3 d-block pcab-fee" style="margin-top:3px!important;">Total Amount:
@@ -489,7 +489,7 @@
                         <label class="">Documentary Stamp Tax <span class="d-inline p-0 m-0 pl-2"
                                 style="pointer-events:auto;margin-top:3px!important;" tabindex="0" data-toggle="tooltip"
                                 title="Undeposited DST of <?= $last_deposit_date ? date_format(date_create($last_deposit_date), "m/d/Y") : "N/A" ?>">(&#8369;
-                                <?= $fmt->formatCurrency(floatval($last_deposit ? $last_deposit["balance_document_stamp_tax"] : 0), "PHP") ?>
+                                <?= number_format($last_deposit ? $last_deposit["balance_document_stamp_tax"] : 0, 2, '.', ',')  ?>
                                 <i class="icon-info bg-dark text-white rounded-circle"></i>)
                             </span>
                             <span class="m-0 p-0 pl-3 d-block dst" style="margin-top:3px!important;">Total Amount:
@@ -509,7 +509,7 @@
                         <label class="">Legal Research Fund <span class="d-inline p-0 m-0 pl-2"
                                 style="pointer-events:auto;margin-top:3px!important;" tabindex="0" data-toggle="tooltip"
                                 title="Undeposited LRF of <?= $last_deposit_date ? date_format(date_create($last_deposit_date), "m/d/Y") : "N/A" ?>">(&#8369;
-                                <?= $fmt->formatCurrency(floatval($last_deposit ? $last_deposit["balance_legal_research_fund"] : 0), "PHP") ?>
+                                <?=  number_format($last_deposit ? $last_deposit["balance_legal_research_fund"] : 0, 2, '.', ',')  ?>
                                 <i class="icon-info bg-dark text-white rounded-circle"></i>)
                             </span>
                             <span class="m-0 p-0 pl-3 d-block lrf" style="margin-top:3px!important;">Total Amount:

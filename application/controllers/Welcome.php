@@ -47,6 +47,9 @@ class Welcome extends CI_Controller
                         return $data;
                     }
                     , $deposits ? $deposits : [] );
+
+
+
                     $latest_deposit = $this->crud->last_data_deposit();
                     $result[ 'last_deposit' ] = $latest_deposit ? $this->crud->get_deposit_transactions( [ $latest_deposit[ 'dep_id' ] ] )[ 0 ] : null;
                     $result[ 'last_deposit_date' ] = $latest_deposit ? $latest_deposit[ 'deposited_date' ] : null;

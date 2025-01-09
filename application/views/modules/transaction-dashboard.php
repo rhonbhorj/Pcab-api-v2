@@ -318,7 +318,7 @@
 
           daysOfWeek.forEach(day => {
             if (responseData.all_transaction_this_week[day]) {
-              weeklyTotalTxnAmount += parseFloat((responseData.all_transaction_this_week[day].total_txn_amount ?? '0').replace(/,/g, ''));
+              weeklyTotalTxnAmount += parseFloat((responseData. [day].total_txn_amount ?? '0').replace(/,/g, ''));
             }
           });
 
