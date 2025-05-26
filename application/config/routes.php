@@ -72,6 +72,7 @@ $route['transaction-report']  = 'TransactionReport/dasboardReportData';
 // $route['get-data']  = 'welcome/get_data';
 //api  deposit_log
 $route['generate-qr'] = 'middleware/generate_qr';
+$route['generate-token'] = 'middleware/generate_token';
 // $route['all-transaction-data'] = 'api/all_transaction_data';
 
 $route['total-txn-amount'] = 'middleware/total_txnamount_indate';

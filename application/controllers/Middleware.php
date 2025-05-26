@@ -72,11 +72,31 @@ class Middleware extends REST_Controller
     }
 
     private function call_external_api( $data, $get_header )
- {
+    {
         // RE-WRITE $DATA FOR TESTING PURPOSES
         $response = $this->apiService->call_external_api( $data, $get_header );
         return $response;
     }
+
+    public function generate_token_post()
+    {
+$this->output->set_content_type( 'application/json' );
+
+        
+        $header = apache_request_headers();
+
+
+
+         $this->response( [
+            'messege' =>  mw_token($header)
+     
+        ], Rest_Controller::HTTP_OK );
+    }
+
+
+
+
+
 
     public function generate_qr_post()
  {

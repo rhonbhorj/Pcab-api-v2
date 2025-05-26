@@ -107,4 +107,34 @@ class ApiService
 
         return $resp;
     }
+
+ public function mw_token($access){
+
+$curl = curl_init();
+
+curl_setopt_array($curl, array(
+  CURLOPT_URL => 'https://api.ngsi-pgw-uat.netglobalsolutions.net/generate-token',
+  CURLOPT_RETURNTRANSFER => true,
+  CURLOPT_ENCODING => '',
+  CURLOPT_MAXREDIRS => 10,
+  CURLOPT_TIMEOUT => 0,
+  CURLOPT_FOLLOWLOCATION => true,
+  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+  CURLOPT_CUSTOMREQUEST => 'GET',
+  CURLOPT_HTTPHEADER => array(
+    'X-API-KEY: '.$access['X-API-KEY'],
+    'X-API-USERNAME: '.$access['X-API-USERNAME'],
+    'X-API-PASSWORD: '.$access['X-API-PASSWORD']
+  ),
+));
+
+$response = curl_exec($curl);
+
+curl_close($curl);
+return $response;
+
+
+
+    }
+
 }
