@@ -234,7 +234,7 @@ class Middleware extends REST_Controller
                                                         unset( $data[ 'data' ][ 'other_details' ] );
                                                     }
 
-                                                    $data[ 'data' ][ 'callback_url' ] = base_url() . 'middleware/postback/?ref=' . $data[ 'data' ][ 'reference_number' ];
+                                                    // $data[ 'data' ][ 'callback_url' ] = base_url() . 'middleware/postback/?ref=' . $data[ 'data' ][ 'reference_number' ];
                                     
 
                                                   
