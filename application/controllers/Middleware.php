@@ -129,7 +129,7 @@ class Middleware extends REST_Controller
                             $rdata=        json_decode( $response['response'], true );
                             if($rdata['status']==false ){
 
-                                $this->response( "pangit",  $response['status_code'] );
+                                $this->response( $rdata,  $response['status_code'] );
                             }else{
 
                                     $transaction[ 'endpoint' ] = $data[ 'data' ][ 'endpoint' ];
