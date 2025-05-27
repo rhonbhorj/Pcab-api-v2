@@ -122,4 +122,42 @@ curl_setopt_array($curl, array(
 
     }
 
+
+   public function transaction_status($data, $access)
+   {
+
+           $endpoint =$this->endpoint_base_url.'/transaction-status';
+      $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+          CURLOPT_URL => $endpoint,
+          CURLOPT_RETURNTRANSFER => true,
+          CURLOPT_ENCODING => '',
+          CURLOPT_MAXREDIRS => 10,
+          CURLOPT_TIMEOUT => 0,
+          CURLOPT_FOLLOWLOCATION => true,
+          CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+          CURLOPT_CUSTOMREQUEST => 'POST',
+          CURLOPT_POSTFIELDS =>json_encode($data),
+          CURLOPT_HTTPHEADER => array(
+            'Authorization:' . $access['Authorization'],
+            'X-API-KEY: '.$access['X-API-KEY'],
+            'X-API-USERNAME: '.$access['X-API-USERNAME'],
+            'X-API-PASSWORD: '.$access['X-API-PASSWORD'],
+            'Content-Type: application/json'
+          ),
+        ));
+        
+        $response = curl_exec($curl);
+        $http_status_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+        curl_close($curl);
+       
+       
+        $resp['response'] =$response;
+        $resp['status_code'] = $http_status_code;
+
+        return $resp;
+
+   }
+
 }

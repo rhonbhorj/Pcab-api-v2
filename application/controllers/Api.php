@@ -40,4 +40,19 @@ class Api extends REST_Controller
     }
 
 
+
+    public function trans_status_post()
+    {
+           $this->output->set_content_type( 'application/json' );
+              $header = apache_request_headers();
+          $data[ 'data' ] = json_decode( file_get_contents( 'php://input' ), true );
+      
+        $response =$this->apiService->transaction_status($data[ 'data' ] ,$header);
+
+       $this->response( json_decode( $response[ 'response' ], true ), $response[ 'status_code' ] );
+       
+    }
+
+
+
  }
