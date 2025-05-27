@@ -78,126 +78,22 @@ class Middleware extends REST_Controller
         return $response;
     }
 
-    public function generate_token_post()
-    {
-$this->output->set_content_type( 'application/json' );
-
-        
-        $header = apache_request_headers();
-
-
-
-         $this->response( [
-            'messege' =>  mw_token($header)
-     
-        ], Rest_Controller::HTTP_OK );
-    }
-
-
-
-
-
-
     public function generate_qr_post()
- {
+    {
 
         $this->output->set_content_type( 'application/json' );
 
         $header = apache_request_headers();
 
+        $get_header['Authorization'] = $header[ 'Authorization' ] ;
+        $get_header['X-API-KEY'] = $header[ 'X-API-KEY' ] ;
+        $get_header['X-API-USERNAME'] = $header[ 'X-API-USERNAME' ] ;
+        $get_header['X-API-PASSWORD'] = $header[ 'X-API-PASSWORD' ] ;
+
+
         $data[ 'data' ] = json_decode( file_get_contents( 'php://input' ), true );
+ 
 
-        $transaction[ 'endpoint' ] = $data[ 'data' ][ 'endpoint' ];
-        $transaction[ 'reference_number' ] = $data[ 'data' ][ 'reference_number' ];
-
-        $validate_ref = $this->model->select_refNumber( $transaction[ 'reference_number' ] );
-        if ( $validate_ref ) {
-            $this->response( [
-                'error' => true,
-                'messege' => 'Transaction with this client ref ' . $transaction[ 'reference_number' ] . ' already exists.',
-
-            ], Rest_Controller::HTTP_UNAUTHORIZED );
-        } else {
-
-            $txnAmount = $data[ 'data' ][ 'merchant_details' ][ 'txn_amount' ];
-
-            $transaction[ 'method' ] = $data[ 'data' ][ 'merchant_details' ][ 'method' ];
-
-            $transaction[ 'txn_type' ] = $data[ 'data' ][ 'merchant_details' ][ 'txn_type' ];
-
-            $transaction[ 'mobile_number' ] = $data[ 'data' ][ 'merchant_details' ][ 'scanner_mobile_number' ];
- $data[ 'data' ]['autopostback']="on";
- $data[ 'data' ]['scenario']="success";
-            // $transaction[ 'city' ] = $data[ 'data' ][ 'merchant_details' ][ 'city' ];
-
-            $transaction[ 'txn_amount' ] = $txnAmount;
-            $transaction[ 'date_created' ] = date( 'Y-m-d H:i:s' );
-            $transaction[ 'date' ] = date( 'Y-m-d' );
-            $transaction[ 'status' ] = 'STARTED';
-
-            $totalAmount = 0;
-
-            foreach ( $data[ 'data' ][ 'other_details' ] as $item ) {
-                if ( $item[ 'item' ] === 'documentary_stamp_tax' ) {
-                    $item[ 'item' ] = 'document_stamp_tax';
-                }
-                if ( $item[ 'item' ] === 'pcab_fees' ) {
-                    $item[ 'item' ] = 'fees_pcab';
-                }
-                $itemName = $item[ 'item' ];
-                $amount = $item[ 'amount' ];
-                // Sanitize and validate column name ( replace non-alphanumeric characters )
-                $columnName = preg_replace( '/[^a-zA-Z0-9_]/', '', $itemName );
-
-                $transaction[ $columnName ] = $amount;
-
-                // $totalAmount += $amount;
-
-            }
-
-            foreach ( $data[ 'data' ][ 'other_details' ] as $detail ) {
-                if ( $detail[ 'item' ] != 'ngsi_convenience_fee' && isset( $detail[ 'amount' ] ) && $detail[ 'item' ] != 'name_of_payor' && $detail[ 'item' ] != 'particulars' ) {
-                    $totalAmount += is_numeric( $detail[ 'amount' ] ) ? $detail[ 'amount' ] : 0;
-                }
-            }
-            // if ( $txnAmount != $totalAmount ) {
-
-            //     $this->response( [
-
-            //         'error' => 'True',
-            //         'messege' => 'the txn_amount in not equal of total other_details amount'
-            // ], Rest_Controller::HTTP_UNAUTHORIZED );
-            // }
-
-            $report_no = date( 'Y' ).'-012';
-            $chk_report_no =       $this->model->select_report_no();
-            if ( $chk_report_no == false ) {
-                $report_no_data = $report_no;
-                $ar_no = '1';
-            } else {
-
-                //this part is for log sa report number
-                if ( $chk_report_no[ 'date' ] != $transaction[ 'date' ] ) {
-
-                    $parts = explode( '-', $chk_report_no[ 'report_no' ] );
-
-                    $year = $parts[ 0 ];
-                    $number = ( int )$parts[ 1 ];
-
-                    $number += 1;
-                    $numberString = str_pad( $number, 3, '0', STR_PAD_LEFT );
-                    $report_no_data = $year . '-' . $numberString;
-
-                    $ar_no = ( int ) $chk_report_no[ 'trans_id' ]+1;
-
-                } else {
-                    $ar_no = ( int )$chk_report_no[ 'trans_id' ]+1;
-                    $report_no_data =  $chk_report_no[ 'report_no' ];
-                }
-
-            }
-
-            $get_header = $header[ 'Authorization' ] ?? '';
 
             $params = json_encode( $data[ 'data' ] );
 
@@ -208,52 +104,325 @@ $this->output->set_content_type( 'application/json' );
             $ins_data[ 'method' ] = $_SERVER[ 'REQUEST_METHOD' ];
 
             $get_id = $this->model->insertApiLogs( $ins_data );
+             $response = $this->call_external_api( $data[ 'data' ], $get_header );
+       
 
-            if ( $get_id ) {
-                $transaction[ 'callback_uri' ] = $data[ 'data' ][ 'callback_uri' ];
-                $transaction[ 'no_ngsi_fee' ] =  $totalAmount;
-                $transaction[ 'report_no' ] =  $report_no_data;
-                $AR = '00000000';
+                if($response['status_code']>=500){
+                        $this->response( [
+                                'error' => false,
+                                'messege' => 'internal error',
 
-                $length = strlen( $ar_no );
+                            ], Rest_Controller::HTTP_INTERNAL_SERVER_ERROR);
 
-                $newString = substr_replace( $AR, '', -$length, $length );
+                }{
+                    $transaction[ 'endpoint' ] = $data[ 'data' ][ 'endpoint' ];
+                    $transaction[ 'reference_number' ] = $data[ 'data' ][ 'reference_number' ];
 
-                $transaction[ 'ar_no' ] =  $newString.$ar_no;
-                $get_transaction_id = $this->model->transaction_log( $transaction );
+                     $validate_ref = $this->model->select_refNumber( $transaction[ 'reference_number' ] );
+                    if ( $validate_ref ) {
+                        $this->response( [
+                            'error' =>  $validate_ref,
+                            'messege' => 'Transaction with this client ref ' . $transaction[ 'reference_number' ] . ' already exists',
 
-                if ( isset( $data[ 'data' ][ 'callback_uri' ] ) ) {
-                    unset( $data[ 'data' ][ 'callback_uri' ] );
-                }
+                        ], Rest_Controller::HTTP_UNAUTHORIZED );
+                    } else {
+                            $rdata=        json_decode( $response['response'], true );
+                            if($rdata['status']==false ){
 
-                if ( isset( $data[ 'data' ][ 'other_details' ] ) ) {
-                    unset( $data[ 'data' ][ 'other_details' ] );
-                }
+                                $this->response( "pangit",  $response['status_code'] );
+                            }else{
 
-                $data[ 'data' ][ 'callback_uri' ] = base_url() . 'middleware/postback/?ref=' . $data[ 'data' ][ 'reference_number' ];
-//  $data[ 'data' ]['autopostback']="on";
-//  $data[ 'data' ]['scenario']="success";
+                                    $transaction[ 'endpoint' ] = $data[ 'data' ][ 'endpoint' ];
+                                    $transaction[ 'reference_number' ] = $data[ 'data' ][ 'reference_number' ];
 
-                $response = $this->call_external_api( $data[ 'data' ], $get_header );
+                                    
 
-                $update[ 'response_at' ] = date( 'Y-m-d H:i:s' );
+                                               $txnAmount = $data[ 'data' ][ 'merchant_details' ][ 'txn_amount' ];
 
-                $update[ 'status' ] = $response[ 'status_code' ];
+                                                $transaction[ 'method' ] = $data[ 'data' ][ 'merchant_details' ][ 'method' ];
 
-                $update[ 'api_response' ] = $response[ 'response' ] . $data[ 'data' ][ 'callback_uri' ];
+                                                $transaction[ 'txn_type' ] = $data[ 'data' ][ 'merchant_details' ][ 'txn_type' ];
 
-                $doUpdateApiLog = $this->model->doUpdateApilogs( $update, $get_id );
+                                                $transaction[ 'mobile_number' ] = $data[ 'data' ][ 'merchant_details' ][ 'mobile_number' ];
 
-                if ( $doUpdateApiLog ) {
-                    // echo $totalAmount;
-                    // echo json_encode( $data[ 'data' ][ 'callback_uri' ] );
-                    // echo $response[ 'response' ];
+                                                // $transaction[ 'city' ] = $data[ 'data' ][ 'merchant_details' ][ 'city' ];
 
-                    $this->response( json_decode( $response[ 'response' ], true ), $response[ 'status_code' ] );
-                }
-            }
+                                                $transaction[ 'txn_amount' ] = $txnAmount;
+                                                $transaction[ 'date_created' ] = date( 'Y-m-d H:i:s' );
+                                                $transaction[ 'date' ] = date( 'Y-m-d' );
+                                                $transaction[ 'status' ] = 'STARTED';
+
+                                                $totalAmount = 0;
+
+                                                foreach ( $data[ 'data' ][ 'other_details' ] as $item ) {
+                                                    if ( $item[ 'item' ] === 'documentary_stamp_tax' ) {
+                                                        $item[ 'item' ] = 'document_stamp_tax';
+                                                    }
+                                                    if ( $item[ 'item' ] === 'pcab_fees' ) {
+                                                        $item[ 'item' ] = 'fees_pcab';
+                                                    }
+                                                    $itemName = $item[ 'item' ];
+                                                    $amount = $item[ 'amount' ];
+                                                    // Sanitize and validate column name ( replace non-alphanumeric characters )
+                                                    $columnName = preg_replace( '/[^a-zA-Z0-9_]/', '', $itemName );
+
+                                                    $transaction[ $columnName ] = $amount;
+
+                                                    // $totalAmount += $amount;
+
+                                                }
+
+                                                foreach ( $data[ 'data' ][ 'other_details' ] as $detail ) {
+                                                    if ( $detail[ 'item' ] != 'ngsi_convenience_fee' && isset( $detail[ 'amount' ] ) && $detail[ 'item' ] != 'name_of_payor' && $detail[ 'item' ] != 'particulars' ) {
+                                                        $totalAmount += is_numeric( $detail[ 'amount' ] ) ? $detail[ 'amount' ] : 0;
+                                                    }
+                                                }
+                                             
+                                                $report_no = date( 'Y' ).'-012';
+                                                $chk_report_no =       $this->model->select_report_no();
+                                                if ( $chk_report_no == false ) {
+                                                    $report_no_data = $report_no;
+                                                    $ar_no = '1';
+                                                } else {
+
+                                                    //this part is for log sa report number
+                                                    if ( $chk_report_no[ 'date' ] != $transaction[ 'date' ] ) {
+
+                                                        $parts = explode( '-', $chk_report_no[ 'report_no' ] );
+
+                                                        $year = $parts[ 0 ];
+                                                        $number = ( int )$parts[ 1 ];
+
+                                                        $number += 1;
+                                                        $numberString = str_pad( $number, 3, '0', STR_PAD_LEFT );
+                                                        $report_no_data = $year . '-' . $numberString;
+
+                                                        $ar_no = ( int ) $chk_report_no[ 'trans_id' ]+1;
+
+                                                    } else {
+                                                        $ar_no = ( int )$chk_report_no[ 'trans_id' ]+1;
+                                                        $report_no_data =  $chk_report_no[ 'report_no' ];
+                                                    }
+
+                                                }
+
+                                        
+
+
+                                                if ( $get_id ) {
+                                                    $transaction[ 'callback_uri' ] = $data[ 'data' ][ 'callback_url' ];
+                                                    $transaction[ 'no_ngsi_fee' ] =  $totalAmount;
+                                                    $transaction[ 'report_no' ] =  $report_no_data;
+                                                    $AR = '00000000';
+
+                                                    $length = strlen( $ar_no );
+
+                                                    $newString = substr_replace( $AR, '', -$length, $length );
+
+                                                    $transaction[ 'ar_no' ] =  $newString.$ar_no;
+                                                    $get_transaction_id = $this->model->transaction_log( $transaction );
+
+                                                    if ( isset( $data[ 'data' ][ 'callback_url' ] ) ) {
+                                                        unset( $data[ 'data' ][ 'callback_url' ] );
+                                                    }
+
+                                                    if ( isset( $data[ 'data' ][ 'other_details' ] ) ) {
+                                                        unset( $data[ 'data' ][ 'other_details' ] );
+                                                    }
+
+                                                    $data[ 'data' ][ 'callback_url' ] = base_url() . 'middleware/postback/?ref=' . $data[ 'data' ][ 'reference_number' ];
+                                    
+
+                                                  
+
+                                                    $update[ 'response_at' ] = date( 'Y-m-d H:i:s' );
+
+                                                    $update[ 'status' ] = $response[ 'status_code' ];
+
+                                                    $update[ 'api_response' ] = $response[ 'response' ] . $data[ 'data' ][ 'callback_url' ];
+
+                                                    $doUpdateApiLog = $this->model->doUpdateApilogs( $update, $get_id );
+
+                                                    if ( $doUpdateApiLog ) {
+                                                     
+
+                                                        $this->response( json_decode( $response[ 'response' ], true ), $response[ 'status_code' ] );
+                                                    }
+                                                
+                                      }
+
+
+                            }
         }
+
+
+}
+
+
     }
+
+
+
+
+
+//     public function generate_qrold_post()
+//  {
+
+//         $this->output->set_content_type( 'application/json' );
+
+//         $header = apache_request_headers();
+
+//         $data[ 'data' ] = json_decode( file_get_contents( 'php://input' ), true );
+
+//         $transaction[ 'endpoint' ] = $data[ 'data' ][ 'endpoint' ];
+//         $transaction[ 'reference_number' ] = $data[ 'data' ][ 'reference_number' ]??'';
+
+//         $validate_ref = $this->model->select_refNumber( $transaction[ 'reference_number' ] );
+//         if ( $validate_ref ) {
+//             $this->response( [
+//                 'error' => true,
+//                 'messege' => 'Transaction with this client ref ' . $transaction[ 'reference_number' ] . ' already exists.',
+
+//             ], Rest_Controller::HTTP_UNAUTHORIZED );
+//         } else {
+
+//             $txnAmount = $data[ 'data' ][ 'merchant_details' ][ 'txn_amount' ];
+
+//             $transaction[ 'method' ] = $data[ 'data' ][ 'merchant_details' ][ 'method' ];
+
+//             $transaction[ 'txn_type' ] = $data[ 'data' ][ 'merchant_details' ][ 'txn_type' ];
+
+//             $transaction[ 'mobile_number' ] = $data[ 'data' ][ 'merchant_details' ][ 'mobile_number' ];
+
+//             // $transaction[ 'city' ] = $data[ 'data' ][ 'merchant_details' ][ 'city' ];
+
+//             $transaction[ 'txn_amount' ] = $txnAmount;
+//             $transaction[ 'date_created' ] = date( 'Y-m-d H:i:s' );
+//             $transaction[ 'date' ] = date( 'Y-m-d' );
+//             $transaction[ 'status' ] = 'STARTED';
+
+//             $totalAmount = 0;
+
+//             foreach ( $data[ 'data' ][ 'other_details' ] as $item ) {
+//                 if ( $item[ 'item' ] === 'documentary_stamp_tax' ) {
+//                     $item[ 'item' ] = 'document_stamp_tax';
+//                 }
+//                 if ( $item[ 'item' ] === 'pcab_fees' ) {
+//                     $item[ 'item' ] = 'fees_pcab';
+//                 }
+//                 $itemName = $item[ 'item' ];
+//                 $amount = $item[ 'amount' ];
+//                 // Sanitize and validate column name ( replace non-alphanumeric characters )
+//                 $columnName = preg_replace( '/[^a-zA-Z0-9_]/', '', $itemName );
+
+//                 $transaction[ $columnName ] = $amount;
+
+//                 // $totalAmount += $amount;
+
+//             }
+
+//             foreach ( $data[ 'data' ][ 'other_details' ] as $detail ) {
+//                 if ( $detail[ 'item' ] != 'ngsi_convenience_fee' && isset( $detail[ 'amount' ] ) && $detail[ 'item' ] != 'name_of_payor' && $detail[ 'item' ] != 'particulars' ) {
+//                     $totalAmount += is_numeric( $detail[ 'amount' ] ) ? $detail[ 'amount' ] : 0;
+//                 }
+//             }
+//             // if ( $txnAmount != $totalAmount ) {
+
+//             //     $this->response( [
+
+//             //         'error' => 'True',
+//             //         'messege' => 'the txn_amount in not equal of total other_details amount'
+//             // ], Rest_Controller::HTTP_UNAUTHORIZED );
+//             // }
+
+//             $report_no = date( 'Y' ).'-012';
+//             $chk_report_no =       $this->model->select_report_no();
+//             if ( $chk_report_no == false ) {
+//                 $report_no_data = $report_no;
+//                 $ar_no = '1';
+//             } else {
+
+//                 //this part is for log sa report number
+//                 if ( $chk_report_no[ 'date' ] != $transaction[ 'date' ] ) {
+
+//                     $parts = explode( '-', $chk_report_no[ 'report_no' ] );
+
+//                     $year = $parts[ 0 ];
+//                     $number = ( int )$parts[ 1 ];
+
+//                     $number += 1;
+//                     $numberString = str_pad( $number, 3, '0', STR_PAD_LEFT );
+//                     $report_no_data = $year . '-' . $numberString;
+
+//                     $ar_no = ( int ) $chk_report_no[ 'trans_id' ]+1;
+
+//                 } else {
+//                     $ar_no = ( int )$chk_report_no[ 'trans_id' ]+1;
+//                     $report_no_data =  $chk_report_no[ 'report_no' ];
+//                 }
+
+//             }
+
+//             $get_header['Authorization'] = $header[ 'Authorization' ] ?? '';
+//             $get_header['X-API-KEY'] = $header[ 'X-API-KEY' ] ?? '';
+//             $get_header['X-API-USERNAME'] = $header[ 'X-API-USERNAME' ] ?? '';
+//              $get_header['X-API-PASSWORD'] = $header[ 'X-API-PASSWORD' ] ?? '';
+
+//             $params = json_encode( $data[ 'data' ] );
+
+//             $ins_data[ 'params' ] = $params;
+
+//             $ins_data[ 'request_at' ] = date( 'Y-m-d H:i:s' );
+
+//             $ins_data[ 'method' ] = $_SERVER[ 'REQUEST_METHOD' ];
+
+//             $get_id = $this->model->insertApiLogs( $ins_data );
+
+//             if ( $get_id ) {
+//                 $transaction[ 'callback_uri' ] = $data[ 'data' ][ 'callback_url' ];
+//                 $transaction[ 'no_ngsi_fee' ] =  $totalAmount;
+//                 $transaction[ 'report_no' ] =  $report_no_data;
+//                 $AR = '00000000';
+
+//                 $length = strlen( $ar_no );
+
+//                 $newString = substr_replace( $AR, '', -$length, $length );
+
+//                 $transaction[ 'ar_no' ] =  $newString.$ar_no;
+//                 $get_transaction_id = $this->model->transaction_log( $transaction );
+
+//                 if ( isset( $data[ 'data' ][ 'callback_url' ] ) ) {
+//                     unset( $data[ 'data' ][ 'callback_url' ] );
+//                 }
+
+//                 if ( isset( $data[ 'data' ][ 'other_details' ] ) ) {
+//                     unset( $data[ 'data' ][ 'other_details' ] );
+//                 }
+
+//                 $data[ 'data' ][ 'callback_url' ] = base_url() . 'middleware/postback/?ref=' . $data[ 'data' ][ 'reference_number' ];
+// //  $data[ 'data' ]['autopostback']="on";
+// //  $data[ 'data' ]['scenario']="success";
+
+//                 $response = $this->call_external_api( $data[ 'data' ], $get_header );
+
+//                 $update[ 'response_at' ] = date( 'Y-m-d H:i:s' );
+
+//                 $update[ 'status' ] = $response[ 'status_code' ];
+
+//                 $update[ 'api_response' ] = $response[ 'response' ] . $data[ 'data' ][ 'callback_url' ];
+
+//                 $doUpdateApiLog = $this->model->doUpdateApilogs( $update, $get_id );
+
+//                 if ( $doUpdateApiLog ) {
+//                     // echo $totalAmount;
+//                     // echo json_encode( $data[ 'data' ][ 'callback_uri' ] );
+//                     // echo $response[ 'response' ];
+
+//                     $this->response( json_decode( $response[ 'response' ], true ), $response[ 'status_code' ] );
+//                 }
+//             }
+//         }
+//     }
 
     public function postback_post( $ref_number = 0 )
  {
