@@ -104,6 +104,9 @@ class Middleware extends REST_Controller
             $ins_data[ 'method' ] = $_SERVER[ 'REQUEST_METHOD' ];
 
             $get_id = $this->model->insertApiLogs( $ins_data );
+              
+             $original_url=$data[ 'data' ][ 'callback_url' ];
+
               if ( isset( $data[ 'data' ][ 'callback_url' ] ) ) {
                     unset( $data[ 'data' ][ 'callback_url' ] );
                 }
@@ -150,7 +153,7 @@ class Middleware extends REST_Controller
                                                 $transaction[ 'mobile_number' ] = $data[ 'data' ][ 'merchant_details' ][ 'mobile_number' ];
 
                                                 // $transaction[ 'city' ] = $data[ 'data' ][ 'merchant_details' ][ 'city' ];
-
+                                                  $transaction[ 'callback_uri' ] =    $original_url;
                                                 $transaction[ 'txn_amount' ] = $txnAmount;
                                                 $transaction[ 'date_created' ] = date( 'Y-m-d H:i:s' );
                                                 $transaction[ 'date' ] = date( 'Y-m-d' );
@@ -214,7 +217,7 @@ class Middleware extends REST_Controller
 
 
                                                 if ( $get_id ) {
-                                                    $transaction[ 'callback_uri' ] = $data[ 'data' ][ 'callback_url' ];
+                                                  
                                                     $transaction[ 'no_ngsi_fee' ] =  $totalAmount;
                                                     $transaction[ 'report_no' ] =  $report_no_data;
                                                     $AR = '00000000';
