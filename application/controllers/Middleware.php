@@ -237,7 +237,7 @@ class Middleware extends REST_Controller
                                                         unset( $data[ 'data' ][ 'other_details' ] );
                                                     }
 
-                                                    // $data[ 'data' ][ 'callback_url' ] = base_url() . 'middleware/postback/?ref=' . $data[ 'data' ][ 'reference_number' ];
+                                                    $datacallback  = base_url() . 'middleware/postback/?ref=' . $data[ 'data' ][ 'reference_number' ];
                                     
 
                                                   
@@ -246,7 +246,7 @@ class Middleware extends REST_Controller
 
                                                     $update[ 'status' ] = $response[ 'status_code' ];
 
-                                                    $update[ 'api_response' ] = $response[ 'response' ] . $data[ 'data' ][ 'callback_url' ];
+                                                    $update[ 'api_response' ] = $response[ 'response' ] . $datacallback ;
 
                                                     $doUpdateApiLog = $this->model->doUpdateApilogs( $update, $get_id );
 
