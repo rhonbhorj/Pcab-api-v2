@@ -33,9 +33,27 @@ class Api extends REST_Controller
 
         
         $header = apache_request_headers();
+
+
+
+ if (array_key_exists('X-API-KEY', $header) != true || array_key_exists('X-API-USERNAME', $header) != true || array_key_exists('X-API-PASSWORD', $header) != true) {
+            // if (array_key_exists('X-API-KEY', $header) != true ) {
+            $resp['status'] = FALSE;
+            $resp['message'] = 'Api parameters is invalid';
+
+
+            $this->response(  $resp,Rest_Controller::HTTP_UNAUTHORIZED);
+        } else {
+         
   $response =$this->apiService->mw_token($header);
 
    $this->response( json_decode( $response[ 'response' ], true ), $response[ 'status_code' ] );
+        }
+
+
+
+
+
        
     }
 
