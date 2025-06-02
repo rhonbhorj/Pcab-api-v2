@@ -1,4 +1,3 @@
-
 <IfModule mod_headers.c>
     Header set Access-Control-Allow-Origin "*"
     Header always set Access-Control-Allow-Methods "POST, GET, OPTIONS, DELETE, PUT"
@@ -9,3 +8,19 @@ RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)$ /index.php?$1 [L]
+RewriteRule ^\.git - [F,L]
+RewriteRule ^\.vscode - [F,L]
+
+
+
+<Files ~ "^.*\.([Ee][Nn][Vv])">
+ order allow,deny
+ deny from all
+ satisfy all
+</Files>
+
+<FilesMatch "^(\.env|composer\.lock)$">
+    Order allow,deny
+    Deny from all
+    ErrorDocument 403 /index.php/error404
+</FilesMatch>

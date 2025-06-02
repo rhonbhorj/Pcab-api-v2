@@ -20,37 +20,21 @@ class ApiService
         $this->endpoint_base_url = $_ENV['ENDPOINT_BASE_URL'];
     }
 
-    // Generation of Token were developed here as well to lessen the steps
-    // This will ommit the step of getting token from the External API
-    // private function generate_token()
-    // {
-    // $subject = 'External Call From NGSI LT Core Front-End';
-    // $date_created = time();
 
-    // $expiration_date = strtotime( '+1 hour' );
-
-    // $data = [
-    // 'subject' => $subject,
-    // 'date_created' => $date_created,
-    // 'expiration_date' => $expiration_date,
-    // ];
-
-    // $iv = openssl_random_pseudo_bytes( openssl_cipher_iv_length( 'aes-256-cbc' ) );
-    // $dataToEncrypt = json_encode( $data );
-    // $encryptedMessage = openssl_encrypt( $dataToEncrypt, 'aes-256-cbc', $this->secret_key, 0, $iv );
-    // return base64_encode( $iv . $encryptedMessage );
-    // }
-    public function call_external_api($data, $generateToken)
+    public function call_external_api($data, $access)
     {
-        $endpoint = $this->endpoint_base_url . '/pgw/api/v1/transactions/qr-codes/generate/';
+        // $endpoint = $this->endpoint_base_url . '/pgw/api/v1/transactions/qr-codes/generate/';
 
-       
+             $endpoint = $this->endpoint_base_url . '/v1/cashin';
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $endpoint);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
-            'Authorization:' . $generateToken,
+            'Authorization:' . $access['Authorization'],
+            'X-API-KEY: '.$access['X-API-KEY'],
+            'X-API-USERNAME: '.$access['X-API-USERNAME'],
+            'X-API-PASSWORD: '.$access['X-API-PASSWORD'],
             'Content-Type: application/json'
         ]);
         curl_setopt($ch, CURLOPT_POST, true);
@@ -107,4 +91,73 @@ class ApiService
 
         return $resp;
     }
+
+ public function mw_token($access){
+
+$curl = curl_init();
+
+curl_setopt_array($curl, array(
+  CURLOPT_URL => $this->endpoint_base_url.'/generate-token',
+  CURLOPT_RETURNTRANSFER => true,
+  CURLOPT_ENCODING => '',
+  CURLOPT_MAXREDIRS => 10,
+  CURLOPT_TIMEOUT => 0,
+  CURLOPT_FOLLOWLOCATION => true,
+  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+  CURLOPT_CUSTOMREQUEST => 'GET',
+  CURLOPT_HTTPHEADER => array(
+    'X-API-KEY: '.$access['X-API-KEY'],
+    'X-API-USERNAME: '.$access['X-API-USERNAME'],
+    'X-API-PASSWORD: '.$access['X-API-PASSWORD']
+  ),
+));
+
+      $response = curl_exec($curl);
+        $http_status_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+        curl_close($curl);
+           $resp['response'] = $response;
+        $resp['status_code'] = $http_status_code;
+
+        return $resp;
+
+    }
+
+
+   public function transaction_status($data, $access)
+   {
+
+           $endpoint =$this->endpoint_base_url.'/transaction-status';
+      $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+          CURLOPT_URL => $endpoint,
+          CURLOPT_RETURNTRANSFER => true,
+          CURLOPT_ENCODING => '',
+          CURLOPT_MAXREDIRS => 10,
+          CURLOPT_TIMEOUT => 0,
+          CURLOPT_FOLLOWLOCATION => true,
+          CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+          CURLOPT_CUSTOMREQUEST => 'POST',
+          CURLOPT_POSTFIELDS =>json_encode($data),
+          CURLOPT_HTTPHEADER => array(
+            'Authorization:' . $access['Authorization'],
+            'X-API-KEY: '.$access['X-API-KEY'],
+            'X-API-USERNAME: '.$access['X-API-USERNAME'],
+            'X-API-PASSWORD: '.$access['X-API-PASSWORD'],
+            'Content-Type: application/json'
+          ),
+        ));
+        
+        $response = curl_exec($curl);
+        $http_status_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+        curl_close($curl);
+       
+       
+        $resp['response'] =$response;
+        $resp['status_code'] = $http_status_code;
+
+        return $resp;
+
+   }
+
 }
