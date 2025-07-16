@@ -317,7 +317,6 @@
                                             </thead>
                                             <tbody class="border-bottom-1">
 
-<<<<<<< HEAD
                                                     <?php
                                         // $fmt = new NumberFormatter('en-US', NumberFormatter::CURRENCY);
                                         // $fmt->setPattern(str_replace('¤#', "", $fmt->getPattern()));
@@ -346,36 +345,6 @@
                                             }
                                         }
                                         ?>
-=======
-                                                <?php
-                                                $fmt = new NumberFormatter('en-US', NumberFormatter::CURRENCY);
-                                                $fmt->setPattern(str_replace('¤#', "", $fmt->getPattern()));
-                                                if (empty($data)) {
-                                                    // echo "<tr><td colspan='11'>No data available</td></tr>";
-                                                } else {
-                                                    $total = ["totalAR" => 0, "totalFee" => 0, "totalDST" => 0, "totalLRF" => 0];
-                                                    foreach ($data as $row) {
-                                                        echo "<tr>";
-                                                        echo "<td>" .  date_format(date_create($row["date_created"]), "m/d/Y H:i:s") . "</td>";
-                                                        echo "<td>" . date_format(date_create($row['last_modified']), "m/d/Y") . "</td>";
-                                                        echo "<td>" . date("H:i:s", strtotime($row["last_modified"])) . "</td>";
-                                                        echo "<td>" . $row["ar_no"] . "</td>";
-                                                        echo '<td style="text-wrap: wrap;">' . $row["name_of_payor"] . '</td>';
-                                                        echo "<td>" . $row["particulars"] . "</td>";
-                                                        $total_per_AR = $row["fees_pcab"] + $row["document_stamp_tax"] + $row["legal_research_fund"];
-                                                        $total["totalAR"] += $total_per_AR;
-                                                        $total["totalFee"] += $row["fees_pcab"];
-                                                        $total["totalDST"] += $row["document_stamp_tax"];
-                                                        $total["totalLRF"] += $row["legal_research_fund"];
-                                                        echo "<td class='text-right'>" . $fmt->formatCurrency(floatval($total_per_AR), "PHP") . "</td>";
-                                                        echo "<td class='text-right'>" . $fmt->formatCurrency(floatval($row["fees_pcab"]), "PHP") . "</td>";
-                                                        echo "<td class='text-right'>" . $fmt->formatCurrency(floatval($row["document_stamp_tax"]), "PHP") . "</td>";
-                                                        echo "<td class='text-right'>" . $fmt->formatCurrency(floatval($row["legal_research_fund"]), "PHP") . "</td>";
-                                                        echo "</tr>";
-                                                    }
-                                                }
-                                                ?>
->>>>>>> c6ad2852b17f2a0b7b9a320d73062f9f691860af
 
 
                                             </tbody>
