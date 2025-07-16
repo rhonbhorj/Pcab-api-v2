@@ -1384,7 +1384,8 @@
         content += `
     <div class="row d-flex pl-5">
             <div class="col text-capitalize ">Name of Payor<div class="float-right">  :</div></div>
-            <div class="col"> ${rowData.name_of_payor}</div>
+            <div class="col col text-wrap text-break" style="letter-spacing: 2px;  word-spacing: 10px; word-break: break-word;">
+             ${rowData.name_of_payor}</div>
         </div>
         <div class="row d-flex pl-5">
             <div class="col text-capitalize ">Particular<div class="float-right">  :</div></div>
