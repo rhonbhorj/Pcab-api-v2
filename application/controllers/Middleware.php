@@ -26,23 +26,29 @@ class Middleware extends REST_Controller
     }
 
 
+    public function doreply_post()
+    {
+               $this->response( [
+                'messege' => 'success'
+            ], Rest_Controller::HTTP_OK );
 
+    }
 
 
     
-    public function index_post()
- {
+        public function index_post()
+    {
 
-        // $last_data_deposit =     $this->model->last_data_deposit() ;
+            // $last_data_deposit =     $this->model->last_data_deposit() ;
 
-        // echo json_encode( $last_data_deposit );
-        $this->response( [
-            'messege' => 'FORBIDDEN'
-        ], Rest_Controller::HTTP_FORBIDDEN );
-    }
+            // echo json_encode( $last_data_deposit );
+            $this->response( [
+                'messege' => 'FORBIDDEN'
+            ], Rest_Controller::HTTP_FORBIDDEN );
+        }
 
-    private function getHeaders()
- {
+        private function getHeaders()
+    {
 
         $arh = array();
         $rx_http = '/\AHTTP_/';
