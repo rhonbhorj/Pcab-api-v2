@@ -86,7 +86,7 @@ class ApiService
         curl_close($curl);
        
        
-        $resp['response'] =json_encode($data);
+        $resp['response'] =$response;
         $resp['status_code'] = $http_status_code;
 
         return $resp;
