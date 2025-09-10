@@ -371,8 +371,7 @@
                             <div class="col-md-4 mt-3" style="margin-left:11rem;">
                                 <p class="font-weight-bold" style="font-family: Century Gothic; font-size:16px;" ;>
                                     NET GLOBAL SOLUTIONS&nbsp;&nbsp; INC.</p>
-                                <p style="margin-top: -20px;margin-bottom: -5px; font-family: Century Gothic;">Tel.
-                                    No. 632 82877374</p>
+                                <p style="margin-top: -20px;margin-bottom: -5px; font-family: Century Gothic;">Tel. No: (02) - 853 - 50989</p>
                                 <p style=" line-height: 80%; color:blue;margin-top: 10px;">
                                     Support@netglobalsolutions.net</p>
                             </div>

@@ -573,6 +573,8 @@
         </div>
     </div>
 </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
 <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.6/jspdf.plugin.autotable.min.js"></script>
@@ -1106,220 +1108,219 @@
     });
 
     async function printDailyReport(modalStartDate, modalEndDate) {
+        const { jsPDF } = window.jspdf;
+
         const filteredData = _jsonData.filter(object => {
-            // const modalStartDate = new Date($("#Daily_CollectionModal #modal_start_date").val());
-            // const modalEndDate =new Date( $("#Daily_CollectionModal #modal_end_date").val());
-
-
-
-            const partss = object.last_modified.split(' ');
-            // Take the first part, which is the date
+            const partss = object.last_modified.split(" ");
             const dateParts = partss[0];
-
-
-
-
             return dateParts >= modalStartDate && dateParts <= modalEndDate;
         });
 
-        let doc = new jspdf.jsPDF({
-            orientation: 'p',
-            unit: 'px'
+        if (filteredData.length === 0) {
+            alert("No data found for selected dates.");
+            return;
+        }
+
+        let doc = new jsPDF({
+            orientation: "p",
+            unit: "pt",
+            format: "a4"
         });
 
         let report_number = filteredData[0].report_no;
         let date = filteredData[0].last_modified;
-        let pdf_date = date.split(' ')[0];
+        let pdf_date = date.split(" ")[0];
 
-        let i = 0;
-        let totalCIAPPCAB = 0;
-        let totalLRF = 0;
-        let totalDST = 0;
-        let totalCollection = 0;
-        let currentPage = 1; // Track the current page number
+        const pageWidth = doc.internal.pageSize.getWidth();
 
-        let rowsPerPageHtml = '';
+        // ---- HEADER ----
+        const logo = new Image();
+        logo.src = "assets/images/ngsi-letterhead.png";
+        doc.addImage(logo, "PNG", 120, 0, 210, 50);
 
+        let textX = 340, textY = 20;
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(9);
+        doc.text("NET GLOBAL SOLUTIONS INC.", textX, textY);
 
-        while (filteredData.length - (i * 13) > 0) {
-            let rows = filteredData.slice(i * 13, i * 13 + 13);
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(8);
+        doc.text("Tel. No: (02) - 853 - 50989", textX, textY + 10);
+        doc.setTextColor(0, 0, 255);
+        doc.text("Support@netglobalsolutions.net", textX, textY + 20);
+        doc.setTextColor(0, 0, 0);
 
-            // Generate HTML for the current page
-            rowsPerPageHtml += `<br><div class="page-container" style="margin-top: 9rem; margin-left:2rem; width: 100%; text-align: center;margin-bottom:8rem; ">
-                <div class="table-wrapper" style="display: inline-block; width: 66rem; margin-bottom:5rem;">
-                <table class="report-table " style="width: 100%; border-collapse: collapse; border: 1px solid black;">
-                <thead>
-        <tr>
-            <th colspan="8" class="text-center">Collection</th>
-        </tr>
-        <tr>
-            <th style="text-wrap:nowrap; border-bottom: none; ">Date & Time</th>
-            <th style="text-wrap:nowrap; border-bottom: none; ">AR Number</th>
-            <th style="text-wrap:nowrap; border-bottom: none;">Name of Payor</th>
-            <th style="text-wrap:nowrap; border-bottom: none;  ">Reference Number</th>
-            <th style="text-wrap:nowrap;">CIAP-PCAB</th>
-            <th style="text-wrap:nowrap;">LRF</th>
-            <th style="text-wrap:nowrap;">DST</th>
-            <th style="text-wrap:nowrap; border-bottom: none;">Total Collection</th>
-        </tr>
-        <tr>
-            <th style="text-wrap:nowrap; border-top: none;"></th>
-            <th style="text-wrap:nowrap; border-top: none;"></th>
-            <th style="text-wrap:nowrap; border-top: none;"></th>
-            <th style="text-wrap:nowrap; border-top: none;"></th>
-            <th>Account No.<br/>(0052-1684-30)</th>
-            <th>Account No.<br/>(3402-2866-19)</th>
-            <th>Account No.<br/>(3402-2866-00)</th>
-            <th style="text-wrap:nowrap; border-top: none;"></th>
-        </tr>
-        </thead>
-                    <tbody>`;
+        const divider = new Image();
+        divider.src = "assets/images/NGSI_header.png";
+        doc.addImage(divider, "PNG", 30, 55, pageWidth * 0.9, 4);
 
-            rows.forEach(data => {
-                // Function to manually wrap text
-                const wrapText = (text, maxLength) => {
-                    const words = text.split(' ');
-                    let lines = [];
-                    let currentLine = '';
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(9);
+        doc.text("LIST OF DAILY COLLECTION", pageWidth / 2, 80, { align: "center" });
 
-                    words.forEach(word => {
-                        if ((currentLine.length + word.length) <= maxLength) {
-                            currentLine += (currentLine.length > 3 ? ' ' : '') + word;
-                        } else {
-                            lines.push(currentLine);
-                            currentLine = word;
-                        }
-                    });
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(9);
+        doc.text("AGENCY: CONSTRUCTION INDUSTRY AUTHORITY OF THE PHILIPPINES", pageWidth / 2, 90, { align: "center" });
+        doc.text("Philippine Contractors Accreditation Board ( PCAB )", pageWidth / 2, 100, { align: "center" });
+        doc.text(`Date : ${pdf_date}`, pageWidth / 2, 110, { align: "center" });
 
-                    if (currentLine.length > 3) {
-                        lines.push(currentLine);
-                    }
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(8);
+        doc.text(`Report No : ${report_number}`, pageWidth - 30, 125, { align: "right" });
 
-                    return lines.join('\n');
-                };
-                // Calculate totals
-                const feesPCAB = parseFloat(data.fees_pcab ?? 0);
-                const legalResearchFund = parseFloat(data.legal_research_fund ?? 0);
-                const documentStampTax = parseFloat(data.document_stamp_tax ?? 0);
-                const totalForRow = feesPCAB + legalResearchFund + documentStampTax;
+        // --- TABLE DATA ---
+        let grandFees = 0, grandLRF = 0, grandDST = 0, grandTotal = 0;
 
-                // Update totals
-                totalCIAPPCAB += feesPCAB;
-                totalLRF += legalResearchFund;
-                totalDST += documentStampTax;
-                totalCollection += totalForRow;
-                rowsPerPageHtml += `
-                    <tr>
-                        <td class="cell" style="border: 1px solid black; width: 12px;text-wrap:wrap;">${wrapText(data.last_modified ?? "", 13)}</td>
-                        <td class="cell" style="border: 1px solid black; width: 12px;text-wrap:wrap ">${wrapText(data.reference_number ?? "", 10)}</td>
-                        <td class="cell" style="border: 1px solid black; text-wrap:wrap; word-spacing: 6px; height:80px;">${data.name_of_payor ?? ""}</td>
-                        <td class="cell" style="border: 1px solid black; width: 12px;text-wrap:wrap;">${wrapText(data.referenceNumber ?? "", 10)}</td>
-                        <td class="cell" style="border: 1px solid black; width: 12px;">${parseFloat(parseFloat(data.fees_pcab ?? 0)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                        <td class="cell" style="border: 1px solid black; width: 12px;">${parseFloat(parseFloat(data.legal_research_fund ?? 0)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                        <td class="cell" style="border: 1px solid black; width: 12px;">${parseFloat(parseFloat(data.document_stamp_tax ?? 0)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                        <td class="cell" style="border: 1px solid black; width: 10px; height:80px;vertical-align: bottom;">${parseFloat(parseFloat(data.fees_pcab ?? 0) + parseFloat(data.legal_research_fund ?? 0) + parseFloat(data.document_stamp_tax ?? 0)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                    </tr>`;
-            });
+        let tableData = filteredData.map(data => {
+            const feesPCAB = parseFloat(data.fees_pcab ?? 0);
+            const legalResearchFund = parseFloat(data.legal_research_fund ?? 0);
+            const documentStampTax = parseFloat(data.document_stamp_tax ?? 0);
+            const totalForRow = feesPCAB + legalResearchFund + documentStampTax;
 
-            rowsPerPageHtml += `</tbody>`;
+            grandFees += feesPCAB;
+            grandLRF += legalResearchFund;
+            grandDST += documentStampTax;
+            grandTotal += totalForRow;
 
-            // Add the footer only on the last page
-            if (i === Math.ceil(filteredData.length / 13) - 1) {
-                rowsPerPageHtml += `
-                        <tfoot>
-                            <tr>
-                                <td style="border: 1px solid black;"></td>
-                                <td style="border: 1px solid black;"></td>
-                                <td style="border: 1px solid black;"></td>
-                                <td style="border: 1px solid black;">Total :</td>
-                                <td style="border: 1px solid black;">${totalCIAPPCAB.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                                <td style="border: 1px solid black;">${totalLRF.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                                <td style="border: 1px solid black;">${totalDST.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                                <td style="border: 1px solid black;">${totalCollection.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                            </tr>
-                        </tfoot>`;
+            return [
+                data.last_modified ?? "",
+                data.reference_number ?? "",
+                data.name_of_payor ?? "",
+                data.referenceNumber ?? "",
+                feesPCAB.toLocaleString(undefined, { minimumFractionDigits: 2 }),
+                legalResearchFund.toLocaleString(undefined, { minimumFractionDigits: 2 }),
+                documentStampTax.toLocaleString(undefined, { minimumFractionDigits: 2 }),
+                totalForRow.toLocaleString(undefined, { minimumFractionDigits: 2 })
+            ];
+        });
+
+        // Add TOTAL row at the end (only last page will show it)
+        const totalsRow = [
+            { content: "TOTAL", colSpan: 4, styles: { halign: "right", fontStyle: "bold" } },
+            grandFees.toLocaleString(undefined, { minimumFractionDigits: 2 }),
+            grandLRF.toLocaleString(undefined, { minimumFractionDigits: 2 }),
+            grandDST.toLocaleString(undefined, { minimumFractionDigits: 2 }),
+            grandTotal.toLocaleString(undefined, { minimumFractionDigits: 2 })
+        ];
+
+        // --- CHUNKING LOGIC (20 rows per page) ---
+        function chunkArray(array, size) {
+            const result = [];
+            for (let i = 0; i < array.length; i += size) {
+                result.push(array.slice(i, i + size));
             }
-
-            rowsPerPageHtml += `</table>
-            </div>
-            </div>`;
-
-            // Add a page break if there are more rows to be processed
-            if (filteredData.length - ((i + 1) * 13) > 0) {
-                rowsPerPageHtml += `<div style="page-break-before: always; word-wrap: break-word; overflow-wrap: break-word;"></div>`;
-            }
-
-            i++;
+            return result;
         }
 
-        // Generate header and footer content
-        const header = `<div class="mx-auto d-flex flex-column border-dark" style="width:70rem;height:5rem;">
-            <div class="d-flex align-items-center justify-content-center" style="height: 250px;">
-                <div class="row justify-content-center mb-2">
-                    <div class="col-md-3">
-                        <img  height="100px" style="margin-left:-1rem;" src="assets/images/ngsi-letterhead.png" alt="logo" class="logo-dark" />
-                    </div>
-                    <div class="col-md-4 mt-3"  style="margin-left:11rem;">
-                        <p class="font-weight-bold" style="font-family: Century Gothic; font-size:16px;">NET GLOBAL SOLUTIONS&nbsp;&nbsp; INC.</p>
-                        <p style="margin-top: -20px;margin-bottom: -5px; font-family: Century Gothic;">Tel. No. 632 82877374</p>
-                        <p style=" line-height: 80%; color:blue;margin-top: 10px;">Support@netglobalsolutions.net</p>
-                    </div>
-                </div>
-            </div>
-            <div class="d-flex align-items-center justify-content-center" style="height: 250px;">
-                <img width="100%" height="6px" style="margin-top: -10px; margin-left:30px; margin-right:30px;" src="assets/images/NGSI_header.png" alt="logo" class="logo-dark" />
-            </div>
-            <div class="d-flex align-items-center justify-content-center" style="height: 250px;">
-                <div class="text-center text-uppercase py-3">
-                    <p class="font-weight-bold" style="color:black;">LIST &nbsp;OF &nbsp;DAILY &nbsp;COLLECTION<p>
-                    <p style="color:black;margin-top:-20px;">Agency : &nbsp;CONSTRUCTION &nbsp INDUSTRY &nbsp;AUTHORITY &nbsp; OF &nbsp; THE &nbsp;PHILIPPINES<p>
-                    <p class="text-justify" style="color:black;margin-top:-20px;">Philippine &nbsp; Contractors &nbsp;&nbsp; Accreditation &nbsp; Board &nbsp;( PCAB )<p>
-                    <p class="text-capitalize" style="color:black;margin-top:-20px;">Date : ${pdf_date}<p>
-                </div>
-            </div>
-            <p class="text-right" style="color:black;margin-top:-20px;margin-right:50px;">Report No :${report_number}<p>
-           
-            </div>`;
+        const rowsPerPage = 15;
+        const tableChunks = chunkArray(tableData, rowsPerPage);
 
-        const footer = `<div class="mx-auto d-flex flex-column border-dark" style="width:70rem;height:5rem;margin-top:-8rem;">
-            <div class="d-flex align-items-center justify-content-center" style="height: 250px;">
-                <div class="row mt-4" style="margin:50px">
-                    <div class="col-sm">
-                        <img style="margin-left:25%; background-position:center; margin-bottom:-15px;z-index:0;position:relative;transform:scale(1.1)"width="35%" height="35%" src="assets/images/ma'am_je.png" alt="logo" class="logo-dark" />
-                        <p style="position:relative;left:11px;margin:0;margin-top:-80px;">Prepared By: </p>
-                        <p style="margin-top:60px;margin-left:155px;font-size 18px; font-family: Arial, Helvetica, sans-serif;z-index:1;position:relative;">Jeremie Soliveres </p>
-                        <p style=" margin-top:-20px; margin-left: 159px; font-family: Arial, Helvetica, sans-serif; font-size: 12px;">Accounting Specialist</p>
-                        <p style=" margin-top:-20px; margin-left: 154px; font-family: Arial, Helvetica, sans-serif; font-size: 12px;">Netglobal Solutions, Inc.</p>
-                    </div>
-                    <div class="col-sm">
-                        <img style="margin-left:13rem; margin-bottom:-15px;" width="35%" height="35%" src="assets/images/sir_peter1.png" alt="logo" class="logo-dark" />
-                        <p style="position:relative;left:5.7rem;margin:0;margin-top:-80px;">Checked/Verified By: </p>
-                        <p style="margin-top:55px;margin-left: 13.5rem;font-size: 15px; font-family: Arial, Helvetica, sans-serif;">Mischell A. Fernandez</p>
-                        <p style=" margin-top:-20px; margin-left: 217px; font-family: Arial, Helvetica, sans-serif; font-size: 12px;">Admin Officer III /Cashier II</p>
-                        <p style=" margin-top:-20px; margin-left: 255px; font-family: Arial, Helvetica, sans-serif; font-size: 12px;">CIAP - PCAB</p>
-                    </div>
-                </div>
-            </div>
-            </div>`;
+        let startY = 135;
 
-        doc.html(header + rowsPerPageHtml + footer, {
-            html2canvas: {
-                scale: .40
-            },
-            async callback(pdf) {
-                const totalPages = pdf.internal.getNumberOfPages();
+        tableChunks.forEach((chunk, index) => {
+            // If this is the last chunk, append the TOTAL row
+            if (index === tableChunks.length - 1) {
+                chunk.push(totalsRow);
+            }
 
-                for (let i = 1; i <= totalPages; i++) {
-                    pdf.setPage(i);
-                    pdf.setFontSize(10);
-                    pdf.text(520, 800, `Page ${i} of ${totalPages}`);
+            doc.autoTable({
+                startY: startY,
+                head: [
+                    [{ content: "Collection", colSpan: 8, styles: { halign: "center", fontStyle: "bold" , lineWidth: { bottom: 0, top: 1, left: 1, right: 1 }} }],
+                    [
+                        { content: "Date & Time", styles: { cellWidth: 65, halign: "center", valign: "middle", minCellHeight: 15, lineWidth: { bottom: 0, top: 1, left: 1, right: 1 } } },
+                        { content: "AR Number", styles: { cellWidth: 55, halign: "center", lineWidth: { bottom: 0, top: 1, left: 1, right: 1 } } },
+                        { content: "Name of Payor", styles: { cellWidth: 115, halign: "center", lineWidth: { bottom: 0, top: 1, left: 1, right: 1 } } },
+                        { content: "Reference Number", styles: { cellWidth: 85, halign: "center", lineWidth: { bottom: 0, top: 1, left: 1, right: 1 } } }, // strong border
+                        { content: "CIAP-PCAB", styles: { cellWidth: 50, halign: "center", lineWidth: { bottom: 1, top: 1, left: 1, right: 1 } } },
+                        { content: "LRF", styles: { cellWidth: 50, halign: "center", lineWidth: { bottom: 1, top: 1, left: 1, right: 1 } } },
+                        { content: "DST", styles: { cellWidth: 50, halign: "center", lineWidth: { bottom: 1, top: 1, left: 1, right: 1 } } },
+                        { content: "Total Collection", styles: { cellWidth: 60, halign: "center", lineWidth: { bottom: 0, top: 1, left: 1, right: 1 } } }
+                    ],
+
+                    // Second row (sub-headers)
+                    [
+                        { content: "", styles: { cellWidth: 65, lineWidth: { top: 0, bottom: 1, left: 1, right: 1 } } },
+                        { content: "", styles: { cellWidth: 55, lineWidth: { top: 0, bottom: 1, left: 1, right: 1 } } },
+                        { content: "", styles: { cellWidth: 115, lineWidth: { top: 0, bottom: 1, left: 1, right: 1 } } },
+                        { content: "", styles: { cellWidth: 85, lineWidth: { top: 0, bottom: 1, left: 1, right: 1 } } }, // full border
+                        { content: "Account No.\n(0052-1684-30)", styles: { cellWidth: 50, halign: "center", lineWidth: { top: 1, bottom: 1, left: 1, right: 1 } } },
+                        { content: "Account No.\n(3402-2866-19)", styles: { cellWidth: 50, halign: "center", lineWidth: { top: 1, bottom: 1, left: 1, right: 1 } } },
+                        { content: "Account No.\n(3402-2866-00)", styles: { cellWidth: 50, halign: "center", lineWidth: { top: 1, bottom: 1, left: 1, right: 1 } } },
+                        { content: "", styles: { cellWidth: 60, lineWidth: { top: 0, bottom: 1, left: 1, right: 1 } } }
+                    ]
+                ],
+                body: chunk,
+                theme: "grid",
+                tableWidth: 540,
+                margin: { left: 40, right: 30 },
+                styles: {
+                    fontSize: 6,
+                    cellPadding: 3,
+                    overflow: 'linebreak',
+                    valign: 'middle',
+                    lineColor: [0, 0, 0],
+                     lineWidth: 1,  
+                    minCellHeight: 30
+                },
+                headStyles: {
+                    fillColor: [0, 80, 122],
+                    textColor: [255, 255, 255]
+                },
+                bodyStyles: {
+                    textColor: [0, 0, 0]
+                },
+                alternateRowStyles: {
+                    fillColor: [189, 232, 255]
+                },
+                columnStyles: {
+                    0: { cellWidth: 65 },
+                    1: { cellWidth: 55 },
+                    2: { cellWidth: 115 },
+                    3: { cellWidth: 85 },
+                    4: { cellWidth: 50, halign: "center" },
+                    5: { cellWidth: 50, halign: "center" },
+                    6: { cellWidth: 50, halign: "center" },
+                    7: { cellWidth: 60, halign: "center" }
+                },
+                didDrawPage: function () {
+                    let str = `Page ${doc.internal.getNumberOfPages()}`;
+                    doc.setFontSize(8);
+                    doc.text(str, pageWidth - 60, doc.internal.pageSize.getHeight() - 20);
                 }
+            });
 
-                const date = new Date();
-                await pdf.save(`list_of_colletion-${date.toLocaleDateString()}.pdf`);
-            },
+            if (index < tableChunks.length - 1) {
+                doc.addPage();
+                startY = 60;
+            }
         });
+
+        // --- SIGNATURE FOOTER ---
+        let footerY = doc.lastAutoTable.finalY + 40;
+
+        doc.addImage("assets/images/ma'am_je.png", "PNG", 110, footerY, 80, 35);
+        doc.setFontSize(9);
+        doc.text("Prepared By:", 60, footerY + 5);
+        doc.setFontSize(10);
+        doc.text("Jeremie Soliveres", 150, footerY + 35, { align: "center" });
+        doc.setFontSize(7);
+        doc.text("Accounting Specialist", 150, footerY + 45, { align: "center" });
+        doc.text("Netglobal Solutions, Inc.", 150, footerY + 55, { align: "center" });
+
+        doc.setFontSize(9);
+        doc.text("Checked/Verified By:", 290, footerY + 5);
+        doc.setFontSize(10);
+        doc.text("Mischell A. Fernandez", 450, footerY + 35, { align: "center" });
+        doc.setFontSize(7);
+        doc.text("Admin Officer III / Cashier II", 450, footerY + 45, { align: "center" });
+        doc.text("CIAP - PCAB", 450, footerY + 55, { align: "center" });
+
+        // Save file
+        const now = new Date();
+        doc.save(`list_of_collection_${now.toLocaleDateString()}.pdf`);
     }
+
 
     async function printRow(trans_id) {
         const rowData = _jsonData.find(obj => obj.trans_id == trans_id);
@@ -1350,7 +1351,7 @@
                             </div>
                             <div class="col-md-4 mt-3"  style="margin-left:11rem;">
                                 <p class="font-weight-bold" style="font-family: Century Gothic; font-size:16px;" ;>NET GLOBAL SOLUTIONS&nbsp;&nbsp; INC.</p>
-                                <p style="margin-top: -20px;margin-bottom: -5px; font-family: Century Gothic;">Tel. No. 632 82877374</p>
+                                <p style="margin-top: -20px;margin-bottom: -5px; font-family: Century Gothic;">Tel. No: (02) - 853 - 50989</p>
                                 <p style=" line-height: 80%; color:blue;margin-top: 10px;">Support@netglobalsolutions.net</p>
                             </div>
                         </div>
