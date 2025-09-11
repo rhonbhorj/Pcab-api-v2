@@ -1390,14 +1390,14 @@
         </div>
         <div class="row d-flex pl-5">
             <div class="col text-capitalize ">Particular<div class="float-right">  :</div></div>
-            <div class="col">PCAB fee</div>
+            <div class="col">PCAB&nbsp;&nbsp;Fee</div>
         </div>
         <div class="row d-flex pl-5">
     <div class="col text-capitalize ">Amount<div class="float-right ">:</div></div>
     <div class="col"> ${Amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} </div>
 </div>
 <div class="row d-flex pl-5">
-    <div class="col text-capitalize pl-4">PCAB Fee<div class="float-right pr-2">:</div></div>
+    <div class="col text-capitalize pl-4">PCAB&nbsp;&nbsp;Fee<div class="float-right pr-2">:</div></div>
     <div class="col"> (${parseFloat(rowData.fees_pcab).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })})</div>
 </div>
 <div class="row d-flex pl-5">
