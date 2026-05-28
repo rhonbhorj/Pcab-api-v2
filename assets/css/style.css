@@ -2077,7 +2077,10 @@ progress {
   height: auto; }
 
 [type="search"] {
-  outline-offset: -2px;
+  color: #555 ;
+  border-radius: 8px;
+  border: 2px solid #555  ;
+  padding: 7px;
   -webkit-appearance: none; }
 
 [type="search"]::-webkit-search-decoration {

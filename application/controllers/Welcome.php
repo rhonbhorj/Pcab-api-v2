@@ -27,9 +27,14 @@ class Welcome extends CI_Controller
                 return;
             }
 
-            if ( $result[ 'route' ] == 'acknowledgement-receipt' ) {
+            // Handle both acknowledgement-receipt routes (v2 refactored version)
+            if ( $result[ 'route' ] == 'acknowledgement-receipt' || $result[ 'route' ] == 'acknowledgement-receipt-v2' ) {
                 $latest_deposit = $this->crud->last_data_deposit();
-                $result[ 'data' ] = $this->crud->get_all_data();
+                $startDate = $this->input->get( 'startDate', TRUE );
+                $endDate = $this->input->get( 'endDate', TRUE );
+                $result[ 'selectedStartDate' ] = $startDate ? $startDate : date( 'm/d/Y' );
+                $result[ 'selectedEndDate' ] = $endDate ? $endDate : date( 'm/d/Y' );
+                $result[ 'data' ] = $this->crud->get_all_data( $startDate, $endDate );
                 $result[ 'last_deposit' ] = $latest_deposit ? $this->crud->get_deposit_transactions( [ $latest_deposit[ 'dep_id' ] ] )[ 0 ] : null;
                 $result[ 'last_deposit_date' ] = $latest_deposit ? $latest_deposit[ 'deposited_date' ] : null;
             }
@@ -72,6 +77,10 @@ class Welcome extends CI_Controller
 
 			}
 
+			if ( $result[ 'route' ] == 'transaction-dashboard-v2' ) {
+
+			}
+
             $this->load->view( 'index', $result );
         } else {
             redirect( 'login' );
@@ -90,7 +99,61 @@ class Welcome extends CI_Controller
     }
 
 
+    public function getTransactionsByDate()
+    {
+        $this->output->set_content_type( 'application/json' );
 
+        $startDate = $this->input->get( 'startDate', TRUE );
+        $endDate = $this->input->get( 'endDate', TRUE );
+        $draw = $this->input->get( 'draw', TRUE );
+
+        if ( $draw !== null ) {
+            $start = intval( $this->input->get( 'start', TRUE ) );
+            $length = intval( $this->input->get( 'length', TRUE ) );
+            $length = $length > 0 ? $length : 10;
+
+            $data = $this->crud->get_all_data( $startDate, $endDate, $length, $start );
+            $recordsTotal = $this->crud->count_all_data( $startDate, $endDate );
+
+            echo json_encode( [
+                'draw' => intval( $draw ),
+                'recordsTotal' => $recordsTotal,
+                'recordsFiltered' => $recordsTotal,
+                'data' => $data ? $data : []
+            ] );
+            return;
+        }
+
+        $data = $this->crud->get_all_data( $startDate, $endDate );
+
+        echo json_encode( [
+            'status' => true,
+            'data' => $data ? $data : [],
+            'message' => $data ? 'Success' : 'No data found'
+        ] );
+    }
+
+    public function getTransactionById()
+    {
+        $this->output->set_content_type( 'application/json' );
+
+        $trans_id = $this->input->get( 'trans_id', TRUE );
+        if ( ! $trans_id ) {
+            echo json_encode( [
+                'status' => false,
+                'message' => 'Missing transaction id',
+                'data' => []
+            ] );
+            return;
+        }
+
+        $row = $this->crud->get_transaction_by_id( $trans_id );
+        echo json_encode( [
+            'status' => (bool) $row,
+            'data' => $row ? $row : [],
+            'message' => $row ? 'Success' : 'Transaction not found'
+        ] );
+    }
     public function redirect()
     {
 

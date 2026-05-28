@@ -30,12 +30,63 @@ class CrudModel extends CI_Model
         return $data->row_array() ? $data->row_array() : false;
     }
 
-    public function get_all_data()
+    private function build_all_data_query( $startDate = null, $endDate = null )
  {
+        $this->db->from( 'transactions' );
+        $this->db->where( 'status', 'SUCCESS' );
 
-        $sql = 'SELECT * FROM transactions where status = "SUCCESS" ORDER BY last_modified DESC';
-        $Q = $this->db->query( $sql );
+        $hasStart = ! empty( $startDate );
+        $hasEnd = ! empty( $endDate );
+
+        if ( $hasStart || $hasEnd ) {
+            if ( $hasStart ) {
+                $startDateTime = DateTime::createFromFormat( 'm/d/Y', $startDate );
+                if ( $startDateTime ) {
+                    $this->db->where( 'DATE(last_modified) >=', $startDateTime->format( 'Y-m-d' ) );
+                }
+            }
+            if ( $hasEnd ) {
+                $endDateTime = DateTime::createFromFormat( 'm/d/Y', $endDate );
+                if ( $endDateTime ) {
+                    $this->db->where( 'DATE(last_modified) <=', $endDateTime->format( 'Y-m-d' ) );
+                }
+            }
+        } else {
+            $today = date( 'Y-m-d' );
+            $this->db->where( 'DATE(last_modified)', $today );
+        }
+
+        $this->db->order_by( 'last_modified', 'DESC' );
+    }
+
+    public function get_all_data( $startDate = null, $endDate = null, $limit = null, $offset = null )
+ {
+        $this->db->select( '*' );
+        $this->build_all_data_query( $startDate, $endDate );
+
+        if ( $limit !== null ) {
+            $this->db->limit( $limit, $offset );
+        }
+
+        $Q = $this->db->get();
         return $Q->row_array() ? $Q->result_array() : false;
+    }
+
+    public function count_all_data( $startDate = null, $endDate = null )
+ {
+        $this->build_all_data_query( $startDate, $endDate );
+        return (int) $this->db->count_all_results();
+    }
+
+    public function get_transaction_by_id( $trans_id )
+ {
+        $Q = $this->db->select( '*' )
+            ->from( 'transactions' )
+            ->where( 'trans_id', $trans_id )
+            ->where( 'status', 'SUCCESS' )
+            ->get();
+
+        return $Q->row_array() ? $Q->row_array() : false;
     }
 
     public function get_all_transaction_data()

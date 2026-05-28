@@ -67,6 +67,7 @@ $route['deposit']  = 'welcome/index';
 $route['dashboard']  = 'welcome/index';
 $route['get-transactions']  = 'welcome/getTransactions';
 $route['transaction-dashboard']  = 'Welcome/index';
+$route['transaction-dashboard-v2']  = 'Welcome/index';
 $route['transaction-report']  = 'TransactionReport/dasboardReportData';
 
 // $route['get-data']  = 'welcome/get_data';

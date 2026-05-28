@@ -39,7 +39,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
         integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous">
         </script> -->
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous">
     </script>
@@ -80,7 +80,15 @@ defined('BASEPATH') or exit('No direct script access allowed');
                 <div class="content-wrapper p-0 pl-3 m-0 bg-white">
                     <!-- main view container -->
                     <?php
-                    $view = isset($route) ? $route : "acknowledgement-receipt";
+                    $view = isset($route) ? $route : "acknowledgement-receipt-v2";
+                    // Map acknowledgement-receipt to v2
+                    if ($view === 'acknowledgement-receipt') {
+                        $view = 'acknowledgement-receipt-v2';
+                    }
+                    // Map transaction-dashboard-v2
+                    if ($view === 'transaction-dashboard') {
+                        $view = 'transaction-dashboard-v2';
+                    }
                     $this->load->view('./modules/' . $view);
                     ?>
 

@@ -66,6 +66,8 @@ $route['acknowledgement-receipt']  = 'welcome/index';
 $route['deposit']  = 'welcome/index';
 $route['dashboard']  = 'welcome/index';
 $route['get-transactions']  = 'welcome/getTransactions';
+$route['get-transactions-by-date'] = 'welcome/getTransactionsByDate';
+$route['get-transaction'] = 'welcome/getTransactionById';
 $route['transaction-dashboard']  = 'Welcome/index';
 $route['transaction-report']  = 'TransactionReport/dasboardReportData';
 

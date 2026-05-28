@@ -7,7 +7,7 @@
       </a>
     </li> -->
     <li class="nav-item">
-      <a class="nav-link" href="dashboard">
+      <a class="nav-link" href="transaction-dashboard">
         <span class="menu-title text-capitalize">Dashboard</span>
         <i class=" icon-screen-desktop  menu-icon"></i>
       </a>
@@ -29,7 +29,7 @@
       echo 
     '<li class="nav-item">
       <a class="nav-link" href="transaction-table">
-        <span class="menu-title text-capitalize"> Transactions</span>
+        <span class="menu-title text-capitalize">Transactions</span>
         <i class=" icon-list    menu-icon"></i>
       </a>
     </li> '
