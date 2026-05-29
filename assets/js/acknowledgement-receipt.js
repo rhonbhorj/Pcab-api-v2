@@ -308,13 +308,15 @@ function initializeMainTable() {
                         const filterWrapper = wrapper.find('.dataTables_filter');
                         if (filterWrapper.length && !filterWrapper.find('#tableSearchIconBtn').length) {
                             const searchInput = filterWrapper.find('input');
-                            searchInput.off('keyup').on('keyup', function(e) {
-                                // Prevent automatic search on typing
+                            // Disable automatic DataTable search on input
+                            searchInput.off('keyup change input').on('keyup change input', function(e) {
                                 e.preventDefault();
+                                e.stopPropagation();
+                                return false;
                             });
                             filterWrapper.append('<button type="button" id="tableSearchIconBtn" class="btn-search-icon" title="Search"><i class="icon-magnifier"></i></button>');
                             
-                            // Handle search button click
+                            // Handle search button click - client-side only
                             filterWrapper.find('#tableSearchIconBtn').off('click').on('click', function() {
                                 const searchValue = searchInput.val();
                                 tableInstance.search(searchValue).draw();
@@ -418,6 +420,10 @@ function initializeDailyCollectionModal() {
     // Clear validation message on date change
     $startDateInput.add($endDateInput).on("change", function() {
         $validationMessage.empty();
+        // Auto-populate table when both dates are selected
+        if ($startDateInput.val() && $endDateInput.val()) {
+            handleDailyCollectionPreview($startDateInput, $endDateInput, $validationMessage, $modalDataTableContainer, $modal);
+        }
     });
 }
 
@@ -552,14 +558,21 @@ function populateDailyCollectionTable(data, validationMessage, modal) {
             const wrapper = $(settings.nTableWrapper);
             const filterWrapper = wrapper.find('.dataTables_filter');
             if (filterWrapper.length && !filterWrapper.find('#dailyCollectionSearchBtn').length) {
-                const searchInput = filterWrapper.find('input');
-                searchInput.off('keyup').on('keyup', function(e) {
-                    // Prevent automatic search on typing
+                const searchInput = filterWrapper.find('input');               // Disable automatic DataTable search on input
+                searchInput.off('keyup change input').on('keyup change input', function(e) {
                     e.preventDefault();
+                    e.stopPropagation();
+                    return false;
                 });
-                    filterWrapper.append('<button type="button" id="dailyCollectionSearchBtn" class="btn-search-icon" title="Search"><i class="icon-magnifier"></i></button>');
-        }
-    }});
+                filterWrapper.append('<button type=\"button\" id=\"dailyCollectionSearchBtn\" class=\"btn-search-icon\" title=\"Search\"><i class=\"icon-magnifier\"></i></button>');
+                
+                // Handle search button click - client-side only
+                filterWrapper.find('#dailyCollectionSearchBtn').off('click').on('click', function() {
+                    const searchValue = searchInput.val();
+                    modalTableInstance.search(searchValue).draw();
+                });
+            }
+        }});
 
     // Adjust modal size
     const modalDialog = $('#Daily_CollectionModal .modal-dialog');
@@ -670,13 +683,15 @@ function initializeECollectionDataTable() {
             const filterWrapper = wrapper.find('.dataTables_filter');
             if (filterWrapper.length && !filterWrapper.find('#eCollectionSearchBtn').length) {
                 const searchInput = filterWrapper.find('input');
-                searchInput.off('keyup').on('keyup', function(e) {
-                    // Prevent automatic search on typing
+                // Disable automatic DataTable search on input
+                searchInput.off('keyup change input').on('keyup change input', function(e) {
                     e.preventDefault();
+                    e.stopPropagation();
+                    return false;
                 });
                 filterWrapper.append('<button type="button" id="eCollectionSearchBtn" class="btn-search-icon" title="Search"><i class="icon-magnifier"></i></button>');
                 
-                // Handle search button click
+                // Handle search button click - client-side only
                 filterWrapper.find('#eCollectionSearchBtn').off('click').on('click', function() {
                     const searchValue = searchInput.val();
                     eCollectionTable.search(searchValue).draw();
