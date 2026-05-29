@@ -22,6 +22,8 @@
     <!-- External CSS -->
     <link rel="stylesheet" href="<?= base_url('assets/css/acknowledgement-receipt.css'); ?>">
     <link rel="stylesheet" href="<?= base_url('assets/css/main.css'); ?>">
+    <!-- Font Awesome Icons -->
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">> -->
 </head>
 <body>
     <!-- Main Content Container -->
@@ -56,6 +58,8 @@
                                        placeholder="mm/dd/yyyy"
                                        value="<?php echo isset($selectedEndDate) ? htmlspecialchars($selectedEndDate) : ''; ?>">
                             </div>
+
+
                         </form>
 
                         <div class="collection-button-container">

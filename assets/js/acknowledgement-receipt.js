@@ -303,6 +303,23 @@ function initializeMainTable() {
                     drawCallback: function(settings) {
                         const wrapper = $(settings.nTableWrapper);
                         wrapper.find('.dataTables_paginate').css('visibility', 'visible');
+                        
+                        // Add search icon button beside DataTables search box
+                        const filterWrapper = wrapper.find('.dataTables_filter');
+                        if (filterWrapper.length && !filterWrapper.find('#tableSearchIconBtn').length) {
+                            const searchInput = filterWrapper.find('input');
+                            searchInput.off('keyup').on('keyup', function(e) {
+                                // Prevent automatic search on typing
+                                e.preventDefault();
+                            });
+                            filterWrapper.append('<button type="button" id="tableSearchIconBtn" class="btn-search-icon" title="Search"><i class="icon-magnifier"></i></button>');
+                            
+                            // Handle search button click
+                            filterWrapper.find('#tableSearchIconBtn').off('click').on('click', function() {
+                                const searchValue = searchInput.val();
+                                tableInstance.search(searchValue).draw();
+                            });
+                        }
                     },
                     buttons: [{
                         extend: 'excelHtml5',
@@ -344,7 +361,7 @@ function initializeMainTable() {
     // Load initial data
     loadTableData();
 
-    // Handle date filter changes
+    // Handle date change - reload table with validation
     $startDate.add($endDate).on('change', function() {
         if (ValidationHelper.areBothDatesSelected($startDate.val(), $endDate.val())) {
             loadTableData();
@@ -523,14 +540,26 @@ function populateDailyCollectionTable(data, validationMessage, modal) {
     tableContainer.append(table);
 
     // Initialize DataTable
-    $('#modalDataTable').DataTable({
+    const modalTableInstance = $('#modalDataTable').DataTable({
         dom: 'frtip',
         scrollX: '100%',
         scrollCollapse: true,
         ordering: false,
         paging: true,
-        pageLength: 10
-    });
+        pageLength: 10,
+        drawCallback: function(settings) {
+            // Add search icon button beside DataTables search box
+            const wrapper = $(settings.nTableWrapper);
+            const filterWrapper = wrapper.find('.dataTables_filter');
+            if (filterWrapper.length && !filterWrapper.find('#dailyCollectionSearchBtn').length) {
+                const searchInput = filterWrapper.find('input');
+                searchInput.off('keyup').on('keyup', function(e) {
+                    // Prevent automatic search on typing
+                    e.preventDefault();
+                });
+                    filterWrapper.append('<button type="button" id="dailyCollectionSearchBtn" class="btn-search-icon" title="Search"><i class="icon-magnifier"></i></button>');
+        }
+    }});
 
     // Adjust modal size
     const modalDialog = $('#Daily_CollectionModal .modal-dialog');
@@ -631,10 +660,29 @@ function initializeECollectionDataTable() {
         today.getDate().toString().padStart(2, '0');
     const filename = 'NGSI_E-Collection_' + dateString;
 
-    return $('#EcollectTable').DataTable({
+    const eCollectionTable = $('#EcollectTable').DataTable({
         dom: 'Bfrtip',
         scrollX: '100%',
         scrollCollapse: true,
+        drawCallback: function(settings) {
+            // Add search icon button beside DataTables search box
+            const wrapper = $(settings.nTableWrapper);
+            const filterWrapper = wrapper.find('.dataTables_filter');
+            if (filterWrapper.length && !filterWrapper.find('#eCollectionSearchBtn').length) {
+                const searchInput = filterWrapper.find('input');
+                searchInput.off('keyup').on('keyup', function(e) {
+                    // Prevent automatic search on typing
+                    e.preventDefault();
+                });
+                filterWrapper.append('<button type="button" id="eCollectionSearchBtn" class="btn-search-icon" title="Search"><i class="icon-magnifier"></i></button>');
+                
+                // Handle search button click
+                filterWrapper.find('#eCollectionSearchBtn').off('click').on('click', function() {
+                    const searchValue = searchInput.val();
+                    eCollectionTable.search(searchValue).draw();
+                });
+            }
+        },
         buttons: [{
             extend: 'excelHtml5',
             text: 'Export',
@@ -654,6 +702,7 @@ function initializeECollectionDataTable() {
             customize: customizeECollectionExport
         }]
     });
+    return eCollectionTable;
 }
 
 /**
