@@ -10,18 +10,11 @@ class Api_model extends CI_Model
         $this->load->database();
     }
 
-
-
-    public function doLogin($username, $password)
+    public function get_all_transaction($from_date, $to_date)
     {
-        $this->db->where('username', $username);
-        $this->db->where('password', $password);
-        $query = $this->db->get('users');
-
-        if ($query->num_rows() > 0) {
-            return $query->row();
-        } else {
-            return false;
-        }
+        $this->db->where('date >=', $from_date . ' 00:00:00');
+        $this->db->where('date <=', $to_date . ' 23:59:59');
+        $query = $this->db->get('transactions');
+        return $query->result();
     }
 }

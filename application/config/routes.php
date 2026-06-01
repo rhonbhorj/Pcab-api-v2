@@ -57,4 +57,6 @@ $route['default_controller'] = 'auth';
 $route['api-login'] = 'auth/authenticate';
 $route['api-logout'] = 'auth/logout';
 
+$route['api-transaction'] = 'api/get_all_transaction';
+
 

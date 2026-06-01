@@ -29,13 +29,18 @@ class MY_Exceptions extends CI_Exceptions
             $code = 400;
         }
 
+        // 🚀 FIX: Fallback safely if CodeIgniter URL Helper hasn't loaded yet
+        $path = function_exists('current_url')
+            ? current_url()
+            : (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+
         // Prepare JSON response
         $response = [
             'success' => false,
             'message' => $message,
-            'error'   => $exception->getMessage(),
+            'error' => $exception->getMessage(),
             'timestamp' => date('Y-m-d H:i:s'),
-            'path' => current_url()
+            'path' => $path
         ];
 
         // Clean output buffer to prevent mixed content
@@ -43,7 +48,13 @@ class MY_Exceptions extends CI_Exceptions
             ob_end_clean();
         }
 
-        set_status_header($code);
+        // 🚀 FIX: Prevent crash if framework functions aren't fully instantiated
+        if (function_exists('set_status_header')) {
+            set_status_header($code);
+        } else {
+            header("HTTP/1.1 $code Internal Server Error", true, $code);
+        }
+
         header('Content-Type: application/json');
         echo json_encode($response, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
         exit;
@@ -71,11 +82,16 @@ class MY_Exceptions extends CI_Exceptions
         $response = [
             'success' => false,
             'message' => 'A PHP error occurred.',
-            'error'   => $message,
+            'error' => $message,
             'timestamp' => date('Y-m-d H:i:s'),
         ];
 
-        set_status_header(500);
+        if (function_exists('set_status_header')) {
+            set_status_header(500);
+        } else {
+            header("HTTP/1.1 500 Internal Server Error", true, 500);
+        }
+
         header('Content-Type: application/json');
         echo json_encode($response, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
         exit;
