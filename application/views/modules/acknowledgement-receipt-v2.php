@@ -22,8 +22,6 @@
     <!-- External CSS -->
     <link rel="stylesheet" href="<?= base_url('assets/css/acknowledgement-receipt.css'); ?>">
     <link rel="stylesheet" href="<?= base_url('assets/css/main.css'); ?>">
-    <!-- Font Awesome Icons -->
-    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">> -->
 </head>
 <body>
     <!-- Main Content Container -->
@@ -65,7 +63,7 @@
                         <div class="collection-button-container">
                             <!-- Daily Collection Button -->
                             <div class="">
-                            <button class="btn-lg btn-outline-dark rounded border-0"
+                            <button class="btn-lg rounded border-0"
                                     id="dailyCollectionBtn" 
                                     data-toggle="modal"
                                     data-target="#Daily_CollectionModal"
@@ -75,42 +73,58 @@
                             
                             <!-- Daily Collection Modal -->
                             <div class="modal fade" id="Daily_CollectionModal" tabindex="-1" role="dialog" aria-labelledby="Daily_CollectionModalLabel">
-                                <div class="modal-dialog modal-sm" role="document">
-                                    <div id="DailyCollectModal" class="modal-content bg-white">
+                                <div class="modal-dialog modal-lg" role="document">
+                                    <div class="modal-content bg-white">
                                         <div class="modal-header py-2">
                                             <h5 class="modal-title" id="Daily_CollectionModalLabel">Daily Collection Report</h5>
                                             <button type="button" class="close text-right pr-4 text-dark" data-dismiss="modal">&times;</button>
                                         </div>
                                         <div class="modal-body bg-white py-3">
-                                            <form class="form-group" style="display: flex !important; flex-wrap: wrap !important; margin-bottom: 0 !important;">
-                                                <label for="modal_start_date" class="pb-2 pt-3">Start Date:</label>
+                                            <form class="form-group">
+                                                <label for="modal_start_date" class="pb-2 pt-3 mr-2">Start Date:</label>
                                                 <input type="text" 
-                                                       class="form-control" 
+                                                       class="form-control mr-2"
+                                                       style="max-width: 12rem;" 
                                                        name="modal_start_date" 
                                                        id="modal_start_date"
                                                        placeholder="yyyy-mm-dd"
                                                        readonly>
                                                 
-                                                <label for="modal_end_date" class="pb-2 pt-3">End Date:</label>
+                                                <label for="modal_end_date" class="pb-2 pt-3 mr-2">End Date:</label>
                                                 <input type="text" 
-                                                       class="form-control" 
+                                                       class="form-control mr-2"
+                                                       style="max-width: 12rem;"
                                                        name="modal_end_date" 
                                                        id="modal_end_date"
                                                        placeholder="yyyy-mm-dd"
                                                        readonly>
                                             </form>
-                                            <div id="validationMessage" role="alert"></div>
                                         </div>
-                                        <div id="modalDataTableContainer" class="scrollable-container mx-3" style="background-color: #fff;"></div>
+                                        <div class="scrollable-container mx-3 bg-white" id="modalDataTableContainer" style="background-color: #fff; max-height: 400px; overflow-y: auto;">
+                                            <table id="modalDataTable" class="table table-striped" width="100%">
+                                                <thead>
+                                                    <tr><th colspan="9" class="text-center">Collection</th></tr>
+                                                    <tr>
+                                                        <th style="align-content: center;" rowspan="2">Date & Time</th>
+                                                        <th style="align-content: center;" rowspan="2">Date Created & Time</th>
+                                                        <th style="align-content: center;" rowspan="2">AR Number</th>
+                                                        <th style="align-content: center;" rowspan="2">Name of Payor</th>
+                                                        <th style="align-content: center;" rowspan="2">Reference Number</th>
+                                                        <th>CIAP-PCAB</th>
+                                                        <th>LRF</th>
+                                                        <th>DST</th>
+                                                        <th style="align-content: center;" rowspan="2">Total Collection</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Account No.<br/>(0052-1684-30)</th>
+                                                        <th>Account No.<br/>(3402-2866-19)</th>
+                                                        <th>Account No.<br/>(3402-2866-00)</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody></tbody>
+                                            </table>
+                                        </div>
                                         <div class="modal-footer bg-white border-top py-2 px-4 d-flex flex-wrap justify-content-center">
-                                            <button type="button" 
-                                                    class="btn-sm border-0 m-0 rounded btn-generate-container preview-btn-modal mb-2 w-100">
-                                                Preview
-                                            </button>
-                                            <button type="button" 
-                                                    class="btn-sm border-0 m-0 rounded btn-generate-container download-btn-modal mb-2 w-100">
-                                                Download
-                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -119,7 +133,7 @@
 
                             <!-- E-Collection Button -->
                             <div class="">
-                            <button class="btn-lg btn-outline-dark rounded border-0"
+                            <button class="btn-lg rounded border-0"
                                     id="eCollectionBtn" 
                                     data-toggle="modal"
                                     data-target="#exportModal"

@@ -152,7 +152,7 @@
               <h5>Daily Page Hits</h5>
               <h5>Total Successful Transactions This Week: <span id="weeklyTotalCount"></span></h5>
             </div>
-            <div id="bar-chart-daily-count" style="margin-left: -20px; margin-top: 20px;"></div>
+            <div id="bar-chart-daily-count" style="margin-top: 20px;"></div>
           </div>
         </div>
         

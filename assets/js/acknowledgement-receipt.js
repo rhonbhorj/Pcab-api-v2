@@ -382,8 +382,8 @@ function initializeDailyCollectionModal() {
     const $modal = $('#Daily_CollectionModal');
     const $startDateInput = $('#modal_start_date');
     const $endDateInput = $('#modal_end_date');
-    const $validationMessage = $('#validationMessage');
     const $modalDataTableContainer = $('#modalDataTableContainer');
+    let dailyCollectionDataTable = null;
 
     // Initialize datepickers
     $startDateInput.add($endDateInput).datepicker({
@@ -394,217 +394,141 @@ function initializeDailyCollectionModal() {
         orientation: 'bottom'
     });
 
-    // Preview button handler
-    $('.preview-btn-modal').on('click', function() {
-        handleDailyCollectionPreview($startDateInput, $endDateInput, $validationMessage, $modalDataTableContainer, $modal);
+    // Initialize DataTable on modal open
+    $modal.on('shown.bs.modal', function() {
+        if (!dailyCollectionDataTable && !$.fn.dataTable.isDataTable('#modalDataTable')) {
+            
+            const today = new Date();
+            const dateString = today.getFullYear() + '-' +
+                (today.getMonth() + 1).toString().padStart(2, '0') + '-' +
+                today.getDate().toString().padStart(2, '0');
+            const filename = 'NGSI_Daily_Collection_' + dateString;
+            
+            dailyCollectionDataTable = $('#modalDataTable').DataTable({
+                dom: 'Bfrtip',
+                scrollX: '100%',
+                scrollCollapse: true,
+                ordering: false,
+                paging: true,
+                pageLength: 10,
+                buttons: [{
+                    extend: 'excelHtml5',
+                    text: 'Export',
+                    filename: filename,
+                    autoWidth: true,
+                    header: true,
+                    footer: true,
+                    title: "Daily Collection",
+                    className: 'export-btn',
+                    action: function (e, dt, node, config) {
+                        if (dt.rows().count() === 0) {
+                            alert('No data to export.');
+                            return;
+                        }
+                        $.fn.dataTable.ext.buttons.excelHtml5.action.call(this, e, dt, node, config);
+                    }
+                }],
+                drawCallback: function(settings) {
+                    // Add search icon button beside DataTables search box
+                    const wrapper = $(settings.nTableWrapper);
+                    const filterWrapper = wrapper.find('.dataTables_filter');
+                    if (filterWrapper.length && !filterWrapper.find('#dailyCollectionSearchBtn').length) {
+                        const searchInput = filterWrapper.find('input');
+                        // Disable automatic DataTable search on input
+                        searchInput.off('keyup change input').on('keyup change input', function(e) {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            return false;
+                        });
+                        filterWrapper.append('<button type="button" id="dailyCollectionSearchBtn" class="btn-search-icon" title="Search"><i class="icon-magnifier"></i></button>');
+                        
+                        // Handle search button click - client-side only
+                        filterWrapper.find('#dailyCollectionSearchBtn').off('click').on('click', function() {
+                            const searchValue = searchInput.val();
+                            dailyCollectionDataTable.search(searchValue).draw();
+                        });
+                    }
+                }
+            });
+        }
     });
 
-    // Download button handler
-    $('.download-btn-modal').on('click', function() {
-        handleDailyCollectionDownload($startDateInput, $endDateInput, $validationMessage);
-    });
+    // Handle date changes - fetch and populate table
+    $startDateInput.add($endDateInput).on('input change changeDate', function() {
+        if (!dailyCollectionDataTable) return;
 
-    // Clear modal on close
-    $modal.on('hidden.bs.modal', function() {
-        $startDateInput.val('');
-        $endDateInput.val('');
-        $validationMessage.empty();
-        $modalDataTableContainer.empty();
-        $(this).attr("role", "dialog");
-        $(".modal-dialog", this).removeClass("modal-lg").addClass("modal-sm");
-        $('#Daily_CollectionModal .form-group').css('flex-wrap', 'wrap').children().removeClass('mr-2');
-        $('#Daily_CollectionModal .form-group .form-control').css('max-width', '');
-        $('#Daily_CollectionModal .modal-footer').addClass('flex-wrap').children().removeClass('mr-2').addClass('w-100');
-    });
+        const startDate = $startDateInput.val();
+        const endDate = $endDateInput.val();
 
-    // Clear validation message on date change
-    $startDateInput.add($endDateInput).on("change", function() {
-        $validationMessage.empty();
-        // Auto-populate table when both dates are selected
-        if ($startDateInput.val() && $endDateInput.val()) {
-            handleDailyCollectionPreview($startDateInput, $endDateInput, $validationMessage, $modalDataTableContainer, $modal);
+        dailyCollectionDataTable.clear().draw();
+
+        if (startDate && endDate) {
+            const startDateFormatted = DateConverter.normalizeDateForApi(startDate);
+            const endDateFormatted = DateConverter.normalizeDateForApi(endDate);
+
+            TransactionAPI.getTransactionsByDateRange(startDateFormatted, endDateFormatted)
+                .done(function(response) {
+                    populateDailyCollectionTable(dailyCollectionDataTable, response.data || []);
+                })
+                .fail(function() {
+                    populateDailyCollectionTable(dailyCollectionDataTable, []);
+                });
         }
     });
 }
 
-/**
- * Handle Daily Collection preview
- */
-function handleDailyCollectionPreview(startDateInput, endDateInput, validationMessage, tableContainer, modal) {
-    const startDate = startDateInput.val();
-    const endDate = endDateInput.val();
-
-    if (!startDate || !endDate) {
-        validationMessage.html(
-            '<span style="font-size:.8rem; color: red; text-align:center;" role="alert">' +
-            'Please select both start and end dates.</span>'
-        );
-        return;
-    }
-
-    validationMessage.empty();
-
-    const startDateFormatted = DateConverter.normalizeDateForApi(startDate);
-    const endDateFormatted = DateConverter.normalizeDateForApi(endDate);
-
-    TransactionAPI.getTransactionsByDateRange(startDateFormatted, endDateFormatted)
-        .done(function(response) {
-            const filteredData = response.data || [];
-            populateDailyCollectionTable(filteredData, validationMessage, modal);
-        })
-        .fail(function() {
-            validationMessage.html(
-                '<span style="font-size:.8rem; color: red; text-align:center;" role="alert">' +
-                'Error fetching data. Please try again.</span>'
-            );
-        });
-}
 
 /**
  * Populate Daily Collection table with data
  */
-function populateDailyCollectionTable(data, validationMessage, modal) {
-    if (!data || data.length === 0) {
-        validationMessage.html(
-            '<span style="font-size:.8rem; color: red; text-align:center;" role="alert">' +
-            'No data found for the selected date range.</span>'
-        );
+function populateDailyCollectionTable(dataTable, transactionData) {
+    if (!Array.isArray(transactionData) || transactionData.length === 0) {
+        dataTable.draw();
         return;
     }
 
-    validationMessage.empty();
-
-    const tableContainer = $('#modalDataTableContainer');
-    
-    // Destroy existing DataTable if present
-    if ($.fn.dataTable.isDataTable('#modalDataTable')) {
-        $('#modalDataTable').DataTable().destroy();
-    }
-    
-    // Clear the container
-    tableContainer.empty();
-
-    // Create table structure
-    const table = document.createElement('table');
-    table.id = 'modalDataTable';
-    table.className = 'table table-bordered table-hover table-striped';
-    table.style.overflow = 'hidden';
-
-    // Table header
-    const thead = document.createElement('thead');
-    thead.className = 'thead';
-    thead.innerHTML = `
-        <tr><th colspan="9" class="text-center">Collection</th></tr>
-        <tr>
-            <th style="width:${100 / 9}%;" rowspan="2">Date & Time</th>
-            <th style="width:${100 / 9}%;" rowspan="2">Date Created & Time</th>
-            <th style="width:${100 / 9}%;" rowspan="2">AR Number</th>
-            <th style="width:${100 / 9}%;" rowspan="2">Name of Payor</th>
-            <th style="width:${100 / 9}%;" rowspan="2">Reference Number</th>
-            <th style="width:${100 / 9}%;">CIAP-PCAB</th>
-            <th style="width:${100 / 9}%;">LRF</th>
-            <th style="width:${100 / 9}%;">DST</th>
-            <th style="width:${100 / 9}%;" rowspan="2">Total Collection</th>
-        </tr>
-        <tr>
-            <th>Account No.<br/>(0052-1684-30)</th>
-            <th>Account No.<br/>(3402-2866-19)</th>
-            <th>Account No.<br/>(3402-2866-00)</th>
-        </tr>
-    `;
-
-    // Table body
-    const tbody = document.createElement('tbody');
     const formatter = new Intl.NumberFormat('en-US', {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2
     });
 
-    data.forEach((row) => {
+    const rowsToAdd = transactionData.map(function(row) {
         const ciapPcab = parseFloat(row.fees_pcab || 0);
         const lrf = parseFloat(row.legal_research_fund || 0);
         const dst = parseFloat(row.document_stamp_tax || 0);
         const total = ciapPcab + lrf + dst;
 
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-            <td class="text-left" style="width:${100 / 9}%;padding-left:18px;">${row.last_modified || ''}</td>
-            <td class="text-left" style="width:${100 / 9}%;padding-left:18px;">${row.date_created || ''}</td>
-            <td class="text-center" style="width:${100 / 9}%;padding-left:18px;">${row.ar_no || ''}</td>
-            <td style="width:${100 / 9}%;padding-left:18px; text-wrap: wrap;">${row.name_of_payor || ''}</td>
-            <td style="width:${100 / 9}%;padding-left:18px;">${row.reference_number || ''}</td>
-            <td class="text-right" style="width:${100 / 9}%;">${formatter.format(ciapPcab)}</td>
-            <td class="text-right" style="width:${100 / 9}%;">${formatter.format(lrf)}</td>
-            <td class="text-right" style="width:${100 / 9}%;">${formatter.format(dst)}</td>
-            <td class="text-right">${formatter.format(total)}</td>
-        `;
-        tbody.appendChild(tr);
+        const createdDate = row.date_created ? new Date(row.date_created) : null;
+        const lastModifiedDate = row.last_modified ? new Date(row.last_modified) : null;
+
+        return [
+            DateFormatter.formatDateTime(createdDate),
+            DateFormatter.formatDateTime(lastModifiedDate),
+            row.ar_no || '',
+            row.name_of_payor || '',
+            row.reference_number || '',
+            formatter.format(ciapPcab),
+            formatter.format(lrf),
+            formatter.format(dst),
+            formatter.format(total)
+        ];
     });
 
-    table.appendChild(thead);
-    table.appendChild(tbody);
-    tableContainer.append(table);
-
-    // Initialize DataTable
-    const modalTableInstance = $('#modalDataTable').DataTable({
-        dom: 'frtip',
-        scrollX: '100%',
-        scrollCollapse: true,
-        ordering: false,
-        paging: true,
-        pageLength: 10,
-        drawCallback: function(settings) {
-            // Add search icon button beside DataTables search box
-            const wrapper = $(settings.nTableWrapper);
-            const filterWrapper = wrapper.find('.dataTables_filter');
-            if (filterWrapper.length && !filterWrapper.find('#dailyCollectionSearchBtn').length) {
-                const searchInput = filterWrapper.find('input');               // Disable automatic DataTable search on input
-                searchInput.off('keyup change input').on('keyup change input', function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    return false;
-                });
-                filterWrapper.append('<button type=\"button\" id=\"dailyCollectionSearchBtn\" class=\"btn-search-icon\" title=\"Search\"><i class=\"icon-magnifier\"></i></button>');
-                
-                // Handle search button click - client-side only
-                filterWrapper.find('#dailyCollectionSearchBtn').off('click').on('click', function() {
-                    const searchValue = searchInput.val();
-                    modalTableInstance.search(searchValue).draw();
-                });
-            }
-        }});
-
-    // Adjust modal size
-    const modalDialog = $('#Daily_CollectionModal .modal-dialog');
-    const modalDateContainer = $('#Daily_CollectionModal .form-group');
-    const modalFooterBtnContainer = $('#Daily_CollectionModal .modal-footer');
-    if (!modalDialog.hasClass('modal-lg')) {
-        modalDialog.removeClass('modal-sm').addClass('modal-lg');
-        modalDialog.css('transition', 'width 0.5s ease-in-out');
-        // Remove flex-wrap from #DailyCollectModal form-group
-        modalDateContainer.css('flex-wrap', 'nowrap').children().not(':last').addClass('mr-2');
-        $('#Daily_CollectionModal .form-group .form-control').css('max-width', '200px');
-        // Remove flex-wrap from modal-footer
-        modalFooterBtnContainer.removeClass('flex-wrap justify-content-center').addClass('justify-content-end').children().removeClass('w-100').not(':last').addClass('mr-2');
-    }
+    dataTable.rows.add(rowsToAdd);
+    dataTable.draw();
 }
 
 /**
  * Handle Daily Collection download
  */
-function handleDailyCollectionDownload(startDateInput, endDateInput, validationMessage) {
+function handleDailyCollectionDownload(startDateInput, endDateInput) {
     const startDate = startDateInput.val();
     const endDate = endDateInput.val();
 
     if (!startDate || !endDate) {
-        validationMessage.html(
-            '<span style="font-size:.8rem; color: red; text-align:center;" role="alert">' +
-            'Please select both start and end dates.</span>'
-        );
+        alert('Please select both start and end dates.');
         return;
     }
-
-    validationMessage.empty();
 
     const startDateFormatted = DateConverter.normalizeDateForApi(startDate);
     const endDateFormatted = DateConverter.normalizeDateForApi(endDate);
