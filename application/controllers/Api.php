@@ -176,4 +176,89 @@ class Api extends CI_Controller
             ->_display();
         exit;
     }
+
+    public function acknowledgement_receipt_search()
+    {
+        // Read JSON payload inputs or fall back to standard GET/POST methods
+        $stream = json_decode($this->input->raw_input_stream, true);
+
+        $session_id = $stream['session_id'] ?? $this->input->post('session_id');
+        $search = $this->input->get('search') ?? $stream['search'] ?? $this->input->post('search') ?? null;
+
+        // Read Pagination Parameters (Defaulting to Page 1, Limit 10)
+        $page = (int) ($this->input->get('page') ?? $stream['page'] ?? $this->input->post('page') ?? 1);
+        $limit = (int) ($this->input->get('limit') ?? $stream['limit'] ?? $this->input->post('limit') ?? 10);
+
+        // Enforce minimum values for safe calculation
+        if ($page < 1)
+            $page = 1;
+        if ($limit < 1)
+            $limit = 10;
+
+        // Ensure CodeIgniter's Native Session library is fully initialized
+        if (!isset($this->session)) {
+            $this->load->library('session');
+        }
+
+        // 1. VALIDATION: Verify session_id matches active server session
+        if (empty($session_id) || $session_id !== $this->session->session_id) {
+            $response = (object) [
+                'status' => false,
+                'message' => 'Unauthorized access. Invalid or expired session ID.',
+                'data' => []
+            ];
+
+            $this->output
+                ->set_status_header(401) // 401 Unauthorized
+                ->set_content_type('application/json', 'utf-8')
+                ->set_output(json_encode($response, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES))
+                ->_display();
+            exit;
+        }
+
+        // Calculate database query offset
+        $offset = ($page - 1) * $limit;
+
+        // 🚀 2. EXECUTION: Call the schema-matched search transaction model
+        $result = $this->Api->get_search_transactions($limit, $offset, $search);
+
+        if ($result !== false && !empty($result['records'])) {
+            $total_pages = ceil($result['total_records'] / $limit);
+
+            // Structuring the clean paginated API response
+            $response = (object) [
+                'status' => true,
+                'message' => 'Data retrieved successfully',
+                'pagination' => (object) [
+                    'total_records' => (int) $result['total_records'],
+                    'current_page' => $page,
+                    'per_page' => $limit,
+                    'total_pages' => $total_pages
+                ],
+                'data' => $result['records']
+            ];
+            $status_code = 200;
+        } else {
+            $response = (object) [
+                'status' => false,
+                'message' => 'No transaction records found matching the search criteria.',
+                'pagination' => (object) [
+                    'total_records' => 0,
+                    'current_page' => $page,
+                    'per_page' => $limit,
+                    'total_pages' => 0
+                ],
+                'data' => []
+            ];
+            $status_code = 404; // 404 Not Found
+        }
+
+        // Output clean JSON native response
+        $this->output
+            ->set_status_header($status_code)
+            ->set_content_type('application/json', 'utf-8')
+            ->set_output(json_encode($response, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES))
+            ->_display();
+        exit;
+    }
 }

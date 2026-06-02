@@ -59,5 +59,6 @@ $route['api-logout'] = 'auth/logout';
 
 $route['api-transaction'] = 'api/get_all_transaction';
 $route['api-acknowledgement-receipt'] = 'api/acknowledgement_receipt';
+$route['api-search'] = 'api/acknowledgement_receipt_search';
 
 

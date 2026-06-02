@@ -47,4 +47,46 @@ class Api_model extends CI_Model
         ];
     }
 
+    public function get_search_transactions($limit, $offset, $search = null)
+    {
+        $this->db->from('transactions');
+
+        // 🚀 Dynamic search block matching your exact database image schema properties
+        if (!empty($search)) {
+            $this->db->group_start();
+
+            $this->db->like('reference_number', $search);
+            $this->db->or_like('referenceNumber', $search);
+            $this->db->or_like('name_of_payor', $search);
+            $this->db->or_like('particulars', $search);
+            $this->db->or_like('mobile_number', $search);
+            $this->db->or_like('status', $search);  // Allows users to find records by searching "SUCCESS" or "FAILED"
+            $this->db->or_like('ar_no', $search);   // Acknowledgement Receipt Number (Row 25)
+            $this->db->or_like('report_no', $search); // Report Number (Row 24)
+
+            $this->db->group_end();
+        }
+
+        // 1. Calculate the absolute total matching records before applying pagination limits
+        // Passing 'false' prevents CodeIgniter from destroying the query context in memory
+        $total_records = $this->db->count_all_results('', false);
+
+        if ($total_records === 0) {
+            return false;
+        }
+
+        // 2. Extract the specific subset window of matching rows
+        // Always sorting cleanly by your table's explicit last_modified column (Row 18)
+        $this->db->order_by('last_modified', 'ASC');
+        $this->db->limit($limit, $offset);
+
+        $query = $this->db->get();
+
+        return [
+            'total_records' => $total_records,
+            'records' => $query->result() // Returns an array of standard PHP objects
+        ];
+    }
+
+
 }
