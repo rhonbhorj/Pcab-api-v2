@@ -17,6 +17,127 @@ class Api extends CI_Controller
         header("Access-Control-Allow-Headers: Content-Type, Content-Length, Accept-Encoding, X-Requested-With, Authorization, X-API-KEY");
     }
 
+    /**
+     * Unserialize a single CodeIgniter session value
+     * @param string $serialized The serialized value
+     * @return mixed The unserialized value
+     */
+    private function unserialize_ci_value($serialized)
+    {
+        if (empty($serialized)) {
+            return null;
+        }
+
+        // Integer: i:value
+        if (strpos($serialized, 'i:') === 0) {
+            return (int)substr($serialized, 2);
+        }
+        // Boolean: b:0 or b:1
+        elseif (strpos($serialized, 'b:') === 0) {
+            return (bool)(int)substr($serialized, 2);
+        }
+        // Null: N
+        elseif ($serialized === 'N') {
+            return null;
+        }
+        // String: s:length:"string"
+        elseif (strpos($serialized, 's:') === 0) {
+            preg_match('/s:(\d+):"(.*)"/', $serialized, $matches);
+            return isset($matches[2]) ? $matches[2] : null;
+        }
+
+        return null;
+    }
+
+    /**
+     * Parse CodeIgniter's custom session format
+     * @param string $data The serialized session data
+     * @return array The unserialized session array
+     */
+    private function unserialize_ci_session($data)
+    {
+        $result = [];
+        
+        // Split by semicolons to get individual key-value pairs
+        $pairs = explode(';', $data);
+
+        foreach ($pairs as $pair) {
+            if (empty($pair)) {
+                continue;
+            }
+
+            // Split by the first | to separate key from serialized value
+            $pos = strpos($pair, '|');
+            if ($pos === false) {
+                continue;
+            }
+
+            $key = substr($pair, 0, $pos);
+            $serialized = substr($pair, $pos + 1);
+
+            // Parse the serialized value
+            $value = $this->unserialize_ci_value($serialized);
+            $result[$key] = $value;
+        }
+
+        return $result;
+    }
+
+    /**
+     * Validate session by session_id by checking if session file exists
+     * @param string $session_id The session ID to validate
+     * @return bool True if valid session exists, false otherwise
+     */
+    private function validate_session($session_id)
+    {
+        if (empty($session_id)) {
+            return false;
+        }
+
+        // Get session save path and construct the session file path
+        $sess_save_path = config_item('sess_save_path');
+        $sess_driver = config_item('sess_driver');
+
+        // Only support files driver
+        if ($sess_driver !== 'files') {
+            return false;
+        }
+
+        // Normalize the path to use forward slashes consistently
+        $sess_save_path = str_replace('\\', '/', $sess_save_path);
+        if (substr($sess_save_path, -1) !== '/') {
+            $sess_save_path .= '/';
+        }
+
+        // Construct the session file path
+        $session_file = $sess_save_path . 'ci_session' . $session_id;
+
+        // Check if session file exists
+        if (!file_exists($session_file)) {
+            return false;
+        }
+
+        // Read session file with proper error handling
+        $session_data = file_get_contents($session_file);
+        if ($session_data === false || empty($session_data)) {
+            return false;
+        }
+
+        // Parse CodeIgniter's custom session format
+        $data = $this->unserialize_ci_session($session_data);
+        
+        if (empty($data) || !is_array($data)) {
+            return false;
+        }
+
+        // Check if the session has logged_in flag set to TRUE
+        if (!isset($data['logged_in']) || $data['logged_in'] !== TRUE) {
+            return false;
+        }
+
+        return true;
+    }
+
 
     public function get_all_transaction()
     {
@@ -26,11 +147,8 @@ class Api extends CI_Controller
         $from_date = $this->input->get('from_date') ?? $stream['from_date'] ?? $this->input->post('from_date');
         $to_date = $this->input->get('to_date') ?? $stream['to_date'] ?? $this->input->post('to_date');
 
-        if (!isset($this->session)) {
-            $this->load->library('session');
-        }
-
-        if (empty($session_id) || $session_id !== $this->session->session_id) {
+        // 1. VALIDATION: Verify session_id is valid and authenticated
+        if (!$this->validate_session($session_id)) {
             $response = (object) [
                 'status' => false,
                 'message' => 'Unauthorized access. Invalid or expired session ID.',
@@ -95,13 +213,8 @@ class Api extends CI_Controller
         if ($limit < 1)
             $limit = 10;
 
-        // Ensure CodeIgniter's Native Session library is fully initialized
-        if (!isset($this->session)) {
-            $this->load->library('session');
-        }
-
-        // 1. VALIDATION: Verify session_id matches active server session
-        if (empty($session_id) || $session_id !== $this->session->session_id) {
+        // 1. VALIDATION: Verify session_id is valid and authenticated
+        if (!$this->validate_session($session_id)) {
             $response = (object) [
                 'status' => false,
                 'message' => 'Unauthorized access. Invalid or expired session ID.',
@@ -195,13 +308,8 @@ class Api extends CI_Controller
         if ($limit < 1)
             $limit = 10;
 
-        // Ensure CodeIgniter's Native Session library is fully initialized
-        if (!isset($this->session)) {
-            $this->load->library('session');
-        }
-
-        // 1. VALIDATION: Verify session_id matches active server session
-        if (empty($session_id) || $session_id !== $this->session->session_id) {
+        // 1. VALIDATION: Verify session_id is valid and authenticated
+        if (!$this->validate_session($session_id)) {
             $response = (object) [
                 'status' => false,
                 'message' => 'Unauthorized access. Invalid or expired session ID.',

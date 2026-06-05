@@ -26,9 +26,9 @@ class Auth extends CI_Controller
 		$login = $this->Auth->doLogin($username, $password);
 
 		if ($login) {
-			if (!isset($this->session)) {
-				$this->load->library('session');
-			}
+			// Load session library for login
+			$this->load->library('session');
+			
 			$user_id = is_object($login) ? ($login->id ?? null) : ($login['id'] ?? null);
 			$session_data = [
 				'user_id' => $user_id,
