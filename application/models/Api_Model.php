@@ -47,11 +47,11 @@ class Api_model extends CI_Model
         ];
     }
 
-    public function get_search_transactions($limit, $offset, $search = null)
+    public function get_search_transactions($limit, $offset, $search = null, $from_date = null, $to_date = null)
     {
         $this->db->from('transactions');
 
-        // 🚀 Dynamic search block matching your exact database image schema properties
+        // 🚀 Dynamic search block matching your database schema properties
         if (!empty($search)) {
             $this->db->group_start();
 
@@ -61,10 +61,19 @@ class Api_model extends CI_Model
             $this->db->or_like('particulars', $search);
             $this->db->or_like('mobile_number', $search);
             $this->db->or_like('status', $search);  // Allows users to find records by searching "SUCCESS" or "FAILED"
-            $this->db->or_like('ar_no', $search);   // Acknowledgement Receipt Number (Row 25)
-            $this->db->or_like('report_no', $search); // Report Number (Row 24)
+            $this->db->or_like('ar_no', $search);   // Acknowledgement Receipt Number
+            $this->db->or_like('report_no', $search); // Report Number
 
             $this->db->group_end();
+        }
+
+        // 📅 Date Filtering Block (Assumes filtering targeting your explicitly sorted 'last_modified' column)
+        if (!empty($from_date)) {
+            $this->db->where('last_modified >=', $from_date);
+        }
+        if (!empty($to_date)) {
+            // Tip: If your to_date is just 'YYYY-MM-DD', you might want to append ' 23:59:59' to include the full day
+            $this->db->where('last_modified <=', $to_date);
         }
 
         // 1. Calculate the absolute total matching records before applying pagination limits
@@ -76,7 +85,7 @@ class Api_model extends CI_Model
         }
 
         // 2. Extract the specific subset window of matching rows
-        // Always sorting cleanly by your table's explicit last_modified column (Row 18)
+        // Always sorting cleanly by your table's explicit last_modified column
         $this->db->order_by('last_modified', 'ASC');
         $this->db->limit($limit, $offset);
 

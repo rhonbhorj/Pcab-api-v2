@@ -30,11 +30,11 @@ class Api extends CI_Controller
 
         // Integer: i:value
         if (strpos($serialized, 'i:') === 0) {
-            return (int)substr($serialized, 2);
+            return (int) substr($serialized, 2);
         }
         // Boolean: b:0 or b:1
         elseif (strpos($serialized, 'b:') === 0) {
-            return (bool)(int)substr($serialized, 2);
+            return (bool) (int) substr($serialized, 2);
         }
         // Null: N
         elseif ($serialized === 'N') {
@@ -57,7 +57,7 @@ class Api extends CI_Controller
     private function unserialize_ci_session($data)
     {
         $result = [];
-        
+
         // Split by semicolons to get individual key-value pairs
         $pairs = explode(';', $data);
 
@@ -125,7 +125,7 @@ class Api extends CI_Controller
 
         // Parse CodeIgniter's custom session format
         $data = $this->unserialize_ci_session($session_data);
-        
+
         if (empty($data) || !is_array($data)) {
             return false;
         }
@@ -298,6 +298,10 @@ class Api extends CI_Controller
         $session_id = $stream['session_id'] ?? $this->input->post('session_id');
         $search = $this->input->get('search') ?? $stream['search'] ?? $this->input->post('search') ?? null;
 
+        // Added Date Filter Inputs
+        $from_date = $this->input->get('from_date') ?? $stream['from_date'] ?? $this->input->post('from_date') ?? null;
+        $to_date = $this->input->get('to_date') ?? $stream['to_date'] ?? $this->input->post('to_date') ?? null;
+
         // Read Pagination Parameters (Defaulting to Page 1, Limit 10)
         $page = (int) ($this->input->get('page') ?? $stream['page'] ?? $this->input->post('page') ?? 1);
         $limit = (int) ($this->input->get('limit') ?? $stream['limit'] ?? $this->input->post('limit') ?? 10);
@@ -327,8 +331,8 @@ class Api extends CI_Controller
         // Calculate database query offset
         $offset = ($page - 1) * $limit;
 
-        // 🚀 2. EXECUTION: Call the schema-matched search transaction model
-        $result = $this->Api->get_search_transactions($limit, $offset, $search);
+        // 🚀 2. EXECUTION: Pass search strings and date strings to the model
+        $result = $this->Api->get_search_transactions($limit, $offset, $search, $from_date, $to_date);
 
         if ($result !== false && !empty($result['records'])) {
             $total_pages = ceil($result['total_records'] / $limit);
